@@ -2,11 +2,9 @@ services:
   - type: web
     name: clf-c02-drill
     runtime: static
-    plan: free
-    buildCommand: ""
     staticPublishPath: .
     headers:
-      # the app is one immutable file per deploy; let the browser hold it
+      # one file per deploy — make sure a redeploy isn't served from cache
       - path: /index.html
         name: Cache-Control
         value: public, max-age=0, must-revalidate

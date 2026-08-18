@@ -1,0 +1,163 @@
+{
+  "_about": "Answer-key corrections applied at build time. `from` must still match the source data or the build fails, so a correction can never silently drift after the underlying question changes. Entries under `disputes` change nothing and only attach a note.",
+  "_coverage": "All 972 unique questions from the 23 practice sets, plus all 155 generated service scenarios, were read by hand. 11 keys were wrong; 9 more are arguable and carry a note.",
+
+  "corrections": [
+    {
+      "id": 661,
+      "type": "fix",
+      "where": "set 14, Q19",
+      "question": "Which task is AWS responsible for in the shared responsibility model?",
+      "from": ["B"],
+      "to": ["C"],
+      "reason": "AWS owns the host hardware, so updating EC2 host firmware is AWS's. Encrypting data in transit is the customer's job — they choose whether to use TLS and which certificate. The identical question in set 9 keys C."
+    },
+    {
+      "id": 734,
+      "type": "fix",
+      "where": "set 15, Q42",
+      "question": "Which operational controls do users fully inherit from AWS?",
+      "from": ["D"],
+      "to": ["A"],
+      "reason": "AWS defines inherited controls as the physical and environmental ones — what a customer gets purely by running on AWS and cannot touch. User and access management is the clearest customer responsibility there is. Sets 3 and 7 ask the same thing and key the physical and data-centre options."
+    },
+    {
+      "id": 976,
+      "type": "fix",
+      "where": "set 20, Q34",
+      "question": "Who is responsible for patching the guest operating system for Amazon RDS?",
+      "from": ["B"],
+      "to": ["A"],
+      "reason": "RDS is a managed service: AWS patches the guest OS and the database engine. Set 20 Q28 in this same bank lists RDS patching as AWS's responsibility, which contradicts the original key here."
+    },
+    {
+      "id": 177,
+      "type": "fix",
+      "where": "set 4, Q27",
+      "question": "What are AWS shared controls?",
+      "from": ["D"],
+      "to": ["C"],
+      "reason": "AWS's wording is 'controls which apply to both the infrastructure layer and customer layers, but in completely separate contexts or perspectives' — option C almost verbatim. The keyed option says the two parties collaborate, which is the opposite of 'separate contexts'."
+    },
+    {
+      "id": 236,
+      "type": "fix",
+      "where": "set 5, Q36",
+      "question": "Which service monitors the HTTP and HTTPS requests forwarded to Amazon CloudFront?",
+      "from": ["B"],
+      "to": ["A"],
+      "reason": "The stem is lifted from the AWS WAF documentation, which describes WAF as letting you monitor the HTTP and HTTPS requests forwarded to CloudFront. CloudWatch reports aggregate metrics; it does not inspect individual requests."
+    },
+    {
+      "id": 732,
+      "type": "fix",
+      "where": "set 15, Q40",
+      "question": "Which benefits does the AWS Compliance program provide? (Choose two)",
+      "from": ["A", "B"],
+      "to": ["B", "C"],
+      "reason": "AWS being certified does not make a customer's workload automatically compliant — that claim contradicts the shared responsibility model outright. What the program does give customers is AWS-maintained framework documentation and assurance that AWS handles physical security and data protection."
+    },
+    {
+      "id": 748,
+      "type": "fix",
+      "where": "set 16, Q6",
+      "question": "How is asset management on AWS easier than in a physical data center?",
+      "from": ["B"],
+      "to": ["D"],
+      "reason": "AWS does not run discovery scans of a customer's estate on their behalf; Application Discovery Service is something the customer deploys and runs. What actually makes asset management easier is that every resource is queryable through the API."
+    },
+    {
+      "id": 796,
+      "type": "fix",
+      "where": "set 17, Q4",
+      "question": "Which service estimates the cost of running a NEW project on AWS?",
+      "from": ["C"],
+      "to": ["B"],
+      "reason": "Cost Explorer analyses spend that has already happened; it cannot price a project that does not exist yet. The calculator is the estimating tool. Set 18 Q6 and set 22 Q39 ask the same thing and key the calculator. In the live console this tool is now the AWS Pricing Calculator."
+    },
+    {
+      "id": 862,
+      "type": "fix",
+      "where": "set 18, Q20",
+      "question": "What are the immediate benefits of using the AWS Cloud? (Choose two)",
+      "from": ["C", "D"],
+      "to": ["B", "D"],
+      "reason": "Control of the infrastructure is what you give up when you move to the cloud, not a benefit of it. Trading capital expense for variable expense is one of the six advertised advantages and belongs in the pair with agility."
+    },
+    {
+      "id": 1003,
+      "type": "fix",
+      "where": "set 21, Q11",
+      "question": "Deploying for the HIGHEST redundancy and fault tolerance",
+      "from": ["C"],
+      "to": ["D"],
+      "reason": "Two Regions survive the loss of a Region; multiple Availability Zones in one Region do not. Set 7 Q28 poses this question with near-identical wording and keys the multi-Region option."
+    },
+    {
+      "id": 1065,
+      "type": "fix",
+      "where": "set 22, Q23",
+      "question": "Which benefit lets applications scale up and down to meet variable demand?",
+      "from": ["D"],
+      "to": ["A"],
+      "reason": "Scaling in both directions with demand is the definition of elasticity; scalability is about being able to grow. Four other questions in this bank key elasticity for the same phrasing, in sets 16, 17, 20 and 22."
+    }
+  ],
+
+  "disputes": [
+    {
+      "id": 98,
+      "type": "dispute",
+      "where": "set 2, Q48",
+      "note": "A partner that delivers a service to improve customer architectures is a Consulting Partner (keyed). A partner that ships software is a Technology Partner. 'Created a solution' pulls slightly toward Technology Partner, so the key is arguable."
+    },
+    {
+      "id": 151,
+      "type": "dispute",
+      "where": "set 4, Q1",
+      "note": "ACM is clearly right. Route 53 is keyed as the second answer, but it issues no certificates — it only validates them through DNS. IAM's legacy server-certificate store is arguably the better second answer. Treat only ACM as certain."
+    },
+    {
+      "id": 336,
+      "type": "dispute",
+      "where": "set 7, Q36",
+      "note": "'Resizable compute capacity in the cloud' is the AWS tagline for EC2, not Lambda, so that option is defensible as the non-benefit too. The keyed answer relies on reading 'directly' strictly — a mobile app does reach Lambda, but through the SDK or API Gateway."
+    },
+    {
+      "id": 393,
+      "type": "dispute",
+      "where": "set 8, Q43",
+      "note": "Out of date. Since 2019 AWS permits penetration testing against eight listed services with no prior approval, so the keyed 'request and wait for approval' is no longer the rule. Set 2 Q12 in this bank states the current policy correctly — answer the current rule on the exam."
+    },
+    {
+      "id": 820,
+      "type": "dispute",
+      "where": "set 17, Q28",
+      "note": "VPC is keyed as the service providing hybrid connectivity, but Direct Connect and VPN are what actually carry the traffic; the VPC is what they terminate into. Every other hybrid-connectivity question in this bank keys Direct Connect or VPN."
+    },
+    {
+      "id": 910,
+      "type": "dispute",
+      "where": "set 19, Q18",
+      "note": "Both the keyed answer and the linked-account option can restrict a Reserved Instance to one account. Buying in the payer account works if that is the account you mean; buying in the linked account works otherwise. The question never says which."
+    },
+    {
+      "id": 915,
+      "type": "dispute",
+      "where": "set 19, Q23",
+      "note": "Budgets alerts you; it does not set resource limits, which is what Service Quotas does. The option about Reserved Instance utilisation alerts is a genuine Budgets feature and is keyed correct elsewhere in this bank, in set 4 Q17. Read the keyed answer as loose wording for 'set a budget'."
+    },
+    {
+      "id": 1021,
+      "type": "dispute",
+      "where": "set 21, Q29",
+      "note": "Tagging is the usual answer for splitting cost by department. Separate accounts is keyed here, which is defensible because some charges — data transfer in particular — are hard to attribute by tag. On the exam, notice whether the question stresses untaggable costs."
+    },
+    {
+      "id": 1053,
+      "type": "dispute",
+      "where": "set 22, Q11",
+      "note": "Partly out of date. The request form now applies only to other simulated events such as DDoS or stress testing. Ordinary penetration testing against the eight permitted services needs no form and no approval."
+    }
+  ]
+}

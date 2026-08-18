@@ -3,17 +3,68 @@
 // writes a single self-contained file to dist/index.html.
 // No dependencies on purpose — Render can run this with nothing installed.
 
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
+import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = dirname(fileURLToPath(import.meta.url));
-const read = p => readFileSync(join(root, p), 'utf8');
 
-const template = read('src/template.html');
-const questions = JSON.parse(read('src/data/questions.json'));
-const review = JSON.parse(read('src/data/review.json'));
-const corrections = JSON.parse(read('src/data/corrections.json'));
+// Uploading through the GitHub web UI often flattens folders, so look for each
+// input in the tidy location first and then anywhere sensible nearby.
+function locate(name, ...candidates) {
+  for (const rel of candidates) {
+    const p = join(root, rel);
+    if (existsSync(p)) return p;
+  }
+  const tree = [];
+  const walk = (dir, depth) => {
+    if (depth > 2) return;
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      if (e.name.startsWith('.') || e.name === 'node_modules' || e.name === 'dist') continue;
+      const full = join(dir, e.name);
+      if (e.isDirectory()) walk(full, depth + 1);
+      else tree.push(relative(root, full));
+    }
+  };
+  try { walk(root, 0); } catch {}
+  console.error(`build failed — could not find ${name}`);
+  console.error(`  looked for: ${candidates.join(', ')}`);
+  console.error(`  files actually present:`);
+  for (const f of tree.sort().slice(0, 40)) console.error(`    ${f}`);
+  console.error(`\n  If these are sitting at the repo root, either move them back into src/`);
+  console.error(`  and src/data/, or leave them — this script accepts both layouts.`);
+  process.exit(1);
+}
+
+// exam-style.json is a bonus set. If it hasn't been uploaded yet, say so loudly
+// and build without it rather than failing the whole deploy.
+function locateOptional(...candidates) {
+  for (const rel of candidates) {
+    const p = join(root, rel);
+    if (existsSync(p)) return p;
+  }
+  return null;
+}
+
+const read = p => readFileSync(p, 'utf8');
+
+const templatePath  = locate('template.html',   'src/template.html', 'template.html', 'src/data/template.html');
+const questionsPath = locate('questions.json',  'src/data/questions.json', 'src/questions.json', 'data/questions.json', 'questions.json');
+const reviewPath    = locate('review.json',     'src/data/review.json', 'src/review.json', 'data/review.json', 'review.json');
+const correctionsPath = locate('corrections.json', 'src/data/corrections.json', 'src/corrections.json', 'data/corrections.json', 'corrections.json');
+const examStylePath   = locateOptional('src/data/exam-style.json', 'src/exam-style.json', 'data/exam-style.json', 'exam-style.json');
+
+console.log('inputs:');
+for (const p of [templatePath, questionsPath, reviewPath, correctionsPath]) console.log('  ' + relative(root, p));
+console.log('  ' + (examStylePath ? relative(root, examStylePath)
+  : 'exam-style.json  << NOT FOUND, so set 24 is missing from this build'));
+
+const template = read(templatePath);
+const questions = JSON.parse(read(questionsPath));
+const review = JSON.parse(read(reviewPath));
+const corrections = JSON.parse(read(correctionsPath));
+// set 24 is written for this app and carries a rationale for every option
+if (examStylePath) for (const q of JSON.parse(read(examStylePath)).questions) questions.push(q);
 
 // ---- apply audited answer-key corrections ----
 // `from` must still match what's in the bank, so a correction can never drift
@@ -43,6 +94,20 @@ for (const d of corrections.disputes) {
   noted++;
 }
 
+// ---- derive a stem-group id ----
+// Some questions appear in more than one practice set. Each set keeps its copy,
+// but the app uses this id so one round never asks the same thing twice. It is
+// derived here on every build and is deliberately NOT stored in the source data.
+const norm = t => t.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+const groups = new Map();
+for (const q of questions) {
+  if ('g' in q) delete q.g;
+  const k = norm(q.q);
+  if (!groups.has(k)) groups.set(k, groups.size + 1);
+  q.g = groups.get(k);
+}
+const repeated = questions.length - groups.size;
+
 // ---- validate the data before it can ever reach the browser ----
 const problems = [];
 const seen = new Set();
@@ -53,13 +118,63 @@ for (const q of questions) {
   if (!q.q || !q.q.trim()) problems.push(`${at}: empty stem`);
   if (!Array.isArray(q.o) || q.o.length < 2) problems.push(`${at}: needs at least two options`);
   if (!Array.isArray(q.a) || !q.a.length) problems.push(`${at}: no answer key`);
-  const letters = new Set((q.o || []).map(o => o[0]));
-  for (const a of q.a || []) if (!letters.has(a)) problems.push(`${at}: answer ${a} is not one of the options`);
+  const keySet = new Set((q.o || []).map(o => o[0]));
+  for (const a of q.a || []) if (!keySet.has(a)) problems.push(`${at}: answer ${a} is not one of the options`);
   if (![1, 2, 3, 4].includes(q.d)) problems.push(`${at}: bad domain ${q.d}`);
   if (/<\s*\/?\s*(br|p|div|span)\b/i.test(q.q)) problems.push(`${at}: raw html left in the stem`);
+  // the source markdown sometimes leaves option A on the question's own line,
+  // which silently swallows it into the stem
+  if (/\s-\s*[A-F]\.\s/.test(q.q)) problems.push(`${at}: an option marker is stuck inside the stem`);
+  const letters = (q.o || []).map(o => o[0]);
+  const expected = 'ABCDEF'.slice(0, letters.length).split('');
+  if (letters.join('') !== expected.join('')) problems.push(`${at}: option letters are ${letters.join('')}, expected ${expected.join('')}`);
   const want = /choose two|select two/i.test(q.q) ? 2 : /choose three|select three/i.test(q.q) ? 3 : null;
   if (want && q.a.length !== want) problems.push(`${at}: says choose ${want} but the key has ${q.a.length}`);
 }
+// every question that ships a rationale must cover each option and say why the key is right
+for (const q of questions) {
+  if (!q.r && !q.k) continue;
+  const at = `question ${q.i}`;
+  if (!q.k) problems.push(`${at}: has per-option rationales but no key insight`);
+  if (!q.r) { problems.push(`${at}: has a key insight but no per-option rationales`); continue; }
+  for (const [letter] of q.o) {
+    if (!q.r[letter] || q.r[letter].trim().length < 15) problems.push(`${at}: option ${letter} has no usable rationale`);
+  }
+  for (const letter of Object.keys(q.r)) {
+    if (!q.o.some(o => o[0] === letter)) problems.push(`${at}: rationale for option ${letter}, which doesn't exist`);
+  }
+  for (const a of q.a) {
+    if (!/^correct\b/i.test(q.r[a] || '')) problems.push(`${at}: the rationale for keyed option ${a} should start by confirming it`);
+  }
+  for (const [letter] of q.o) {
+    if (!q.a.includes(letter) && /^correct\b/i.test(q.r[letter] || '')) problems.push(`${at}: option ${letter} is not keyed but its rationale says it is correct`);
+  }
+}
+
+// no set may ask the same question twice
+const perSet = new Map();
+for (const q of questions) {
+  if (!(q.e > 0)) continue;
+  const k = `${q.e}::${norm(q.q)}`;
+  if (perSet.has(k)) problems.push(`set ${q.e}: Q${perSet.get(k)} and Q${q.n} are the same question`);
+  else perSet.set(k, q.n);
+}
+// every question that shares a stem with another must carry the same group tag,
+// or the random modes can't tell they're the same
+const stems = new Map();
+for (const q of questions) {
+  const k = norm(q.q);
+  if (!stems.has(k)) stems.set(k, []);
+  stems.get(k).push(q);
+}
+for (const [, rows] of stems) {
+  if (rows.length < 2) continue;
+  const tags = new Set(rows.map(q => q.g));
+  if (tags.size !== 1 || tags.has(undefined)) {
+    problems.push(`questions ${rows.map(q => q.i).join(', ')} share a stem but are not grouped`);
+  }
+}
+
 if (!review.services?.length) problems.push('review: no services');
 if (!review.pairs?.length) problems.push('review: no comparison pairs');
 if (!review.cats?.length) problems.push('review: no categories');
@@ -92,4 +207,6 @@ const sets = new Set(questions.filter(q => q.e > 0).map(q => q.e)).size;
 const svc = questions.filter(q => q.src === 'svc').length;
 console.log(`built dist/index.html — ${kb} KB, ${questions.length} questions ` +
             `(${sets} sets + ${svc} service scenarios), ${review.services.length} study notes, ` +
-            `${fixed} key correction(s), ${noted} disputed note(s)`);
+            `${fixed} key correction(s), ${noted} disputed note(s), ` +
+            `${repeated} cross-set repeats (de-duplicated in random modes), ` +
+            `${questions.filter(q => q.r).length} with full per-option rationales`);

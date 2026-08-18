@@ -13,7 +13,7 @@
   --ok-bg:#1B2A24; --ok-line:#33513F; --ok-note:#9CD4B6;
   --no-bg:#2B1F22; --no-line:#5A3B40; --no-note:#E9B4B9;
   --sel-bg:#282318; --sel-txt:#EBCB9C;
-  --track:#262C35; --hatch:#2C333D;
+  --track:#262C35; --hatch:#2C333D; --scrim:#0A0C0FB8;
   --d1:#7FA8DA; --d2:#DFA463; --d3:#6FBECB; --d4:#AF95D6;
   --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans Thai","Sarabun",Roboto,"Helvetica Neue",sans-serif;
@@ -28,7 +28,7 @@ body[data-theme="light"]{
   --ok-bg:#E4EFE7; --ok-line:#A9CDB6; --ok-note:#2C6B4E;
   --no-bg:#F6E4E1; --no-line:#DDB2AC; --no-note:#8E3C37;
   --sel-bg:#F5EBD8; --sel-txt:#6B480F;
-  --track:#E1DED4; --hatch:#D6D2C6;
+  --track:#E1DED4; --hatch:#D6D2C6; --scrim:#2A2E2C66;
   --d1:#3C6FA8; --d2:#7E5615; --d3:#2B7A87; --d4:#6B4E9B;
 }
 *{box-sizing:border-box}
@@ -157,6 +157,28 @@ button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer;border
 .verdict p{margin:5px 0 0;font-size:13.5px;color:var(--mut);word-break:break-word}
 .verdict a{color:var(--d1)}
 
+.flagchip{font-family:var(--mono);font-size:12px;padding:3px 9px;border:1px solid var(--amber);
+  border-radius:7px;color:var(--amber);background:var(--sel-bg);white-space:nowrap}
+.sheet{position:fixed;inset:0;z-index:60;background:var(--scrim);display:flex;align-items:flex-end;justify-content:center}
+.sheet-in{width:100%;max-width:760px;max-height:78vh;overflow:auto;background:var(--panel);
+  border:1px solid var(--line);border-bottom:0;border-radius:16px 16px 0 0;padding:16px 18px 24px}
+.sheet-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.sheet-head b{font-size:16px;letter-spacing:-.01em}
+.sheet-sub{margin:4px 0 14px;font-size:13px;color:var(--mut)}
+.fq-list{display:grid;gap:8px}
+.fq{display:grid;grid-template-columns:auto 1fr auto auto;gap:11px;align-items:center;text-align:left;
+  width:100%;border:1px solid var(--line);background:var(--ink);border-radius:10px;padding:11px 12px;
+  transition:border-color .12s,background .12s}
+.fq:hover{border-color:var(--line2);background:var(--panel2)}
+.fq.here{border-color:var(--amber)}
+.fq-n{font-family:var(--mono);font-size:12px;color:var(--amber);min-width:34px}
+.fq-q{font-size:13.5px;line-height:1.45;min-width:0}
+.fq-s{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);white-space:nowrap}
+.fq-s.done{color:var(--ok)}
+.fq-x{font-family:var(--mono);font-size:16px;color:var(--dim);padding:0 2px;line-height:1}
+.fq-x:hover{color:var(--no)}
+@media(max-width:560px){.fq{grid-template-columns:auto 1fr auto;gap:8px}.fq-s{grid-column:2/4;font-size:9.5px}}
+@media(min-width:761px){.sheet{align-items:center}.sheet-in{border-radius:16px;border-bottom:1px solid var(--line)}}
 .dock{position:fixed;left:0;right:0;bottom:0;z-index:30;background:linear-gradient(to top,var(--ink) 62%,transparent);padding:16px 0 18px}
 .dock-in{max-width:760px;margin:0 auto;padding:0 18px;display:flex;gap:10px;align-items:center}
 .dock .btn{flex:1;padding:14px 18px;font-size:15px}
@@ -398,6 +420,10 @@ async function pullUrl(url){
 /* ---------------- helpers ---------------- */
 const $=(h)=>{const t=document.createElement("template");t.innerHTML=h.trim();return t.content.firstElementChild;};
 const esc=(s)=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+// A handful of questions appear in more than one practice set. Sets keep their
+// own copy, but a random round must never ask the same thing twice.
+const uniqQ=(list)=>{ const seen=new Set(); return list.filter(q=>{
+  const k=q.g?("g"+q.g):("i"+q.i); if(seen.has(k)) return false; seen.add(k); return true; }); };
 const shuffle=(a)=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const pct=(n,d)=>d?Math.round(n/d*100):0;
 const mmss=(s)=>`${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;
@@ -507,12 +533,12 @@ function home(){
   </div>`);
 
   const GO={
-    sim:()=>start({mode:"sim",label:"Exam simulation",qs:shuffle(QUESTIONS).slice(0,65),timed:90*60,instant:false}),
+    sim:()=>start({mode:"sim",label:"Exam simulation",qs:uniqQ(shuffle(QUESTIONS)).slice(0,65),timed:90*60,instant:false}),
     set:()=>render(pickSet()),
     drill:()=>render(pickDrill()),
     svc:()=>render(pickSvc()),
     review:()=>render(reviewScreen()),
-    wrong:()=>start({mode:"wrong",label:"Mistakes",qs:shuffle(S.wrong.map(i=>byId.get(i)).filter(Boolean)),instant:true})
+    wrong:()=>start({mode:"wrong",label:"Mistakes",qs:uniqQ(shuffle(S.wrong.map(i=>byId.get(i)).filter(Boolean))),instant:true})
   };
   el.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>GO[b.dataset.go]());
   const dr=el.querySelector("[data-drill]");
@@ -766,7 +792,7 @@ function reviewScreen(){
 
 function startDrill(doms,n){
   const pool=QUESTIONS.filter(q=>doms.includes(q.d));
-  start({mode:"drill",label:doms.length===1?DOM[doms[0]].th:"Domain drill",qs:shuffle(pool).slice(0,n),instant:true});
+  start({mode:"drill",label:doms.length===1?DOM[doms[0]].th:"Domain drill",qs:uniqQ(shuffle(pool)).slice(0,n),instant:true});
 }
 
 /* ---------------- offline option notes ---------------- */
@@ -1028,6 +1054,18 @@ function setNote(optEl,text){
 // No network, no API, nothing to load - every note already lives in this file.
 function explainInto(q,whyEl,optEls){
   const norm=x=>x.toLowerCase().replace(/[^a-z0-9]/g,"");
+
+  // Questions written for this app carry a rationale for every option. Everything
+  // else falls back to the built-in glossary note for whichever service is named.
+  if(q.r){
+    q.o.forEach(([k],i)=>{ if(q.r[k]) setNote(optEls[i], q.r[k]); });
+    if(!whyEl) return;
+    whyEl.className="why-box";
+    whyEl.innerHTML='<span class="why-lbl">The point of this question</span>'+
+      `<p class="why">${esc(q.k||"")}</p>`;
+    return;
+  }
+
   q.o.forEach(([k,t],i)=>{
     const g=glossFor(t);
     if(!g) return;
@@ -1069,6 +1107,7 @@ function start(cfg){
 function stopTick(){ if(R&&R.tick) clearInterval(R.tick); }
 
 function drawQ(){
+  R.max=Math.max(R.max||0, R.idx);
   const q=R.qs[R.idx], picks=R.picks[R.idx], checked=R.checked[R.idx];
   const multi=q.a.length>1;
   const el=$(`<div>
@@ -1076,13 +1115,14 @@ function drawQ(){
       <span class="lbl"><b>${R.idx+1}</b> / ${R.qs.length}</span>
       <span class="lbl opt-hide">· ${esc(R.label)}</span>
       <span class="spacer"></span>
+      ${R.flags.size?`<button class="flagchip" data-flaglist title="Show flagged questions">\u2691 ${R.flags.size}</button>`:""}
       ${R.timed?`<span class="timer" id="timer">${mmss(Math.max(0,R.left))}</span>`:""}
       <button class="lbl" data-quit style="color:var(--dim)">Exit</button>
     </div><div class="pbar"><i style="width:${(R.idx)/R.qs.length*100}%"></i></div></div>
     <div class="wrap"><div class="qcard">
       <div class="qmeta">
         <span class="tag" style="color:${DOM[q.d].c};border-color:${DOM[q.d].c}44;background:${DOM[q.d].c}12">${DOM[q.d].th}</span>
-        <span class="eyebrow">${q.src==="svc"?"Service scenario · "+esc(CATNAME[q.cat]?CATNAME[q.cat].en:q.cat):"Set "+q.e+" · Q"+q.n}</span>
+        <span class="eyebrow">${q.src==="svc"?"Service scenario · "+esc(CATNAME[q.cat]?CATNAME[q.cat].en:q.cat):q.src==="orig"?"Exam-style set · Q"+q.n:"Set "+q.e+" · Q"+q.n}</span>
       </div>
       ${multi?`<p class="multi">Choose ${q.a.length} answers</p>`:""}
       <p class="qtext">${esc(q.q)}</p>
@@ -1091,6 +1131,7 @@ function drawQ(){
     </div></div>
     <div class="dock"><div class="dock-in">
       ${(!R.instant && R.idx>0)?`<button class="iconbtn" data-back title="Previous question">←</button>`:""}
+      ${(R.idx<R.max)?`<button class="iconbtn" data-resume title="Back to where you were, Q${R.max+1}">\u21b7</button>`:""}
       <button class="iconbtn ${R.flags.has(R.idx)?"on":""}" data-flag title="Flag for review">⚑</button>
       <button class="btn" data-main></button>
     </div></div></div>`);
@@ -1146,14 +1187,78 @@ function drawQ(){
 
   const back=el.querySelector("[data-back]");
   if(back) back.onclick=()=>{ R.idx--; drawQ(); };
+  const resume=el.querySelector("[data-resume]");
+  if(resume) resume.onclick=()=>{ R.idx=R.max; drawQ(); };
+  const flagList=el.querySelector("[data-flaglist]");
+  if(flagList) flagList.onclick=()=>openFlags(el);
   el.querySelector("[data-flag]").onclick=(e)=>{
     R.flags.has(R.idx)?R.flags.delete(R.idx):R.flags.add(R.idx);
     e.currentTarget.classList.toggle("on");
+    syncFlagChip(el);
   };
   el.querySelector("[data-quit]").onclick=()=>{
     if(confirm("Leave this round? Questions you already checked are saved.")){ stopTick(); render(home()); }
   };
   render(el);
+}
+
+// Keeps the HUD counter in step with R.flags without redrawing the question,
+// which would throw away the reading position mid-question.
+function syncFlagChip(el){
+  const hud=el.querySelector(".hud-in");
+  if(!hud) return;
+  let chip=hud.querySelector("[data-flaglist]");
+  if(!R.flags.size){ if(chip) chip.remove(); return; }
+  if(!chip){
+    chip=$(`<button class="flagchip" data-flaglist title="Show flagged questions">\u2691 ${R.flags.size}</button>`);
+    hud.insertBefore(chip, hud.querySelector(".timer") || hud.querySelector("[data-quit]"));
+    chip.onclick=()=>openFlags(el);
+  } else {
+    chip.textContent="\u2691 "+R.flags.size;
+  }
+}
+
+// Lists everything flagged in this round so you can jump straight back to it
+// without walking through the questions in between.
+function openFlags(host){
+  const idxs=[...R.flags].sort((a,b)=>a-b);
+  const rows=idxs.map(i=>{
+    const q=R.qs[i];
+    const answered=R.instant ? R.checked[i] : R.picks[i].length>0;
+    return `<button class="fq ${i===R.idx?"here":""}" data-jump="${i}">
+      <span class="fq-n">Q${i+1}</span>
+      <span class="fq-q">${esc(q.q.length>110?q.q.slice(0,110)+"\u2026":q.q)}</span>
+      <span class="fq-s ${answered?"done":""}">${answered?(R.instant?"answered":"picked"):"blank"}</span>
+      <span class="fq-x" data-unflag="${i}" title="Remove flag">\u00d7</span>
+    </button>`;
+  }).join("");
+  const sheet=$(`<div class="sheet" data-sheet>
+    <div class="sheet-in">
+      <div class="sheet-head">
+        <b>Flagged in this round</b>
+        <button class="lbl" data-close style="color:var(--dim)">Close</button>
+      </div>
+      <p class="sheet-sub">${idxs.length} question${idxs.length===1?"":"s"} \u00b7 tap one to jump to it</p>
+      <div class="fq-list">${rows}</div>
+    </div></div>`);
+  const close=()=>{ sheet.remove(); document.removeEventListener("keydown",esc2,true); };
+  const esc2=(e)=>{ if(e.key==="Escape"){ e.stopPropagation(); close(); } };
+  document.addEventListener("keydown",esc2,true);
+  sheet.onclick=(e)=>{ if(e.target===sheet) close(); };
+  sheet.querySelector("[data-close]").onclick=close;
+  sheet.querySelectorAll("[data-unflag]").forEach(x=>x.onclick=(e)=>{
+    e.stopPropagation();
+    R.flags.delete(+x.dataset.unflag);
+    close();
+    syncFlagChip(host);
+    const btn=host.querySelector("[data-flag]");
+    if(btn) btn.classList.toggle("on", R.flags.has(R.idx));
+    if(R.flags.size) openFlags(host);
+  });
+  sheet.querySelectorAll("[data-jump]").forEach(b=>b.onclick=()=>{
+    close(); R.idx=+b.dataset.jump; drawQ();
+  });
+  host.appendChild(sheet);
 }
 
 function commit(){
@@ -1251,9 +1356,9 @@ function finish(){
   el.querySelector("[data-home]").onclick=()=>render(home());
   el.querySelector("[data-again]").onclick=()=>{
     const c={mode:R.mode,label:R.label,instant:R.instant,timed:R.timed,key:R.key};
-    if(R.mode==="sim") c.qs=shuffle(QUESTIONS).slice(0,65);
-    else if(R.mode==="wrong") c.qs=shuffle(S.wrong.map(i=>byId.get(i)).filter(Boolean));
-    else c.qs=shuffle(R.qs);
+    if(R.mode==="sim") c.qs=uniqQ(shuffle(QUESTIONS)).slice(0,65);
+    else if(R.mode==="wrong") c.qs=uniqQ(shuffle(S.wrong.map(i=>byId.get(i)).filter(Boolean)));
+    else c.qs=uniqQ(shuffle(R.qs));
     if(!c.qs.length){ render(home()); return; }
     start(c);
   };

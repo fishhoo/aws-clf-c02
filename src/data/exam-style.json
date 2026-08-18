@@ -1,0 +1,1121 @@
+{
+  "_about": "Set 24 — written from scratch for this app, in the style of the official CLF-C02 practice questions. Every option carries its own rationale explaining why it is right or wrong. Not copied from any AWS or third-party question set.",
+  "questions": [
+    {
+      "i": 3001,
+      "e": 24,
+      "n": 1,
+      "d": 4,
+      "src": "orig",
+      "q": "A media company runs an image-rendering job that can be stopped and restarted at any point without harming the result. The team wants the lowest possible price for the EC2 capacity. Which purchase option should they choose?",
+      "o": [
+        [
+          "A",
+          "Spot Instances"
+        ],
+        [
+          "B",
+          "On-Demand Instances"
+        ],
+        [
+          "C",
+          "Reserved Instances"
+        ],
+        [
+          "D",
+          "Dedicated Hosts"
+        ]
+      ],
+      "a": [
+        "A"
+      ],
+      "k": "Spot sells AWS's spare capacity at a steep discount and can be reclaimed with two minutes' notice, which only suits work that tolerates interruption.",
+      "r": {
+        "A": "Correct. Spot draws on unused EC2 capacity at up to 90% off, and the job's tolerance for interruption is exactly the condition Spot requires.",
+        "B": "On-Demand is the undiscounted baseline price. It never gets interrupted, but you pay full rate for that guarantee.",
+        "C": "Reserved Instances discount capacity you commit to for one or three years. They reserve capacity rather than resell spare capacity.",
+        "D": "Dedicated Hosts give you a whole physical server for licensing or compliance reasons. They cost more, not less."
+      }
+    },
+    {
+      "i": 3002,
+      "e": 24,
+      "n": 2,
+      "d": 4,
+      "src": "orig",
+      "q": "A company will run a steady baseline of compute for the next three years but expects to move between instance families and between Amazon EC2 and AWS Fargate as its architecture evolves. Which pricing model gives a commitment discount while allowing those changes?",
+      "o": [
+        [
+          "A",
+          "Standard Reserved Instances"
+        ],
+        [
+          "B",
+          "Compute Savings Plans"
+        ],
+        [
+          "C",
+          "Spot Instances"
+        ],
+        [
+          "D",
+          "On-Demand Capacity Reservations"
+        ]
+      ],
+      "a": [
+        "B"
+      ],
+      "k": "Compute Savings Plans commit to a dollars-per-hour spend rather than to a specific instance, so the discount follows the workload as it changes shape.",
+      "r": {
+        "A": "Standard RIs give the deepest discount but lock you to an instance family in a Region. Changing family means selling or wasting the reservation.",
+        "B": "Correct. You commit to spend, not to hardware, and the discount applies across EC2 families, Fargate and Lambda automatically.",
+        "C": "Spot has no commitment and no predictability — the wrong fit for a steady baseline that must keep running.",
+        "D": "Capacity Reservations hold capacity for you but carry no discount on their own; you still pay On-Demand rates."
+      }
+    },
+    {
+      "i": 3003,
+      "e": 24,
+      "n": 3,
+      "d": 4,
+      "src": "orig",
+      "q": "A startup needs to be able to phone AWS engineers around the clock when a production system is impaired, but cannot justify the cost of a designated advisor. What is the least expensive AWS Support plan that meets this need?",
+      "o": [
+        [
+          "A",
+          "Basic"
+        ],
+        [
+          "B",
+          "Developer"
+        ],
+        [
+          "C",
+          "Business"
+        ],
+        [
+          "D",
+          "Enterprise"
+        ]
+      ],
+      "a": [
+        "C"
+      ],
+      "k": "Business is the entry point for 24/7 phone and chat access to support engineers; Enterprise adds a designated TAM at a much higher price.",
+      "r": {
+        "A": "Basic includes documentation, forums and account or billing cases only. There is no technical support channel at all.",
+        "B": "Developer gives email access to a Cloud Support Associate during business hours, with no phone and no 24/7 coverage.",
+        "C": "Correct. Business is the cheapest plan with 24/7 phone, chat and email to engineers, plus a one-hour target for production-down cases.",
+        "D": "Enterprise does include everything asked for, but it is not the least expensive option and adds the designated TAM they said they don't need."
+      }
+    },
+    {
+      "i": 3004,
+      "e": 24,
+      "n": 4,
+      "d": 4,
+      "src": "orig",
+      "q": "Which AWS Support offering provides a designated advisor who knows the customer's environment and proactively reviews their architecture?",
+      "o": [
+        [
+          "A",
+          "AWS Trusted Advisor"
+        ],
+        [
+          "B",
+          "AWS Professional Services"
+        ],
+        [
+          "C",
+          "The AWS Concierge Support Team"
+        ],
+        [
+          "D",
+          "A Technical Account Manager"
+        ]
+      ],
+      "a": [
+        "D"
+      ],
+      "k": "A designated TAM comes with the Enterprise Support plan and is the human relationship, not an automated tool or a paid consulting engagement.",
+      "r": {
+        "A": "Trusted Advisor is an automated checking tool. It produces recommendations but is not a person and knows nothing about your goals.",
+        "B": "Professional Services are paid consultants engaged for a defined project, separate from a Support plan.",
+        "C": "The Concierge team handles billing and account questions for Enterprise customers. It is not a technical advisory role.",
+        "D": "Correct. The TAM is assigned to the account under Enterprise Support and gives ongoing proactive guidance."
+      }
+    },
+    {
+      "i": 3005,
+      "e": 24,
+      "n": 5,
+      "d": 4,
+      "src": "orig",
+      "q": "Once the free tier allowance is used up, which two factors determine the cost of an AWS Lambda function? (Choose two.)",
+      "o": [
+        [
+          "A",
+          "The number of functions defined in the account"
+        ],
+        [
+          "B",
+          "The number of times the function is invoked"
+        ],
+        [
+          "C",
+          "The runtime language the function is written in"
+        ],
+        [
+          "D",
+          "How long the function runs, combined with the memory allocated to it"
+        ],
+        [
+          "E",
+          "The number of published versions of the function"
+        ]
+      ],
+      "a": [
+        "B",
+        "D"
+      ],
+      "k": "Lambda bills on requests and on GB-seconds — duration multiplied by configured memory. Everything else about the function is free.",
+      "r": {
+        "A": "Defining a function costs nothing. An account can hold hundreds of unused functions at no charge.",
+        "B": "Correct. Every invocation counts as a request, and requests are one of the two billed dimensions.",
+        "C": "Python, Node.js, Java and the rest all cost the same. Language affects your cold-start times, not your invoice.",
+        "D": "Correct. Duration is billed in GB-seconds, so raising the memory setting raises the per-millisecond price.",
+        "E": "Versions and aliases are free. Only storage of the deployment package counts, and only past the generous free limit."
+      }
+    },
+    {
+      "i": 3006,
+      "e": 24,
+      "n": 6,
+      "d": 4,
+      "src": "orig",
+      "q": "A finance team wants to be emailed as soon as this month's forecast spend looks likely to pass a threshold they set. Which service should they use?",
+      "o": [
+        [
+          "A",
+          "AWS Budgets"
+        ],
+        [
+          "B",
+          "AWS Cost Explorer"
+        ],
+        [
+          "C",
+          "AWS Cost and Usage Report"
+        ],
+        [
+          "D",
+          "AWS Pricing Calculator"
+        ]
+      ],
+      "a": [
+        "A"
+      ],
+      "k": "Budgets is the alerting tool: you define a cost, usage or reservation threshold and it notifies you when actual or forecast spend crosses it.",
+      "r": {
+        "A": "Correct. Budgets watches actual and forecast spend against a threshold you set and emails or notifies when it is breached.",
+        "B": "Cost Explorer visualises and forecasts spend, but you have to go and look at it. It does not send threshold alerts.",
+        "C": "The Cost and Usage Report is the most granular billing export, delivered to S3 for analysis. It is raw data, not an alarm.",
+        "D": "The Pricing Calculator estimates what a planned architecture would cost. It has no visibility of what you are actually spending."
+      }
+    },
+    {
+      "i": 3007,
+      "e": 24,
+      "n": 7,
+      "d": 4,
+      "src": "orig",
+      "q": "An architect has designed a new workload and needs to tell the business what it will cost per month before anything is deployed. Which tool is appropriate?",
+      "o": [
+        [
+          "A",
+          "AWS Cost Explorer"
+        ],
+        [
+          "B",
+          "AWS Pricing Calculator"
+        ],
+        [
+          "C",
+          "AWS Budgets"
+        ],
+        [
+          "D",
+          "AWS Trusted Advisor"
+        ]
+      ],
+      "a": [
+        "B"
+      ],
+      "k": "Estimating a workload that does not exist yet is forward-looking; every other cost tool works from usage that has already happened.",
+      "r": {
+        "A": "Cost Explorer analyses historical spend and projects it forward. With no history for this workload, there is nothing to analyse.",
+        "B": "Correct. The Pricing Calculator prices a described architecture — instance types, storage, data transfer — with no account activity required.",
+        "C": "Budgets tracks spend against a target. You need the number before you can set the target.",
+        "D": "Trusted Advisor inspects resources you are already running and suggests savings on them."
+      }
+    },
+    {
+      "i": 3008,
+      "e": 24,
+      "n": 8,
+      "d": 4,
+      "src": "orig",
+      "q": "A group has grown to twelve AWS accounts, each paying separately by card. Leadership wants one invoice, volume pricing applied across all usage, and the ability to restrict which services each account may use. What should they set up?",
+      "o": [
+        [
+          "A",
+          "AWS IAM Identity Center in each account separately"
+        ],
+        [
+          "B",
+          "Cost allocation tags applied consistently across the accounts"
+        ],
+        [
+          "C",
+          "An organization in AWS Organizations with all features enabled"
+        ],
+        [
+          "D",
+          "A Cost and Usage Report covering each account"
+        ]
+      ],
+      "a": [
+        "C"
+      ],
+      "k": "Organizations delivers all three at once: consolidated billing, pooled usage tiers, and service control policies as a governance guardrail.",
+      "r": {
+        "A": "Identity Center centralises workforce sign-in across accounts. It has nothing to do with invoices or volume discounts.",
+        "B": "Tags let you attribute costs after the fact. They do not merge the invoices or restrict service usage.",
+        "C": "Correct. Consolidated billing produces the single invoice and aggregates usage for volume tiers, and SCPs restrict what member accounts can do.",
+        "D": "A CUR reports on spend in detail but leaves twelve separate bills and twelve separate sets of permissions."
+      }
+    },
+    {
+      "i": 3009,
+      "e": 24,
+      "n": 9,
+      "d": 3,
+      "src": "orig",
+      "q": "A bank needs a link from its data centre to AWS that is private and delivers predictable, consistent throughput for a latency-sensitive trading application. Which service should it use?",
+      "o": [
+        [
+          "A",
+          "AWS Site-to-Site VPN"
+        ],
+        [
+          "B",
+          "AWS Client VPN"
+        ],
+        [
+          "C",
+          "Amazon CloudFront"
+        ],
+        [
+          "D",
+          "AWS Direct Connect"
+        ]
+      ],
+      "a": [
+        "D"
+      ],
+      "k": "Only Direct Connect gives a dedicated physical circuit. Anything crossing the public internet is shared, so its performance cannot be guaranteed.",
+      "r": {
+        "A": "Site-to-Site VPN is encrypted, but it rides the public internet. Encryption is not the same as privacy of path, and throughput varies.",
+        "B": "Client VPN connects individual laptops to AWS resources. It is not a data-centre-to-cloud link.",
+        "C": "CloudFront caches content near end users. It does not connect a corporate network to AWS.",
+        "D": "Correct. Direct Connect is a dedicated fibre circuit into an AWS location, so bandwidth and latency stay consistent."
+      }
+    },
+    {
+      "i": 3010,
+      "e": 24,
+      "n": 10,
+      "d": 3,
+      "src": "orig",
+      "q": "A company must encrypt traffic between its on-premises servers and AWS, and has been told the solution has to reuse the internet circuit it already pays for. Which option fits?",
+      "o": [
+        [
+          "A",
+          "AWS Site-to-Site VPN"
+        ],
+        [
+          "B",
+          "AWS Direct Connect"
+        ],
+        [
+          "C",
+          "Amazon Route 53"
+        ],
+        [
+          "D",
+          "AWS Transit Gateway"
+        ]
+      ],
+      "a": [
+        "A"
+      ],
+      "k": "The constraint 'use the existing internet connection' rules out a dedicated circuit and points straight at an IPsec tunnel over the internet.",
+      "r": {
+        "A": "Correct. Site-to-Site VPN builds an encrypted IPsec tunnel across the internet link the company already has.",
+        "B": "Direct Connect means ordering a new dedicated circuit, which is exactly what the constraint forbids — and it takes weeks to provision.",
+        "C": "Route 53 is DNS. It resolves names and routes requests; it carries no private traffic.",
+        "D": "Transit Gateway is a hub for connecting VPCs and VPNs together. It still needs a VPN or Direct Connect underneath to reach on-premises."
+      }
+    },
+    {
+      "i": 3011,
+      "e": 24,
+      "n": 11,
+      "d": 3,
+      "src": "orig",
+      "q": "A charity serves its static website from one Amazon S3 bucket. Visitors in other continents report slow page loads. Which change will most improve their experience?",
+      "o": [
+        [
+          "A",
+          "Enable S3 Versioning on the bucket"
+        ],
+        [
+          "B",
+          "Put Amazon CloudFront in front of the bucket"
+        ],
+        [
+          "C",
+          "Move the objects to S3 Standard-Infrequent Access"
+        ],
+        [
+          "D",
+          "Create an Application Load Balancer in front of the bucket"
+        ]
+      ],
+      "a": [
+        "B"
+      ],
+      "k": "Distance is the problem. A CDN copies the content to edge locations worldwide so it is served close to each visitor.",
+      "r": {
+        "A": "Versioning protects against accidental overwrites and deletions. It has no effect on delivery speed.",
+        "B": "Correct. CloudFront caches the site at hundreds of edge locations, so distant visitors are served locally instead of from the bucket's Region.",
+        "C": "Standard-IA lowers storage cost for rarely read data and adds a retrieval charge. It makes the site cheaper to store, not faster to reach.",
+        "D": "A load balancer spreads traffic across compute targets in a Region. A static bucket has nothing to balance and no cross-Region reach."
+      }
+    },
+    {
+      "i": 3012,
+      "e": 24,
+      "n": 12,
+      "d": 3,
+      "src": "orig",
+      "q": "Which two statements describe Amazon S3? (Choose two.)",
+      "o": [
+        [
+          "A",
+          "It is a durable object store designed for 99.999999999% durability"
+        ],
+        [
+          "B",
+          "It presents a POSIX file system that Linux instances can mount"
+        ],
+        [
+          "C",
+          "It stores data as objects inside buckets, addressed by key"
+        ],
+        [
+          "D",
+          "It provides block volumes that attach to a single EC2 instance"
+        ],
+        [
+          "E",
+          "It requires you to provision capacity in advance"
+        ]
+      ],
+      "a": [
+        "A",
+        "C"
+      ],
+      "k": "S3 is object storage: flat namespace, key-addressed, eleven nines of durability, and no capacity to provision.",
+      "r": {
+        "A": "Correct. S3 Standard is designed for 99.999999999% durability by replicating across multiple facilities in a Region.",
+        "B": "That describes Amazon EFS. S3 has no file system semantics — no directories, no file locking, no mount.",
+        "C": "Correct. Objects live in buckets and are retrieved by key; there is no real folder hierarchy underneath.",
+        "D": "Block volumes attached to one instance are Amazon EBS. S3 is reached over HTTP, not attached as a disk.",
+        "E": "S3 grows automatically and bills for what you store. There is nothing to size up front."
+      }
+    },
+    {
+      "i": 3013,
+      "e": 24,
+      "n": 13,
+      "d": 3,
+      "src": "orig",
+      "q": "An online shop needs a managed database with SQL joins and transactions to record customer orders, and wants AWS to handle backups, patching and failover. Which service should it use?",
+      "o": [
+        [
+          "A",
+          "Amazon DynamoDB"
+        ],
+        [
+          "B",
+          "Amazon ElastiCache"
+        ],
+        [
+          "C",
+          "Amazon Aurora"
+        ],
+        [
+          "D",
+          "Amazon Redshift"
+        ]
+      ],
+      "a": [
+        "C"
+      ],
+      "k": "Orders with joins and transactions means relational; wanting AWS to run it means managed. Aurora is the cloud-native relational engine in RDS.",
+      "r": {
+        "A": "DynamoDB is a NoSQL key-value store. It scales beautifully but offers no SQL joins in the relational sense.",
+        "B": "ElastiCache holds data in memory to speed up reads. It sits alongside a database; it is not the system of record.",
+        "C": "Correct. Aurora is MySQL- and PostgreSQL-compatible, fully managed, and built for the transactional workloads an order system generates.",
+        "D": "Redshift is a data warehouse tuned for analytical queries over large volumes, not for high-frequency order writes."
+      }
+    },
+    {
+      "i": 3014,
+      "e": 24,
+      "n": 14,
+      "d": 3,
+      "src": "orig",
+      "q": "A mobile game needs a serverless database that returns single-digit millisecond responses for player profiles and requires no schema definition up front. Which service fits?",
+      "o": [
+        [
+          "A",
+          "Amazon RDS for PostgreSQL"
+        ],
+        [
+          "B",
+          "Amazon Neptune"
+        ],
+        [
+          "C",
+          "Amazon DocumentDB"
+        ],
+        [
+          "D",
+          "Amazon DynamoDB"
+        ]
+      ],
+      "a": [
+        "D"
+      ],
+      "k": "Serverless, schemaless and single-digit millisecond at any scale is DynamoDB's exact description.",
+      "r": {
+        "A": "RDS runs on instances you choose and size, and PostgreSQL requires a schema. Neither matches 'serverless' or 'no schema'.",
+        "B": "Neptune is a graph database for highly connected data such as friend networks — a different shape of problem.",
+        "C": "DocumentDB is MongoDB-compatible and document-oriented, but it runs on instances you provision and manage.",
+        "D": "Correct. DynamoDB needs no servers, no schema beyond the key, and holds latency steady as the table grows."
+      }
+    },
+    {
+      "i": 3015,
+      "e": 24,
+      "n": 15,
+      "d": 3,
+      "src": "orig",
+      "q": "A company wants to lift an entire on-premises Linux server, including the Oracle database installed on it, onto an Amazon EC2 instance with as little change as possible. Which service performs this migration?",
+      "o": [
+        [
+          "A",
+          "AWS Application Migration Service (AWS MGN)"
+        ],
+        [
+          "B",
+          "AWS Database Migration Service (AWS DMS)"
+        ],
+        [
+          "C",
+          "AWS Schema Conversion Tool (AWS SCT)"
+        ],
+        [
+          "D",
+          "AWS DataSync"
+        ]
+      ],
+      "a": [
+        "A"
+      ],
+      "k": "The unit being moved is the whole server, not just the data. MGN replicates entire machines into EC2; DMS moves database contents only.",
+      "r": {
+        "A": "Correct. MGN is the lift-and-shift tool: it replicates physical and virtual servers block by block and launches them as EC2 instances.",
+        "B": "DMS copies data from a source database into a target database. It would not bring across the operating system or the server itself.",
+        "C": "SCT rewrites a schema when you change database engine — for example Oracle to PostgreSQL. Nothing here is changing engine.",
+        "D": "DataSync moves files and objects between storage systems. It does not migrate a running server."
+      }
+    },
+    {
+      "i": 3016,
+      "e": 24,
+      "n": 16,
+      "d": 3,
+      "src": "orig",
+      "q": "A build pipeline must notify an entire on-call group by email and SMS the moment a nightly test run fails. Which service should deliver those notifications?",
+      "o": [
+        [
+          "A",
+          "Amazon Simple Queue Service (Amazon SQS)"
+        ],
+        [
+          "B",
+          "Amazon Simple Notification Service (Amazon SNS)"
+        ],
+        [
+          "C",
+          "Amazon EventBridge"
+        ],
+        [
+          "D",
+          "Amazon Connect"
+        ]
+      ],
+      "a": [
+        "B"
+      ],
+      "k": "Fanning one message out to many human subscribers over email and SMS is the publish-subscribe pattern that SNS exists for.",
+      "r": {
+        "A": "SQS holds messages until a consumer pulls them. Nobody is notified — a queue has no push to humans.",
+        "B": "Correct. Publish once to an SNS topic and every subscriber receives it, including email addresses and phone numbers.",
+        "C": "EventBridge routes events between services on rules. It is the plumbing that might trigger the notification, not the thing that delivers it.",
+        "D": "Amazon Connect is a cloud contact centre for customer calls, not an internal alerting channel."
+      }
+    },
+    {
+      "i": 3017,
+      "e": 24,
+      "n": 17,
+      "d": 3,
+      "src": "orig",
+      "q": "An accessibility feature must read article text aloud in a natural-sounding voice. Which AWS service provides this?",
+      "o": [
+        [
+          "A",
+          "Amazon Transcribe"
+        ],
+        [
+          "B",
+          "Amazon Comprehend"
+        ],
+        [
+          "C",
+          "Amazon Polly"
+        ],
+        [
+          "D",
+          "Amazon Textract"
+        ]
+      ],
+      "a": [
+        "C"
+      ],
+      "k": "Text going in and speech coming out is Polly. Transcribe runs the opposite direction.",
+      "r": {
+        "A": "Transcribe converts speech to text — useful for captioning a recording, but backwards for this requirement.",
+        "B": "Comprehend reads text and extracts sentiment, entities and key phrases. It understands text rather than voicing it.",
+        "C": "Correct. Polly is the text-to-speech service and produces lifelike spoken audio from written text.",
+        "D": "Textract pulls text out of scanned documents and forms. It produces text, not audio."
+      }
+    },
+    {
+      "i": 3018,
+      "e": 24,
+      "n": 18,
+      "d": 2,
+      "src": "orig",
+      "q": "A compliance officer wants a service that will automatically scan Amazon S3 buckets, identify objects containing personal data such as national ID numbers, and report on them. Which service does this?",
+      "o": [
+        [
+          "A",
+          "Amazon Inspector"
+        ],
+        [
+          "B",
+          "Amazon GuardDuty"
+        ],
+        [
+          "C",
+          "AWS Secrets Manager"
+        ],
+        [
+          "D",
+          "Amazon Macie"
+        ]
+      ],
+      "a": [
+        "D"
+      ],
+      "k": "Macie is the only AWS service that inspects the contents of S3 objects and classifies sensitive data.",
+      "r": {
+        "A": "Inspector scans EC2 instances, container images and Lambda functions for known vulnerabilities. It does not look inside S3 objects.",
+        "B": "GuardDuty watches logs for malicious behaviour such as compromised credentials. It detects activity, not data content.",
+        "C": "Secrets Manager stores and rotates credentials your applications use. It does not scan anything.",
+        "D": "Correct. Macie uses machine learning and pattern matching to discover and classify sensitive data sitting in S3."
+      }
+    },
+    {
+      "i": 3019,
+      "e": 24,
+      "n": 19,
+      "d": 2,
+      "src": "orig",
+      "q": "A security team wants continuous analysis of CloudTrail, VPC Flow Logs and DNS logs to spot signs that an account has been compromised. Which service is designed for this?",
+      "o": [
+        [
+          "A",
+          "Amazon GuardDuty"
+        ],
+        [
+          "B",
+          "Amazon Inspector"
+        ],
+        [
+          "C",
+          "AWS Config"
+        ],
+        [
+          "D",
+          "AWS Artifact"
+        ]
+      ],
+      "a": [
+        "A"
+      ],
+      "k": "GuardDuty is the threat-detection service, and those three log sources are exactly what it consumes.",
+      "r": {
+        "A": "Correct. GuardDuty continuously analyses those logs and raises findings such as credential misuse or communication with known bad hosts.",
+        "B": "Inspector assesses software for vulnerabilities and unintended network exposure. It is not log-driven threat detection.",
+        "C": "Config records how resources are configured and whether that drifts from your rules. It answers 'is this compliant', not 'are we under attack'.",
+        "D": "Artifact is where you download AWS's own audit reports. It monitors nothing in your account."
+      }
+    },
+    {
+      "i": 3020,
+      "e": 24,
+      "n": 20,
+      "d": 2,
+      "src": "orig",
+      "q": "Which AWS service issues and automatically renews the public TLS certificates used to encrypt traffic to an Application Load Balancer?",
+      "o": [
+        [
+          "A",
+          "AWS Key Management Service (AWS KMS)"
+        ],
+        [
+          "B",
+          "AWS Certificate Manager (ACM)"
+        ],
+        [
+          "C",
+          "AWS Shield"
+        ],
+        [
+          "D",
+          "AWS Security Hub"
+        ]
+      ],
+      "a": [
+        "B"
+      ],
+      "k": "Encryption in transit needs a TLS certificate, and ACM provisions, stores and renews those certificates at no charge for AWS services.",
+      "r": {
+        "A": "KMS manages the keys used to encrypt data at rest. It does not issue TLS certificates for websites.",
+        "B": "Correct. ACM issues free public certificates, attaches them to ELB, CloudFront and API Gateway, and renews them before expiry.",
+        "C": "Shield defends against DDoS attacks. It protects availability, not confidentiality of data in transit.",
+        "D": "Security Hub aggregates findings from other security services into one dashboard. It issues nothing."
+      }
+    },
+    {
+      "i": 3021,
+      "e": 24,
+      "n": 21,
+      "d": 2,
+      "src": "orig",
+      "q": "A regulator requires that a company's encryption keys be held in single-tenant hardware validated to FIPS 140-2 Level 3, under the company's exclusive control. Which service meets this?",
+      "o": [
+        [
+          "A",
+          "AWS Key Management Service (AWS KMS)"
+        ],
+        [
+          "B",
+          "AWS Secrets Manager"
+        ],
+        [
+          "C",
+          "AWS CloudHSM"
+        ],
+        [
+          "D",
+          "AWS Systems Manager Parameter Store"
+        ]
+      ],
+      "a": [
+        "C"
+      ],
+      "k": "The words 'single-tenant' and 'exclusive control' separate CloudHSM from KMS, which is a shared, AWS-managed service.",
+      "r": {
+        "A": "KMS is multi-tenant and AWS-managed. It is the right default for most workloads but does not give you a dedicated appliance.",
+        "B": "Secrets Manager stores application secrets such as database passwords. It is not a key-custody appliance.",
+        "C": "Correct. CloudHSM gives you dedicated hardware security modules that only you can access, meeting strict key-custody requirements.",
+        "D": "Parameter Store holds configuration values and secrets cheaply, backed by KMS. It offers no dedicated hardware."
+      }
+    },
+    {
+      "i": 3022,
+      "e": 24,
+      "n": 22,
+      "d": 2,
+      "src": "orig",
+      "q": "Which service will flag a security group that leaves a port open to the whole internet?",
+      "o": [
+        [
+          "A",
+          "AWS Identity and Access Management (IAM)"
+        ],
+        [
+          "B",
+          "AWS CloudTrail"
+        ],
+        [
+          "C",
+          "Amazon CloudWatch"
+        ],
+        [
+          "D",
+          "AWS Trusted Advisor"
+        ]
+      ],
+      "a": [
+        "D"
+      ],
+      "k": "Trusted Advisor's security category includes a check for security groups with unrestricted access, and it is available to every account.",
+      "r": {
+        "A": "IAM controls who may call which API. It has no view of network rules attached to instances.",
+        "B": "CloudTrail records that someone changed a security group and when. It does not judge whether the resulting rule is dangerous.",
+        "C": "CloudWatch collects metrics and logs about how resources are performing, not how they are configured.",
+        "D": "Correct. Trusted Advisor inspects security groups and reports rules that allow unrestricted access to a resource."
+      }
+    },
+    {
+      "i": 3023,
+      "e": 24,
+      "n": 23,
+      "d": 2,
+      "src": "orig",
+      "q": "Which two items make up the credentials needed for programmatic access to an AWS account? (Choose two.)",
+      "o": [
+        [
+          "A",
+          "An access key ID"
+        ],
+        [
+          "B",
+          "A secret access key"
+        ],
+        [
+          "C",
+          "The account email address and password"
+        ],
+        [
+          "D",
+          "An SSH key pair"
+        ],
+        [
+          "E",
+          "A multi-factor authentication device serial number"
+        ]
+      ],
+      "a": [
+        "A",
+        "B"
+      ],
+      "k": "The CLI and SDKs authenticate with an access key ID plus its matching secret access key. Console sign-in uses a different credential entirely.",
+      "r": {
+        "A": "Correct. The access key ID is the public half of the credential pair and identifies which principal is calling.",
+        "B": "Correct. The secret access key signs the request and is shown only once, when the key is created.",
+        "C": "Email and password sign a human into the console. They cannot be used by the CLI or an SDK.",
+        "D": "An EC2 key pair logs you into an instance's operating system. It grants no access to the AWS API.",
+        "E": "An MFA device adds a second factor to sign-in. On its own it is not a credential for API calls."
+      }
+    },
+    {
+      "i": 3024,
+      "e": 24,
+      "n": 24,
+      "d": 2,
+      "src": "orig",
+      "q": "Under the AWS shared responsibility model, which two tasks belong to the customer? (Choose two.)",
+      "o": [
+        [
+          "A",
+          "Applying patches to the Amazon RDS database engine"
+        ],
+        [
+          "B",
+          "Configuring security groups for Amazon EC2 instances"
+        ],
+        [
+          "C",
+          "Granting IAM users only the permissions their role requires"
+        ],
+        [
+          "D",
+          "Patching the hypervisor beneath EC2 instances"
+        ],
+        [
+          "E",
+          "Restricting physical entry to AWS data centres"
+        ]
+      ],
+      "a": [
+        "B",
+        "C"
+      ],
+      "k": "The customer owns everything they configure inside the account; AWS owns the hardware, the hypervisor, the facilities and the engines of managed services.",
+      "r": {
+        "A": "RDS is managed, so AWS patches the engine. The customer only chooses the maintenance window.",
+        "B": "Correct. Security groups are the customer's firewall rules, and AWS never sets them for you.",
+        "C": "Correct. AWS supplies IAM; deciding who gets which permission is entirely the customer's call.",
+        "D": "The hypervisor is part of the infrastructure AWS runs. Customers have no access to it.",
+        "E": "Physical security of data centres is one of the controls customers inherit wholly from AWS."
+      }
+    },
+    {
+      "i": 3025,
+      "e": 24,
+      "n": 25,
+      "d": 2,
+      "src": "orig",
+      "q": "A team runs a database on an Amazon EC2 instance and another on Amazon RDS. Who applies operating system security patches in each case?",
+      "o": [
+        [
+          "A",
+          "The customer patches the EC2 instance; AWS patches the RDS instance"
+        ],
+        [
+          "B",
+          "AWS patches both"
+        ],
+        [
+          "C",
+          "The customer patches both"
+        ],
+        [
+          "D",
+          "AWS patches the EC2 instance; the customer patches the RDS instance"
+        ]
+      ],
+      "a": [
+        "A"
+      ],
+      "k": "The dividing line is who controls the operating system. On EC2 the customer does; on RDS the OS is hidden and AWS maintains it.",
+      "r": {
+        "A": "Correct. EC2 is infrastructure the customer operates; RDS is a managed service where AWS handles OS and engine patching.",
+        "B": "On EC2 the customer has full root access to the guest OS, and AWS will not log in to patch it.",
+        "C": "On RDS there is no OS access for the customer, so patching it would be impossible.",
+        "D": "This reverses both halves of the model."
+      }
+    },
+    {
+      "i": 3026,
+      "e": 24,
+      "n": 26,
+      "d": 1,
+      "src": "orig",
+      "q": "What are two advantages of running an application on Amazon EC2 instances spread across multiple Availability Zones? (Choose two.)",
+      "o": [
+        [
+          "A",
+          "It removes a single point of failure"
+        ],
+        [
+          "B",
+          "It raises the availability of the application"
+        ],
+        [
+          "C",
+          "It reduces the cost of running the application"
+        ],
+        [
+          "D",
+          "It serves users on other continents with lower latency"
+        ],
+        [
+          "E",
+          "It increases the throughput a single instance can handle"
+        ]
+      ],
+      "a": [
+        "A",
+        "B"
+      ],
+      "k": "Availability Zones are physically separate facilities within a Region, so spreading across them protects against the loss of any one of them.",
+      "r": {
+        "A": "Correct. If every instance sits in one AZ, that AZ is a single point of failure. Spreading them removes it.",
+        "B": "Correct. The application stays reachable when one AZ has a problem, which is what higher availability means.",
+        "C": "Running more instances and paying for cross-AZ data transfer costs more, not less. Availability is something you buy.",
+        "D": "AZs sit close together inside one Region. Reaching distant users needs another Region or CloudFront.",
+        "E": "An individual instance performs exactly the same wherever it is placed."
+      }
+    },
+    {
+      "i": 3027,
+      "e": 24,
+      "n": 27,
+      "d": 1,
+      "src": "orig",
+      "q": "A team deploys an Amazon RDS database with a standby in a second Availability Zone. Which pillar of the AWS Well-Architected Framework does this decision support?",
+      "o": [
+        [
+          "A",
+          "Performance efficiency"
+        ],
+        [
+          "B",
+          "Reliability"
+        ],
+        [
+          "C",
+          "Cost optimisation"
+        ],
+        [
+          "D",
+          "Operational excellence"
+        ]
+      ],
+      "a": [
+        "B"
+      ],
+      "k": "Reliability covers a workload's ability to recover from failure and keep doing its job; a Multi-AZ standby exists purely for that.",
+      "r": {
+        "A": "Performance efficiency is about using resources well as demand changes. A standby serves no traffic, so it adds no performance.",
+        "B": "Correct. The standby removes a single point of failure and fails over automatically, which is the reliability pillar's central concern.",
+        "C": "Cost optimisation would argue against a second instance you pay for and never read from.",
+        "D": "Operational excellence is about how teams run and improve workloads — runbooks, deployments, observability."
+      }
+    },
+    {
+      "i": 3028,
+      "e": 24,
+      "n": 28,
+      "d": 1,
+      "src": "orig",
+      "q": "Which statement correctly describes AWS global infrastructure?",
+      "o": [
+        [
+          "A",
+          "A Region contains a single data centre, and Availability Zones are separate Regions"
+        ],
+        [
+          "B",
+          "Edge locations are larger than Regions and host EC2 instances"
+        ],
+        [
+          "C",
+          "A Region contains multiple Availability Zones, each of which is one or more discrete data centres"
+        ],
+        [
+          "D",
+          "Every AWS service is available in every Region on the day it launches"
+        ]
+      ],
+      "a": [
+        "C"
+      ],
+      "k": "Region contains Availability Zones; an AZ is one or more data centres with independent power and networking; edge locations are separate and far more numerous.",
+      "r": {
+        "A": "This inverts the hierarchy. A Region is the larger unit, and AZs live inside it.",
+        "B": "Edge locations are small caching sites for CloudFront and Route 53. They do not run EC2 instances.",
+        "C": "Correct. AZs are physically separated within a Region, close enough for low-latency replication but far enough to fail independently.",
+        "D": "New services usually launch in a handful of Regions and expand over time, which is why Region choice matters."
+      }
+    },
+    {
+      "i": 3029,
+      "e": 24,
+      "n": 29,
+      "d": 1,
+      "src": "orig",
+      "q": "A company sells to customers on five continents. Which two properties of the AWS Cloud most directly reduce latency for those customers? (Choose two.)",
+      "o": [
+        [
+          "A",
+          "Amazon CloudFront caches content at edge locations worldwide"
+        ],
+        [
+          "B",
+          "An Application Load Balancer can distribute traffic across AWS Regions"
+        ],
+        [
+          "C",
+          "Applications can be deployed into AWS Regions close to each market"
+        ],
+        [
+          "D",
+          "Amazon Comprehend lets an application answer requests in many languages"
+        ],
+        [
+          "E",
+          "Amazon Translate localises third-party websites automatically"
+        ]
+      ],
+      "a": [
+        "A",
+        "C"
+      ],
+      "k": "Latency is a distance problem, so the answers are the two things that shorten distance: edge caching and deploying into nearby Regions.",
+      "r": {
+        "A": "Correct. Edge locations hold cached copies close to users, so requests need not travel back to the origin Region.",
+        "B": "A load balancer registers targets within a single Region. It cannot spread traffic across Regions — Route 53 or Global Accelerator do that.",
+        "C": "Correct. Running the application in a Region near each market removes most of the round-trip distance.",
+        "D": "Comprehend extracts meaning and sentiment from text. Language support is not the same as network latency.",
+        "E": "Translate converts text between languages on request. It does nothing about how far the packets travel."
+      }
+    },
+    {
+      "i": 3030,
+      "e": 24,
+      "n": 30,
+      "d": 1,
+      "src": "orig",
+      "q": "A retailer's traffic triples during a sale and falls back afterwards, and their infrastructure grows and shrinks automatically to match. Which cloud characteristic does this describe?",
+      "o": [
+        [
+          "A",
+          "High availability"
+        ],
+        [
+          "B",
+          "Durability"
+        ],
+        [
+          "C",
+          "Loose coupling"
+        ],
+        [
+          "D",
+          "Elasticity"
+        ]
+      ],
+      "a": [
+        "D"
+      ],
+      "k": "Growing and shrinking with demand — in both directions — is elasticity. Scalability alone only speaks to the ability to grow.",
+      "r": {
+        "A": "High availability is about staying up when something fails, which is a different goal from matching capacity to demand.",
+        "B": "Durability describes how safely stored data survives over time, as in S3's eleven nines.",
+        "C": "Loose coupling is a design approach where components interact through queues or APIs so one failure does not cascade.",
+        "D": "Correct. Elasticity is acquiring resources when demand rises and releasing them when it falls, so you pay only for what the load needs."
+      }
+    }
+  ]
+}

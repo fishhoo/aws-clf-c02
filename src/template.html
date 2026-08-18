@@ -21,19 +21,20 @@
 }
 /* Warm paper. Easier in daylight; no pure white anywhere. */
 body[data-theme="light"]{
-  /* Cream paper, forest ink, sage rules, tan accent. The tan sits where it can
-     be seen — hover borders, progress fill, selected tint. As small text on
-     cream it only reaches 2:1, so text and buttons use a deepened version of
-     the same hue. */
-  --ink:#F8F0E1; --panel:#FDFAF3; --panel2:#F1E9DA; --line:#D6DFCC; --line2:#BFA880;
-  --txt:#1F3B2D; --mut:#4E6F57; --dim:#6F8168;
-  --ok:#2F6B4F; --no:#9C3B33; --amber:#7A5F2E;
-  --on-accent:#F8F0E1;
-  --ok-bg:#DDE7D5; --ok-line:#A8C4AC; --ok-note:#2A5741;
-  --no-bg:#F6E3DC; --no-line:#DDB6AA; --no-note:#7E2F28;
-  --sel-bg:#F1E7D2; --sel-txt:#6B4F22;
-  --track:#E6DECB; --hatch:#DCD3BF; --scrim:#1F3B2D73;
-  --d1:#35618F; --d2:#7A5F2E; --d3:#2B6B62; --d4:#5F4B84;
+  /* Cream paper, forest ink, sage rules, tan accent. Everything sits a step back
+     from full brightness: the page is warm rather than white, cards are lifted
+     only slightly, and body text lands near 8:1 instead of 11:1 so the letters
+     stop glowing during a long session. The tan shows up where it can be seen —
+     hover borders, progress fill, selected tint — and deepens for text. */
+  --ink:#EDE7D8; --panel:#F4EFE3; --panel2:#E4DDCB; --line:#D5DCC8; --line2:#B5A279;
+  --txt:#2A4738; --mut:#4C6D56; --dim:#6E8168;
+  --ok:#2F6B53; --no:#98423B; --amber:#775E2E;
+  --on-accent:#F4EFE3;
+  --ok-bg:#DFE7D6; --ok-line:#A6C0A8; --ok-note:#2C5B45;
+  --no-bg:#F0DED7; --no-line:#D6ADA3; --no-note:#7C3129;
+  --sel-bg:#EBE0C9; --sel-txt:#6B5325;
+  --track:#DED6C2; --hatch:#D3CAB4; --scrim:#2A473873;
+  --d1:#3A6390; --d2:#775E2E; --d3:#2F6B63; --d4:#5F4F82;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}

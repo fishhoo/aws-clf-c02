@@ -3,17 +3,53 @@
 // writes a single self-contained file to dist/index.html.
 // No dependencies on purpose — Render can run this with nothing installed.
 
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
+import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = dirname(fileURLToPath(import.meta.url));
-const read = p => readFileSync(join(root, p), 'utf8');
 
-const template = read('src/template.html');
-const questions = JSON.parse(read('src/data/questions.json'));
-const review = JSON.parse(read('src/data/review.json'));
-const corrections = JSON.parse(read('src/data/corrections.json'));
+// Uploading through the GitHub web UI often flattens folders, so look for each
+// input in the tidy location first and then anywhere sensible nearby.
+function locate(name, ...candidates) {
+  for (const rel of candidates) {
+    const p = join(root, rel);
+    if (existsSync(p)) return p;
+  }
+  const tree = [];
+  const walk = (dir, depth) => {
+    if (depth > 2) return;
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      if (e.name.startsWith('.') || e.name === 'node_modules' || e.name === 'dist') continue;
+      const full = join(dir, e.name);
+      if (e.isDirectory()) walk(full, depth + 1);
+      else tree.push(relative(root, full));
+    }
+  };
+  try { walk(root, 0); } catch {}
+  console.error(`build failed — could not find ${name}`);
+  console.error(`  looked for: ${candidates.join(', ')}`);
+  console.error(`  files actually present:`);
+  for (const f of tree.sort().slice(0, 40)) console.error(`    ${f}`);
+  console.error(`\n  If these are sitting at the repo root, either move them back into src/`);
+  console.error(`  and src/data/, or leave them — this script accepts both layouts.`);
+  process.exit(1);
+}
+
+const read = p => readFileSync(p, 'utf8');
+
+const templatePath  = locate('template.html',   'src/template.html', 'template.html', 'src/data/template.html');
+const questionsPath = locate('questions.json',  'src/data/questions.json', 'src/questions.json', 'data/questions.json', 'questions.json');
+const reviewPath    = locate('review.json',     'src/data/review.json', 'src/review.json', 'data/review.json', 'review.json');
+const correctionsPath = locate('corrections.json', 'src/data/corrections.json', 'src/corrections.json', 'data/corrections.json', 'corrections.json');
+
+console.log('inputs:');
+for (const p of [templatePath, questionsPath, reviewPath, correctionsPath]) console.log('  ' + relative(root, p));
+
+const template = read(templatePath);
+const questions = JSON.parse(read(questionsPath));
+const review = JSON.parse(read(reviewPath));
+const corrections = JSON.parse(read(correctionsPath));
 
 // ---- apply audited answer-key corrections ----
 // `from` must still match what's in the bank, so a correction can never drift

@@ -21,15 +21,19 @@
 }
 /* Warm paper. Easier in daylight; no pure white anywhere. */
 body[data-theme="light"]{
-  --ink:#EFEDE6; --panel:#F7F6F1; --panel2:#FBFAF7; --line:#DAD6CB; --line2:#B9B3A4;
-  --txt:#2A2E2C; --mut:#5D635F; --dim:#787D77;
-  --ok:#2E7D5B; --no:#A8443F; --amber:#7E5615;
-  --on-accent:#FCFBF8;
-  --ok-bg:#E4EFE7; --ok-line:#A9CDB6; --ok-note:#2C6B4E;
-  --no-bg:#F6E4E1; --no-line:#DDB2AC; --no-note:#8E3C37;
-  --sel-bg:#F5EBD8; --sel-txt:#6B480F;
-  --track:#E1DED4; --hatch:#D6D2C6; --scrim:#2A2E2C66;
-  --d1:#3C6FA8; --d2:#7E5615; --d3:#2B7A87; --d4:#6B4E9B;
+  /* Cream paper, forest ink, sage rules, tan accent. The tan sits where it can
+     be seen — hover borders, progress fill, selected tint. As small text on
+     cream it only reaches 2:1, so text and buttons use a deepened version of
+     the same hue. */
+  --ink:#F8F0E1; --panel:#FDFAF3; --panel2:#F1E9DA; --line:#D6DFCC; --line2:#BFA880;
+  --txt:#1F3B2D; --mut:#4E6F57; --dim:#6F8168;
+  --ok:#2F6B4F; --no:#9C3B33; --amber:#7A5F2E;
+  --on-accent:#F8F0E1;
+  --ok-bg:#DDE7D5; --ok-line:#A8C4AC; --ok-note:#2A5741;
+  --no-bg:#F6E3DC; --no-line:#DDB6AA; --no-note:#7E2F28;
+  --sel-bg:#F1E7D2; --sel-txt:#6B4F22;
+  --track:#E6DECB; --hatch:#DCD3BF; --scrim:#1F3B2D73;
+  --d1:#35618F; --d2:#7A5F2E; --d3:#2B6B62; --d4:#5F4B84;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}

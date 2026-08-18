@@ -36,6 +36,7 @@ function locate(name, ...candidates) {
   process.exit(1);
 }
 
+<<<<<<< HEAD
 // exam-style.json is a bonus set. If it hasn't been uploaded yet, say so loudly
 // and build without it rather than failing the whole deploy.
 function locateOptional(...candidates) {
@@ -46,25 +47,41 @@ function locateOptional(...candidates) {
   return null;
 }
 
+=======
+>>>>>>> c7cc790dbf60ece42711d480eeb2ea4017af0479
 const read = p => readFileSync(p, 'utf8');
 
 const templatePath  = locate('template.html',   'src/template.html', 'template.html', 'src/data/template.html');
 const questionsPath = locate('questions.json',  'src/data/questions.json', 'src/questions.json', 'data/questions.json', 'questions.json');
 const reviewPath    = locate('review.json',     'src/data/review.json', 'src/review.json', 'data/review.json', 'review.json');
 const correctionsPath = locate('corrections.json', 'src/data/corrections.json', 'src/corrections.json', 'data/corrections.json', 'corrections.json');
+<<<<<<< HEAD
 const examStylePath   = locateOptional('src/data/exam-style.json', 'src/exam-style.json', 'data/exam-style.json', 'exam-style.json');
 
 console.log('inputs:');
 for (const p of [templatePath, questionsPath, reviewPath, correctionsPath]) console.log('  ' + relative(root, p));
 console.log('  ' + (examStylePath ? relative(root, examStylePath)
   : 'exam-style.json  << NOT FOUND, so set 24 is missing from this build'));
+=======
+const examStylePath   = locate('exam-style.json', 'src/data/exam-style.json', 'src/exam-style.json', 'data/exam-style.json', 'exam-style.json');
+
+console.log('inputs:');
+for (const p of [templatePath, questionsPath, reviewPath, correctionsPath]) console.log('  ' + relative(root, p));
+>>>>>>> c7cc790dbf60ece42711d480eeb2ea4017af0479
 
 const template = read(templatePath);
 const questions = JSON.parse(read(questionsPath));
 const review = JSON.parse(read(reviewPath));
 const corrections = JSON.parse(read(correctionsPath));
+<<<<<<< HEAD
 // set 24 is written for this app and carries a rationale for every option
 if (examStylePath) for (const q of JSON.parse(read(examStylePath)).questions) questions.push(q);
+=======
+const examStyle = JSON.parse(read(examStylePath));
+
+// set 24 is written for this app and carries a rationale for every option
+for (const q of examStyle.questions) questions.push(q);
+>>>>>>> c7cc790dbf60ece42711d480eeb2ea4017af0479
 
 // ---- apply audited answer-key corrections ----
 // `from` must still match what's in the bank, so a correction can never drift
@@ -152,6 +169,10 @@ for (const q of questions) {
 }
 
 // no set may ask the same question twice
+<<<<<<< HEAD
+=======
+const norm = t => t.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+>>>>>>> c7cc790dbf60ece42711d480eeb2ea4017af0479
 const perSet = new Map();
 for (const q of questions) {
   if (!(q.e > 0)) continue;
@@ -202,11 +223,16 @@ if (/\bfetch\(\s*["'`]https?:/.test(out.replace(/https:\/\/api\.github\.com/g, '
 mkdirSync(join(root, 'dist'), { recursive: true });
 writeFileSync(join(root, 'dist/index.html'), out);
 
+const dupGroups = new Set(questions.filter(q => q.g).map(q => q.g)).size;
 const kb = (Buffer.byteLength(out) / 1024).toFixed(0);
 const sets = new Set(questions.filter(q => q.e > 0).map(q => q.e)).size;
 const svc = questions.filter(q => q.src === 'svc').length;
 console.log(`built dist/index.html — ${kb} KB, ${questions.length} questions ` +
             `(${sets} sets + ${svc} service scenarios), ${review.services.length} study notes, ` +
             `${fixed} key correction(s), ${noted} disputed note(s), ` +
+<<<<<<< HEAD
             `${repeated} cross-set repeats (de-duplicated in random modes), ` +
+=======
+            `${dupGroups} stems shared between sets (de-duplicated in random modes), ` +
+>>>>>>> c7cc790dbf60ece42711d480eeb2ea4017af0479
             `${questions.filter(q => q.r).length} with full per-option rationales`);

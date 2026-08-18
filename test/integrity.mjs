@@ -1,11 +1,8 @@
 // Checks the built artifact itself. No dependencies, runs in about a second.
 import { readFileSync } from 'node:fs';
 
-<<<<<<< HEAD
 const stemKey = t => t.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 
-=======
->>>>>>> c7cc790dbf60ece42711d480eeb2ea4017af0479
 const html = readFileSync(new URL('../dist/index.html', import.meta.url), 'utf8');
 let failed = 0;
 const ok = (name, cond) => { console.log((cond ? '  ok  ' : 'FAIL  ') + name); if (!cond) failed++; };
@@ -83,7 +80,6 @@ const stems = new Map();
 for (const q of Q) { const k = nrm(q.q); stems.set(k, [...(stems.get(k) || []), q]); }
 const shared = [...stems.values()].filter(v => v.length > 1);
 console.log(`    ${shared.length} stems appear in more than one set`);
-<<<<<<< HEAD
 ok('every question carries a group id', Q.every(q => Number.isInteger(q.g) && q.g > 0));
 ok('questions that share a stem share one group id',
    shared.every(rows => new Set(rows.map(q => q.g)).size === 1));
@@ -91,12 +87,6 @@ ok('different stems never share a group id',
    new Set(Q.map(q => q.g)).size === new Set(Q.map(q => stemKey(q.q))).size);
 ok('group ids are derived at build time, not stored in the source',
    !readFileSync(new URL('../src/data/questions.json', import.meta.url), 'utf8').includes('"g":'));
-=======
-ok('every shared stem is tagged with a group id',
-   shared.every(rows => rows.every(q => q.g) && new Set(rows.map(q => q.g)).size === 1));
-ok('untagged questions are genuinely unique',
-   [...stems.values()].filter(v => v.length === 1).every(([q]) => !q.g));
->>>>>>> c7cc790dbf60ece42711d480eeb2ea4017af0479
 
 // ---- audit layer ----
 const fixes = Q.filter(q => q.fix), disputes = Q.filter(q => q.dis);

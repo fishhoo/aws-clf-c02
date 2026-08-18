@@ -1,0 +1,1276 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CLF-C02 Drill</title>
+<style>
+:root{
+  /* Dark, softened for long sessions: the page is lifted off pure black and the
+     text is pulled back from pure white, which is what causes halation at night.
+     Accents are desaturated so nothing on screen shouts. */
+  --ink:#161A20; --panel:#1D222A; --panel2:#242A34; --line:#333A45; --line2:#49525F;
+  --txt:#D7DDE5; --mut:#96A1AF; --dim:#6C7683;
+  --ok:#6FC79A; --no:#E08A92; --amber:#E0A765;
+  --on-accent:#181B20;
+  --ok-bg:#1B2A24; --ok-line:#33513F; --ok-note:#9CD4B6;
+  --no-bg:#2B1F22; --no-line:#5A3B40; --no-note:#E9B4B9;
+  --sel-bg:#282318; --sel-txt:#EBCB9C;
+  --track:#262C35; --hatch:#2C333D;
+  --d1:#7FA8DA; --d2:#DFA463; --d3:#6FBECB; --d4:#AF95D6;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans Thai","Sarabun",Roboto,"Helvetica Neue",sans-serif;
+  --r:14px;
+}
+/* Warm paper. Easier in daylight; no pure white anywhere. */
+body[data-theme="light"]{
+  --ink:#EFEDE6; --panel:#F7F6F1; --panel2:#FBFAF7; --line:#DAD6CB; --line2:#B9B3A4;
+  --txt:#2A2E2C; --mut:#5D635F; --dim:#787D77;
+  --ok:#2E7D5B; --no:#A8443F; --amber:#7E5615;
+  --on-accent:#FCFBF8;
+  --ok-bg:#E4EFE7; --ok-line:#A9CDB6; --ok-note:#2C6B4E;
+  --no-bg:#F6E4E1; --no-line:#DDB2AC; --no-note:#8E3C37;
+  --sel-bg:#F5EBD8; --sel-txt:#6B480F;
+  --track:#E1DED4; --hatch:#D6D2C6;
+  --d1:#3C6FA8; --d2:#7E5615; --d3:#2B7A87; --d4:#6B4E9B;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--ink); color:var(--txt); font-family:var(--sans);
+  font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  padding:0 0 120px;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+h1{font-size:clamp(28px,7vw,44px);line-height:1.05;letter-spacing:-.03em;font-weight:800;margin:6px 0 4px}
+h2{font-size:19px;letter-spacing:-.01em;font-weight:700;margin:0 0 10px}
+.sub{color:var(--mut);font-size:14.5px;margin:0}
+.hide{display:none !important}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer;border:0;background:none}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:6px}
+
+/* ---------- masthead ---------- */
+.mast{padding:34px 0 18px;border-bottom:1px solid var(--line)}
+.stats-row{display:flex;gap:22px;margin-top:16px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column}
+.stat b{font-family:var(--mono);font-size:22px;font-weight:600;letter-spacing:-.02em}
+.stat span{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+
+/* ---------- signature: domain heat ---------- */
+.heat{margin:26px 0 8px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);padding:16px 16px 12px}
+.heat-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:14px}
+.heat-row{display:grid;grid-template-columns:1fr;gap:11px}
+.hd{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center}
+.hd-name{font-size:13.5px;display:flex;align-items:center;gap:8px;min-width:0}
+.dot{width:8px;height:8px;border-radius:2px;flex:none}
+.hd-val{font-family:var(--mono);font-size:12.5px;color:var(--mut);white-space:nowrap}
+.track{grid-column:1/-1;height:7px;border-radius:4px;background:var(--track);overflow:hidden;position:relative}
+.fill{height:100%;border-radius:4px;transition:width .5s cubic-bezier(.2,.7,.3,1)}
+.track.empty::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 6px,var(--hatch) 6px 7px)}
+.weak-cta{margin-top:14px;padding-top:13px;border-top:1px dashed var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.weak-cta p{margin:0;font-size:13.5px;color:var(--mut)}
+
+/* ---------- mode cards ---------- */
+.modes{display:grid;gap:12px;margin:26px 0 10px}
+.mode{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;text-align:left;width:100%;
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px 16px;transition:border-color .15s,transform .1s,background .15s}
+.mode:hover{border-color:var(--line2);background:var(--panel2)}
+.mode:active{transform:translateY(1px)}
+.mode[disabled]{opacity:.42;cursor:not-allowed}
+.mode-k{font-family:var(--mono);font-size:11px;color:var(--ink);background:var(--amber);border-radius:5px;padding:4px 7px;font-weight:700}
+.mode-b{min-width:0}
+.mode-b b{display:block;font-size:15.5px;font-weight:650;letter-spacing:-.01em}
+.mode-b span{display:block;font-size:13px;color:var(--mut);margin-top:2px}
+.chev{color:var(--dim);font-family:var(--mono)}
+
+.btn{background:var(--amber);color:var(--on-accent);font-weight:700;border-radius:10px;padding:11px 18px;font-size:14.5px;letter-spacing:-.01em;transition:filter .15s}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line);font-weight:600}
+.btn.ghost:hover{border-color:var(--line2);filter:none}
+.btn:disabled{opacity:.4;cursor:not-allowed;filter:none}
+
+/* ---------- picker ---------- */
+.grid-ex{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px;margin:16px 0}
+.exbtn{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:12px 4px;text-align:center;transition:border-color .15s,background .15s}
+.exbtn:hover{border-color:var(--line2);background:var(--panel2)}
+.exbtn b{display:block;font-family:var(--mono);font-size:16px}
+.exbtn span{display:block;font-family:var(--mono);font-size:9.5px;color:var(--dim);letter-spacing:.08em;margin-top:3px}
+.exbtn.done{border-color:var(--ok-line)}
+.exbtn.done span{color:var(--ok)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.chip{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 14px;font-size:13.5px;display:flex;align-items:center;gap:8px}
+.chip.on{border-color:var(--amber);background:var(--sel-bg);color:var(--sel-txt)}
+
+/* ---------- quiz ---------- */
+.hud{position:sticky;top:0;z-index:20;background:var(--ink);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.hud-in{max-width:760px;margin:0 auto;padding:11px 18px;display:flex;align-items:center;gap:12px}
+.hud-in .lbl{font-family:var(--mono);font-size:11.5px;color:var(--mut);letter-spacing:.06em;white-space:nowrap}
+.hud-in .lbl b{color:var(--txt);font-weight:600}
+.spacer{flex:1}
+.timer{font-family:var(--mono);font-size:13px;padding:3px 9px;border:1px solid var(--line);border-radius:7px}
+.timer.warn{color:var(--no);border-color:var(--no-line)}
+.pbar{height:3px;background:var(--track)}
+.pbar i{display:block;height:100%;background:var(--amber);transition:width .3s}
+
+.qcard{padding:26px 0 0}
+.qmeta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:5px;border:1px solid}
+.qtext{font-size:19px;line-height:1.45;letter-spacing:-.012em;font-weight:550;margin:0 0 6px}
+.multi{font-family:var(--mono);font-size:11.5px;color:var(--amber);letter-spacing:.05em;margin:0 0 4px}
+
+.opts{display:grid;gap:9px;margin:18px 0 0}
+.opt{display:grid;grid-template-columns:auto 1fr auto;column-gap:13px;row-gap:0;align-items:start;text-align:left;width:100%;
+  border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:13px 14px;font-size:15px;line-height:1.45;
+  transition:border-color .12s,background .12s}
+.opt:hover:not(.locked){border-color:var(--line2);background:var(--panel2)}
+.opt .k{font-family:var(--mono);font-size:12.5px;font-weight:600;width:24px;height:24px;display:grid;place-items:center;
+  border:1px solid var(--line);border-radius:6px;color:var(--mut);flex:none;margin-top:1px}
+.opt .mark{font-family:var(--mono);font-size:13px;opacity:0}
+.opt.sel{border-color:var(--amber);background:var(--sel-bg)}
+.opt.sel .k{border-color:var(--amber);color:var(--amber)}
+.opt.right{border-color:var(--ok);background:var(--ok-bg)}
+.opt.right .k{border-color:var(--ok);color:var(--ok)}
+.opt.right .mark{opacity:1;color:var(--ok)}
+.opt.wrong{border-color:var(--no);background:var(--no-bg)}
+.opt.wrong .k{border-color:var(--no);color:var(--no)}
+.opt.wrong .mark{opacity:1;color:var(--no)}
+.opt.locked{cursor:default}
+.opt-note{grid-column:2/3;margin:1px 0 0;font-size:13px;line-height:1.42;color:var(--mut);display:block}
+.opt.right .opt-note{color:var(--ok-note)}
+.opt.wrong .opt-note{color:var(--no-note)}
+.why-box{margin:12px 0 0}
+.why-lbl{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:4px}
+.why{margin:0 0 5px;font-size:14px;line-height:1.5;color:var(--txt)}
+.why b{font-weight:650}
+.audit{margin:10px 0 0;padding:9px 11px;border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:8px;background:var(--sel-bg)}
+.audit.fixed{border-left-color:var(--ok)}
+.audit-lbl{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:3px}
+.audit.fixed .audit-lbl{color:var(--ok)}
+.audit p{margin:0;font-size:13px;line-height:1.5;color:var(--txt)}
+.refs{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+.ref-lbl{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:5px}
+.ref{margin:0 0 4px;font-size:13px;line-height:1.5;color:var(--mut);word-break:break-word}
+.ref a{color:var(--d1)}
+
+.verdict{margin:18px 0 0;border-left:3px solid var(--line);padding:2px 0 2px 14px}
+.verdict b{font-size:14.5px;letter-spacing:-.01em}
+.verdict.ok{border-color:var(--ok)} .verdict.ok b{color:var(--ok)}
+.verdict.no{border-color:var(--no)} .verdict.no b{color:var(--no)}
+.verdict p{margin:5px 0 0;font-size:13.5px;color:var(--mut);word-break:break-word}
+.verdict a{color:var(--d1)}
+
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:30;background:linear-gradient(to top,var(--ink) 62%,transparent);padding:16px 0 18px}
+.dock-in{max-width:760px;margin:0 auto;padding:0 18px;display:flex;gap:10px;align-items:center}
+.dock .btn{flex:1;padding:14px 18px;font-size:15px}
+.iconbtn{border:1px solid var(--line);background:var(--panel);border-radius:10px;width:48px;height:48px;display:grid;place-items:center;font-size:17px;flex:none}
+.iconbtn.on{border-color:var(--amber);color:var(--amber);background:var(--sel-bg)}
+
+/* ---------- results ---------- */
+.score{display:flex;gap:22px;align-items:center;margin:24px 0 4px;flex-wrap:wrap}
+.ring{width:118px;height:118px;flex:none;position:relative}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--mono);font-size:27px;font-weight:600;letter-spacing:-.02em}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:6px;font-weight:700}
+.pill.pass{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-line)}
+.pill.fail{background:var(--no-bg);color:var(--no);border:1px solid var(--no-line)}
+
+.rev{border-top:1px solid var(--line);margin-top:26px;padding-top:20px}
+.filters{display:flex;gap:8px;margin:0 0 16px;flex-wrap:wrap}
+.item{border:1px solid var(--line);border-radius:12px;background:var(--panel);margin-bottom:9px;overflow:hidden}
+.item summary{padding:13px 15px;cursor:pointer;display:grid;grid-template-columns:auto 1fr;gap:11px;align-items:start;font-size:14.5px;line-height:1.45;list-style:none}
+.item summary::-webkit-details-marker{display:none}
+.item summary .st{font-family:var(--mono);font-size:12px;width:22px;flex:none;margin-top:1px}
+.item[open] summary{border-bottom:1px solid var(--line)}
+.item .body{padding:14px 15px}
+.ans-line{font-family:var(--mono);font-size:12.5px;margin:0 0 4px;color:var(--mut)}
+.ans-line .opt-note{grid-column:auto;font-family:var(--sans);margin:1px 0 7px}
+.ans-line b{color:var(--txt)}
+.empty{color:var(--dim);font-size:14px;padding:20px 0}
+.langbar button{font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--dim);padding:0}
+.langbar button.on{color:var(--amber)}
+.rtabs{display:flex;gap:22px;border-bottom:1px solid var(--line);margin:20px 0 16px}
+.rtabs button{font-size:15px;font-weight:600;color:var(--mut);padding:0 0 10px;border-bottom:2px solid transparent;margin-bottom:-1px}
+.rtabs button.on{color:var(--txt);border-bottom-color:var(--amber)}
+.search{width:100%;box-sizing:border-box;background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  color:var(--txt);font-family:var(--sans);font-size:14px;padding:10px 12px;margin:2px 0 16px}
+.search:focus{outline:none;border-color:var(--amber)}
+.rcat{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+  font-weight:500;margin:22px 0 9px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.rcard{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:13px 15px;margin-bottom:9px}
+.rcard>b{font-size:15px;letter-spacing:-.01em}
+.rcard p{margin:5px 0 0;font-size:14px;line-height:1.5;color:var(--mut)}
+.rcard .rnote{margin-top:7px;padding-top:7px;border-top:1px dashed var(--line);font-size:13px;color:var(--amber);opacity:.9}
+.rcard.pair>b{display:block;margin-bottom:10px}
+.prow{display:grid;grid-template-columns:minmax(90px,auto) 1fr auto;gap:6px 12px;align-items:baseline;
+  padding:8px 0;border-top:1px solid var(--line)}
+.prow b{font-size:13.5px;font-weight:600}
+.prow span{font-size:13.5px;color:var(--mut);line-height:1.45}
+.prow em{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--dim);white-space:nowrap}
+@media(max-width:560px){.prow{grid-template-columns:1fr;gap:2px}.prow em{margin-bottom:2px}}
+
+.foot{border-top:1px solid var(--line);margin-top:34px;padding:16px 0 0;font-size:12px;color:var(--dim);line-height:1.6}
+.foot a{color:var(--mut)}
+.sync{margin-top:14px;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+.sync summary{padding:10px 13px;cursor:pointer;font-size:13px;color:var(--txt);list-style:none}
+.sync summary::-webkit-details-marker{display:none}
+.sync summary::before{content:"+ ";font-family:var(--mono);color:var(--dim)}
+.sync[open] summary::before{content:"- "}
+.sync[open] summary{border-bottom:1px solid var(--line)}
+.sync-body{padding:12px 13px}
+.sync-body p{margin:0 0 9px}
+.sync-body label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin:10px 0 4px}
+.sync-body input{width:100%;box-sizing:border-box;background:var(--ink);border:1px solid var(--line);border-radius:8px;
+  color:var(--txt);font-family:var(--mono);font-size:12.5px;padding:9px 10px}
+.sync-body input:focus{outline:none;border-color:var(--amber)}
+.sync-body hr{border:0;border-top:1px dashed var(--line);margin:16px 0 4px}
+.sync-msg{font-family:var(--mono);font-size:11.5px;color:var(--mut);word-break:break-word;min-height:1em}
+.sync-msg.bad{color:var(--no)}
+@media(prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+@media(max-width:520px){
+  .mast{padding:24px 0 14px}
+  .qtext{font-size:17.5px}
+  .hud-in{gap:8px}
+  .hud-in .lbl.opt-hide{display:none}
+}
+</style>
+
+<div id="app"></div>
+
+<script>
+const QUESTIONS = __DATA__;
+const REVIEW = __REVIEW__;
+
+const DOM = {
+  1:{name:"Cloud Concepts", th:"Cloud Concepts", c:"var(--d1)"},
+  2:{name:"Security & Compliance", th:"Security & Compliance", c:"var(--d2)"},
+  3:{name:"Technology & Services", th:"Technology & Services", c:"var(--d3)"},
+  4:{name:"Billing, Pricing & Support", th:"Billing & Support", c:"var(--d4)"}
+};
+const EXAMS = [...new Set(QUESTIONS.filter(q=>q.e>0).map(q=>q.e))].sort((a,b)=>a-b);
+const SVCQ  = QUESTIONS.filter(q=>q.src==='svc');
+const CATNAME = {}; // set once REVIEW is in scope
+const byId = new Map(QUESTIONS.map(q=>[q.i,q]));
+REVIEW.cats.forEach(c=>{ CATNAME[c.k]=c; });
+
+/* ---------------- state ---------------- */
+const KEY="clf-c02-drill-v1";
+let S = { stats:{1:[0,0],2:[0,0],3:[0,0],4:[0,0]}, wrong:[], done:{} };
+function applyTheme(){ document.body.setAttribute("data-theme", S.theme==="light"?"light":"dark"); }
+
+/* Storage adapter. Uses whichever backend the page actually has:
+   host  - the embedded viewer's own key/value store
+   local - localStorage, e.g. when this file is served from Render or opened directly
+   memory- nothing persistent available; progress lasts for this tab only            */
+function hostStore(){
+  try{ const s=window.storage; return (s && s.get && s.set) ? s : null; }catch(e){ return null; }
+}
+let localOK=null;
+function localStore(){
+  try{
+    if(localOK===null){
+      const p="__clf_probe__";
+      window.localStorage.setItem(p,"1"); window.localStorage.removeItem(p);
+      localOK=true;
+    }
+    return localOK ? window.localStorage : null;
+  }catch(e){ localOK=false; return null; }
+}
+const memStore={};
+// resolved per call, so a host that injects its store late is still picked up
+const STORE={
+  get kind(){ return hostStore() ? "host" : localStore() ? "local" : "memory"; },
+  async get(k){
+    const h=hostStore(); if(h){ const r=await h.get(k); return r && r.value; }
+    const l=localStore(); if(l) return l.getItem(k);
+    return memStore[k];
+  },
+  async set(k,v){
+    const h=hostStore(); if(h){ await h.set(k,v); return; }
+    const l=localStore(); if(l){ l.setItem(k,v); return; }
+    memStore[k]=v;
+  }
+};
+
+async function loadS(){
+  try{
+    if(window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) S.theme="light";
+  }catch(e){}
+  try{
+    const raw = await STORE.get(KEY);
+    if(raw){ S={...S, ...JSON.parse(raw)}; }
+  }catch(e){ /* first run, or unreadable data */ }
+}
+let saveT=null;
+function saveS(){
+  clearTimeout(saveT);
+  saveT=setTimeout(async()=>{ try{ await STORE.set(KEY, JSON.stringify(S)); }catch(e){} },400);
+}
+
+/* progress is device-local, so let people carry it between browsers by hand */
+function exportProgress(){
+  const blob=new Blob([JSON.stringify({app:"clf-c02-drill",saved:new Date().toISOString(),data:S},null,2)],
+                      {type:"application/json"});
+  const url=URL.createObjectURL(blob), a=document.createElement("a");
+  a.href=url; a.download="clf-c02-progress.json"; a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+function importProgress(file,done){
+  const fr=new FileReader();
+  fr.onload=()=>{
+    try{
+      const p=JSON.parse(fr.result);
+      const data=p && p.data ? p.data : p;
+      if(!data || !data.stats) throw new Error("not a progress file");
+      S={ stats:{1:[0,0],2:[0,0],3:[0,0],4:[0,0]}, wrong:[], done:{}, ...data };
+      saveS(); done(true);
+    }catch(e){ done(false,e.message); }
+  };
+  fr.onerror=()=>done(false,"could not read the file");
+  fr.readAsText(file);
+}
+
+/* ---------------- GitHub sync (opt-in) ----------------
+   Stores one secret Gist holding the same JSON that Export produces.
+   A Gist is used rather than a file in the site's own repo because a commit
+   there would trigger a fresh Render deploy on every save.
+   Nothing here runs unless a token is entered — the app stays offline by default. */
+const SYNC_KEY="clf-c02-sync-v1";
+const GIST_FILE="clf-c02-progress.json";
+let SY={token:"",gist:"",last:""};
+
+async function loadSY(){
+  try{ const raw=await STORE.get(SYNC_KEY); if(raw) SY={...SY,...JSON.parse(raw)}; }catch(e){}
+}
+function saveSY(){ try{ STORE.set(SYNC_KEY, JSON.stringify(SY)); }catch(e){} }
+
+function payload(){
+  return JSON.stringify({app:"clf-c02-drill",saved:new Date().toISOString(),data:S},null,2);
+}
+function adopt(parsed){
+  const data = parsed && parsed.data ? parsed.data : parsed;
+  if(!data || !data.stats) throw new Error("that file isn't a progress export");
+  S={ stats:{1:[0,0],2:[0,0],3:[0,0],4:[0,0]}, wrong:[], done:{}, ...data };
+  saveS();
+  return parsed && parsed.saved ? parsed.saved : "";
+}
+
+async function gh(path,method,body){
+  const res=await fetch("https://api.github.com"+path,{
+    method,
+    headers:{ "Authorization":"Bearer "+SY.token,
+              "Accept":"application/vnd.github+json",
+              "X-GitHub-Api-Version":"2022-11-28" },
+    body: body ? JSON.stringify(body) : undefined
+  });
+  if(res.status===401) throw new Error("token rejected (401) — check it has the gist scope");
+  if(res.status===404) throw new Error("gist not found (404) — wrong id, or the token can't see it");
+  if(!res.ok) throw new Error("GitHub returned "+res.status);
+  return res.json();
+}
+
+async function pushGist(){
+  if(!SY.token) throw new Error("enter a token first");
+  const files={}; files[GIST_FILE]={content:payload()};
+  const out = SY.gist
+    ? await gh("/gists/"+SY.gist,"PATCH",{files})
+    : await gh("/gists","POST",{description:"CLF-C02 Drill progress",public:false,files});
+  SY.gist=out.id; SY.last=new Date().toISOString(); saveSY();
+  return out.id;
+}
+
+async function pullGist(){
+  if(!SY.token) throw new Error("enter a token first");
+  if(!SY.gist) throw new Error("no gist saved on this device yet — paste its id, or push from the other device first");
+  const out=await gh("/gists/"+SY.gist,"GET");
+  const f=out.files && out.files[GIST_FILE];
+  if(!f) throw new Error("that gist has no "+GIST_FILE);
+  const text = f.truncated ? await (await fetch(f.raw_url)).text() : f.content;
+  const when=adopt(JSON.parse(text));
+  SY.last=new Date().toISOString(); saveSY();
+  return when;
+}
+
+async function pullUrl(url){
+  if(!/^https:\/\//.test(url)) throw new Error("use an https:// link");
+  const bust = url + (url.includes("?") ? "&" : "?") + "t=" + Date.now();
+  const res=await fetch(bust,{cache:"no-store"});
+  if(!res.ok) throw new Error("fetch failed ("+res.status+")");
+  return adopt(JSON.parse(await res.text()));
+}
+
+/* ---------------- helpers ---------------- */
+const $=(h)=>{const t=document.createElement("template");t.innerHTML=h.trim();return t.content.firstElementChild;};
+const esc=(s)=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle=(a)=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const pct=(n,d)=>d?Math.round(n/d*100):0;
+const mmss=(s)=>`${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;
+const same=(a,b)=>a.length===b.length&&a.every(x=>b.includes(x));
+const app=()=>document.getElementById("app");
+function auditHtml(q){
+  if(q.fix) return `<div class="audit fixed"><span class="audit-lbl">Answer key corrected</span><p>${esc(q.fix)}</p></div>`;
+  if(q.dis) return `<div class="audit"><span class="audit-lbl">Key is arguable</span><p>${esc(q.dis)}</p></div>`;
+  return "";
+}
+function refHtml(x){
+  if(!x) return "";
+  const lines=x.split("\n").filter(Boolean).map(l=>
+    `<p class="ref">${esc(l).replace(/(https?:\/\/[^\s<]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>')}</p>`
+  ).join("");
+  return `<div class="refs"><span class="ref-lbl">From the source notes</span>${lines}</div>`;
+}
+function render(node){ const a=app(); a.innerHTML=""; a.appendChild(node); window.scrollTo(0,0); }
+
+/* ---------------- home ---------------- */
+function heatBlock(){
+  const rows = [1,2,3,4].map(d=>{
+    const [r,t]=S.stats[d]; const p=pct(r,t);
+    return `<div class="hd">
+      <div class="hd-name"><i class="dot" style="background:${DOM[d].c}"></i><span>${DOM[d].th}</span></div>
+      <div class="hd-val">${t?`${p}% · ${r}/${t}`:"not attempted"}</div>
+      <div class="track ${t?"":"empty"}"><i class="fill" style="width:${t?p:0}%;background:${DOM[d].c}"></i></div>
+    </div>`;
+  }).join("");
+  const tried=[1,2,3,4].filter(d=>S.stats[d][1]>=5);
+  let cta="";
+  if(tried.length){
+    const weak=tried.sort((a,b)=>pct(...S.stats[a])-pct(...S.stats[b]))[0];
+    cta=`<div class="weak-cta">
+      <p>Weakest right now: <b style="color:${DOM[weak].c}">${DOM[weak].th}</b> — ${pct(...S.stats[weak])}%</p>
+      <button class="btn" data-drill="${weak}">Drill 20 questions</button></div>`;
+  }
+  return `<div class="heat">
+    <div class="heat-head"><h2 style="margin:0">Accuracy by domain</h2>
+      <span class="eyebrow">CLF-C02 · pass mark 70%</span></div>
+    <div class="heat-row">${rows}</div>${cta}</div>`;
+}
+
+function home(){
+  const [r,t]=[1,2,3,4].reduce((a,d)=>[a[0]+S.stats[d][0],a[1]+S.stats[d][1]],[0,0]);
+  const daysLeft = Math.ceil((new Date(2026,7,21) - new Date())/86400000);
+  const el=$(`<div class="wrap">
+    <header class="mast">
+      <div class="eyebrow">AWS Certified Cloud Practitioner</div>
+      <h1>CLF-C02 Drill</h1>
+      <p class="sub">${QUESTIONS.length} questions — ${EXAMS.length} practice sets plus ${SVCQ.length} service scenarios${daysLeft>0?` · ${daysLeft} days until exam day`:""}</p>
+      <div class="stats-row">
+        <div class="stat"><b>${t}</b><span>Questions answered</span></div>
+        <div class="stat"><b>${t?pct(r,t)+"%":"—"}</b><span>Overall accuracy</span></div>
+        <div class="stat"><b>${S.wrong.length}</b><span>Still getting wrong</span></div>
+      </div>
+    </header>
+    ${heatBlock()}
+    <div class="modes">
+      <button class="mode" data-go="sim"><span class="mode-k">SIM</span>
+        <span class="mode-b"><b>Exam simulation</b><span>65 questions · 90 minutes · answers at the end</span></span><span class="chev">→</span></button>
+      <button class="mode" data-go="set"><span class="mode-k">SET</span>
+        <span class="mode-b"><b>Practice by set</b><span>Pick set 1–${EXAMS.length} · answer revealed each question</span></span><span class="chev">→</span></button>
+      <button class="mode" data-go="drill"><span class="mode-k">WEAK</span>
+        <span class="mode-b"><b>Drill a weak domain</b><span>Choose domains and length · answer revealed each question</span></span><span class="chev">→</span></button>
+      <button class="mode" data-go="svc"><span class="mode-k">SVC</span>
+        <span class="mode-b"><b>Match the service</b><span>${SVCQ.length} scenarios · which AWS service fits this sentence</span></span><span class="chev">→</span></button>
+      <button class="mode" data-go="review"><span class="mode-k">READ</span>
+        <span class="mode-b"><b>Study notes</b><span>Browse every service by category, plus ${REVIEW.pairs.length} easily-confused pairs</span></span><span class="chev">→</span></button>
+      <button class="mode" data-go="wrong" ${S.wrong.length?"":"disabled"}><span class="mode-k">FIX</span>
+        <span class="mode-b"><b>Retry your mistakes</b><span>${S.wrong.length?`${S.wrong.length} queued · a question clears once you get it right`:"Nothing queued yet"}</span></span><span class="chev">→</span></button>
+    </div>
+    <div class="foot">
+      <p>Questions come from the public repo <a href="https://github.com/kananinirav/AWS-Certified-Cloud-Practitioner-Notes" target="_blank" rel="noopener">kananinirav/AWS-Certified-Cloud-Practitioner-Notes</a> (practice-exam folder) — community-collected, not official AWS exam content.</p>
+      <p>One self-contained file with no network calls - the questions and a 293-entry AWS reference both live inside it, so it works offline and can be hosted anywhere that serves static files. Domain labels are assigned automatically from keywords, so a few will be off — read them as a trend, not a score.</p>
+      <p>${STORE.kind==="local"?"Progress is saved in this browser on this device. Export it if you want to carry it to another one."
+        :STORE.kind==="host"?"Progress is saved automatically."
+        :"This browser can't save progress, so results reset when you close the page."}</p>
+      <p style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+        <button class="btn ghost" style="padding:7px 12px;font-size:12.5px" data-themebtn>${S.theme==="light"?"Switch to dark":"Switch to light"}</button>
+        <button class="btn ghost" style="padding:7px 12px;font-size:12.5px" data-export>Export progress</button>
+        <button class="btn ghost" style="padding:7px 12px;font-size:12.5px" data-import>Import progress</button>
+        <button class="btn ghost" style="padding:7px 12px;font-size:12.5px" data-reset>Reset all progress</button>
+      </p>
+      <input type="file" accept="application/json,.json" data-file hidden>
+      <details class="sync"${SY.token?" open":""}>
+        <summary>Sync through GitHub</summary>
+        <div class="sync-body">
+          <p>Keeps one secret Gist in your GitHub account holding the same file Export produces. Push on one device, Pull on the next. The token is stored in this browser only and never leaves it except in the request to GitHub — create a classic token with just the <b>gist</b> scope.</p>
+          <label>Personal access token</label>
+          <input type="password" data-token placeholder="ghp_..." autocomplete="off" spellcheck="false" value="${esc(SY.token)}">
+          <label>Gist id ${SY.gist?`· <a href="https://gist.github.com/${esc(SY.gist)}" target="_blank" rel="noopener">open on GitHub</a>`:"(created on first push)"}</label>
+          <input type="text" data-gist placeholder="paste an existing id, or leave blank" autocomplete="off" spellcheck="false" value="${esc(SY.gist)}">
+          <p style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn ghost" style="padding:7px 12px;font-size:12.5px" data-push>Push to GitHub</button>
+            <button class="btn ghost" style="padding:7px 12px;font-size:12.5px" data-pull>Pull from GitHub</button>
+            <button class="btn ghost" style="padding:7px 12px;font-size:12.5px" data-forget>Forget token</button>
+          </p>
+          <p class="sync-msg" data-msg>${SY.last?"Last synced "+esc(new Date(SY.last).toLocaleString()):""}</p>
+          <hr>
+          <label>Or just load a progress file from a link (no token needed)</label>
+          <input type="url" data-url placeholder="https://gist.githubusercontent.com/.../clf-c02-progress.json" autocomplete="off" spellcheck="false">
+          <p><button class="btn ghost" style="padding:7px 12px;font-size:12.5px" data-loadurl>Load from link</button></p>
+        </div>
+      </details>
+    </div>
+  </div>`);
+
+  const GO={
+    sim:()=>start({mode:"sim",label:"Exam simulation",qs:shuffle(QUESTIONS).slice(0,65),timed:90*60,instant:false}),
+    set:()=>render(pickSet()),
+    drill:()=>render(pickDrill()),
+    svc:()=>render(pickSvc()),
+    review:()=>render(reviewScreen()),
+    wrong:()=>start({mode:"wrong",label:"Mistakes",qs:shuffle(S.wrong.map(i=>byId.get(i)).filter(Boolean)),instant:true})
+  };
+  el.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>GO[b.dataset.go]());
+  const dr=el.querySelector("[data-drill]");
+  if(dr) dr.onclick=()=>startDrill([+dr.dataset.drill],20);
+  const msg=el.querySelector("[data-msg]");
+  const say=(text,bad)=>{ msg.textContent=text; msg.classList.toggle("bad",!!bad); };
+  const readFields=()=>{
+    SY.token=el.querySelector("[data-token]").value.trim();
+    SY.gist=el.querySelector("[data-gist]").value.trim();
+    saveSY();
+  };
+  el.querySelector("[data-push]").onclick=async()=>{
+    readFields(); say("Pushing...");
+    try{ const id=await pushGist();
+         el.querySelector("[data-gist]").value=id;
+         say("Pushed to gist "+id+". Open the app on the other device and press Pull."); }
+    catch(e){ say(e.message,true); }
+  };
+  el.querySelector("[data-pull]").onclick=async()=>{
+    readFields(); say("Pulling...");
+    try{ const when=await pullGist(); const label=when?" (saved "+new Date(when).toLocaleString()+")":"";
+         say("Progress restored"+label+"."); setTimeout(()=>render(home()),700); }
+    catch(e){ say(e.message,true); }
+  };
+  el.querySelector("[data-forget]").onclick=()=>{
+    SY={token:"",gist:"",last:""}; saveSY(); render(home());
+  };
+  el.querySelector("[data-loadurl]").onclick=async()=>{
+    const u=el.querySelector("[data-url]").value.trim();
+    if(!u){ say("paste a link first",true); return; }
+    say("Loading...");
+    try{ const when=await pullUrl(u); const label=when?" (saved "+new Date(when).toLocaleString()+")":"";
+         say("Progress restored"+label+"."); setTimeout(()=>render(home()),700); }
+    catch(e){ say(e.message,true); }
+  };
+  el.querySelector("[data-themebtn]").onclick=()=>{
+    S.theme = S.theme==="light" ? "dark" : "light";
+    saveS(); applyTheme(); render(home());
+  };
+  el.querySelector("[data-export]").onclick=exportProgress;
+  const fileEl=el.querySelector("[data-file]");
+  el.querySelector("[data-import]").onclick=()=>fileEl.click();
+  fileEl.onchange=()=>{
+    const f=fileEl.files&&fileEl.files[0];
+    if(!f) return;
+    importProgress(f,(ok,err)=>{ if(!ok) alert("Import failed: "+err); render(home()); });
+  };
+  el.querySelector("[data-reset]").onclick=()=>{
+    if(!confirm("Reset all stats and the mistakes queue?"))return;
+    S={stats:{1:[0,0],2:[0,0],3:[0,0],4:[0,0]},wrong:[],done:{}}; saveS(); render(home());
+  };
+  return el;
+}
+
+function pickSet(){
+  const el=$(`<div class="wrap"><header class="mast">
+    <div class="eyebrow">Mode · practice by set</div><h1>Choose a set</h1>
+    <p class="sub">Each set is one source practice-exam file · answer revealed after every question</p></header>
+    <div class="grid-ex"></div>
+    <button class="btn ghost" data-back>← Back to home</button></div>`);
+  const g=el.querySelector(".grid-ex");
+  EXAMS.forEach(n=>{
+    const n_q=QUESTIONS.filter(q=>q.e===n).length;
+    const d=S.done["e"+n];
+    const b=$(`<button class="exbtn ${d?"done":""}"><b>${n}</b><span>${d?d+"%":n_q+" Q"}</span></button>`);
+    b.onclick=()=>start({mode:"set",key:"e"+n,label:"Set "+n,qs:QUESTIONS.filter(q=>q.e===n),instant:true});
+    g.appendChild(b);
+  });
+  el.querySelector("[data-back]").onclick=()=>render(home());
+  return el;
+}
+
+function pickDrill(){
+  const sel=new Set([1,2,3,4]); let n=20;
+  const el=$(`<div class="wrap"><header class="mast">
+    <div class="eyebrow">Mode · domain drill</div><h1>Choose domains</h1>
+    <p class="sub">Random pull from the whole bank, limited to the domains you pick</p></header>
+    <div class="chips" data-doms></div>
+    <h2 style="margin-top:22px">How many questions</h2>
+    <div class="chips" data-count></div>
+    <button class="btn" data-start style="margin-top:18px">Start drill</button>
+    <button class="btn ghost" data-back style="margin-top:18px;margin-left:8px">← Back</button></div>`);
+  const dc=el.querySelector("[data-doms]");
+  [1,2,3,4].forEach(d=>{
+    const c=QUESTIONS.filter(q=>q.d===d).length;
+    const b=$(`<button class="chip on"><i class="dot" style="background:${DOM[d].c}"></i>${DOM[d].th} <span style="color:var(--dim);font-family:var(--mono);font-size:11.5px">${c}</span></button>`);
+    b.onclick=()=>{ sel.has(d)?sel.delete(d):sel.add(d); b.classList.toggle("on"); upd(); };
+    dc.appendChild(b);
+  });
+  const cc=el.querySelector("[data-count]");
+  [10,20,30,50].forEach(k=>{
+    const b=$(`<button class="chip ${k===20?"on":""}">${k} questions</button>`);
+    b.onclick=()=>{ n=k; cc.querySelectorAll(".chip").forEach(x=>x.classList.remove("on")); b.classList.add("on"); };
+    cc.appendChild(b);
+  });
+  const go=el.querySelector("[data-start]");
+  const upd=()=>{ go.disabled = sel.size===0; };
+  go.onclick=()=>startDrill([...sel],n);
+  el.querySelector("[data-back]").onclick=()=>render(home());
+  return el;
+}
+function pickSvc(){
+  let sel=new Set(REVIEW.cats.map(c=>c.k)), n=20;
+  const el=$(`<div class="wrap"><header class="mast">
+    <div class="eyebrow">Mode · match the service</div><h1>Which service fits?</h1>
+    <p class="sub">One scenario, four services, one of them right. Built from the same categories as the study notes.</p></header>
+    <div class="chips" data-cats></div>
+    <h2 style="margin-top:22px">How many questions</h2>
+    <div class="chips" data-count></div>
+    <button class="btn" data-start style="margin-top:18px">Start drill</button>
+    <button class="btn ghost" data-back style="margin-top:18px;margin-left:8px">← Back</button></div>`);
+  const cc=el.querySelector("[data-cats]");
+  REVIEW.cats.forEach(c=>{
+    const total=SVCQ.filter(q=>q.cat===c.k).length;
+    if(!total) return;
+    const b=$(`<button class="chip on">${esc(c.en)} <span style="color:var(--dim);font-family:var(--mono);font-size:11.5px">${total}</span></button>`);
+    b.onclick=()=>{ sel.has(c.k)?sel.delete(c.k):sel.add(c.k); b.classList.toggle("on"); upd(); };
+    cc.appendChild(b);
+  });
+  const nc=el.querySelector("[data-count]");
+  [10,20,40,"All"].forEach(k=>{
+    const b=$(`<button class="chip ${k===20?"on":""}">${k===
+      "All"?"All":k+" questions"}</button>`);
+    b.onclick=()=>{ n=k; nc.querySelectorAll(".chip").forEach(x=>x.classList.remove("on")); b.classList.add("on"); };
+    nc.appendChild(b);
+  });
+  const go=el.querySelector("[data-start]");
+  const upd=()=>{ go.disabled=sel.size===0; };
+  go.onclick=()=>startSvc([...sel],n);
+  el.querySelector("[data-back]").onclick=()=>render(home());
+  return el;
+}
+function startSvc(cats,n){
+  const pool=SVCQ.filter(q=>cats.includes(q.cat));
+  const qs=shuffle(pool);
+  start({mode:"svc",
+         label:cats.length===1?(CATNAME[cats[0]]?CATNAME[cats[0]].en:"Services"):"Match the service",
+         qs:(n==="All"?qs:qs.slice(0,n)), instant:true});
+}
+
+function reviewScreen(){
+  let lang=S.lang==="th"?"th":"en";
+  let tab="services";
+  let cat="all";
+  let query="";
+  const el=$(`<div class="wrap">
+    <header class="mast">
+      <div class="eyebrow" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+        <span>Study notes</span>
+        <span class="langbar"><button data-lang="en">EN</button> · <button data-lang="th">ไทย</button></span>
+      </div>
+      <h1>What each service is for</h1>
+      <p class="sub" data-sub></p>
+    </header>
+    <div class="rtabs">
+      <button data-tab="services"></button>
+      <button data-tab="pairs"></button>
+    </div>
+    <div data-controls></div>
+    <div data-body></div>
+    <div class="dock"><div class="dock-in">
+      <button class="btn ghost" data-home style="flex:0 0 auto">Home</button>
+      <button class="btn" data-drill>Drill what I'm reading</button>
+    </div></div>
+  </div>`);
+
+  const T=(en,th)=>lang==="th"?th:en;
+  const body=el.querySelector("[data-body]");
+  const controls=el.querySelector("[data-controls]");
+
+  function drawHead(){
+    el.querySelectorAll("[data-lang]").forEach(b=>
+      b.classList.toggle("on", b.dataset.lang===lang));
+    el.querySelector("[data-sub]").textContent=
+      T(`${REVIEW.services.length} services and concepts, each with the sentence that gives it away in a question.`,
+        `${REVIEW.services.length} บริการและคอนเซปต์ พร้อมประโยคที่เป็นตัวชี้ว่าข้อนั้นตอบอะไร`);
+    el.querySelector('[data-tab="services"]').textContent=T("Services","รายบริการ");
+    el.querySelector('[data-tab="pairs"]').textContent=T(`Easily confused (${REVIEW.pairs.length})`,`คู่ที่สับสนบ่อย (${REVIEW.pairs.length})`);
+    el.querySelectorAll("[data-tab]").forEach(b=>b.classList.toggle("on", b.dataset.tab===tab));
+    el.querySelector("[data-drill]").textContent=T("Drill what I'm reading","ทดสอบหมวดที่กำลังอ่าน");
+    el.querySelector("[data-drill]").style.display = tab==="services" ? "" : "none";
+  }
+
+  function drawControls(){
+    controls.innerHTML="";
+    if(tab!=="services") return;
+    const chips=$(`<div class="chips"></div>`);
+    const mk=(k,label,count)=>{
+      const b=$(`<button class="chip ${cat===k?"on":""}">${esc(label)}${count!=null?` <span style="color:var(--dim);font-family:var(--mono);font-size:11.5px">${count}</span>`:""}</button>`);
+      b.onclick=()=>{ cat=k; drawControls(); drawBody(); };
+      chips.appendChild(b);
+    };
+    mk("all",T("All","ทั้งหมด"),REVIEW.services.length);
+    REVIEW.cats.forEach(c=>{
+      const n=REVIEW.services.filter(x=>x.c===c.k).length;
+      if(n) mk(c.k, lang==="th"?c.th:c.en, n);
+    });
+    controls.appendChild(chips);
+    const box=$(`<input class="search" type="search" placeholder="${T("Filter by name or wording…","พิมพ์ชื่อบริการหรือคำในโจทย์…")}" value="${esc(query)}">`);
+    box.oninput=()=>{ query=box.value; drawBody(); };
+    controls.appendChild(box);
+  }
+
+  function drawBody(){
+    body.innerHTML="";
+    if(tab==="services"){
+      const q=query.trim().toLowerCase();
+      const list=REVIEW.services.filter(x=>
+        (cat==="all"||x.c===cat) &&
+        (!q || (x.n+" "+x.en+" "+x.th).toLowerCase().includes(q)));
+      if(!list.length){ body.appendChild($(`<p class="empty">${T("Nothing matches that.","ไม่พบรายการที่ตรง")}</p>`)); return; }
+      let last=null;
+      list.forEach(x=>{
+        if(cat==="all" && x.c!==last){
+          last=x.c;
+          const c=CATNAME[x.c];
+          body.appendChild($(`<h2 class="rcat">${esc(c?(lang==="th"?c.th:c.en):x.c)}</h2>`));
+        }
+        const note=lang==="th"?x.tht:x.ent;
+        body.appendChild($(`<div class="rcard">
+          <b>${esc(x.n)}</b>
+          <p>${esc(lang==="th"?x.th:x.en)}</p>
+          ${note?`<p class="rnote">${esc(note)}</p>`:""}
+        </div>`));
+      });
+    } else {
+      REVIEW.pairs.forEach(p=>{
+        const rows=p.rows.map(r=>`<div class="prow">
+            <b>${esc(r.n)}</b>
+            <span>${esc(lang==="th"?r.th:r.en)}</span>
+            <em>${esc(lang==="th"?r.thTag:r.enTag)}</em>
+          </div>`).join("");
+        body.appendChild($(`<div class="rcard pair"><b>${esc(lang==="th"?p.th:p.en)}</b>${rows}</div>`));
+      });
+    }
+  }
+
+  el.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{
+    lang=b.dataset.lang; S.lang=lang; saveS(); drawHead(); drawControls(); drawBody();
+  });
+  el.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{
+    tab=b.dataset.tab; drawHead(); drawControls(); drawBody();
+  });
+  el.querySelector("[data-home]").onclick=()=>render(home());
+  el.querySelector("[data-drill]").onclick=()=>
+    startSvc(cat==="all"?REVIEW.cats.map(c=>c.k):[cat], cat==="all"?20:"All");
+
+  drawHead(); drawControls(); drawBody();
+  return el;
+}
+
+function startDrill(doms,n){
+  const pool=QUESTIONS.filter(q=>doms.includes(q.d));
+  start({mode:"drill",label:doms.length===1?DOM[doms[0]].th:"Domain drill",qs:shuffle(pool).slice(0,n),instant:true});
+}
+
+/* ---------------- offline option notes ---------------- */
+/* [pattern, display name, what it is / when it is the right answer] */
+const GLOSS_RAW = [
+// --- support plans & billing (most-missed area) ---
+["enterprise on-?ramp","Enterprise On-Ramp support","Business plus a pool of TAMs and 30-min SLA for business-critical cases; below full Enterprise."],
+["enterprise support|enterprise plan","Enterprise support","Only plan with a designated TAM, 15-min SLA for business-critical cases, Concierge team and IEM."],
+["business support|business plan","Business support","First plan with 24/7 phone/chat/email to engineers, full Trusted Advisor, and 1-hour production-down SLA. No TAM."],
+["developer support|developer plan","Developer support","Business-hours email to a Cloud Support Associate, 12–24h response. For test and dev, not production."],
+["basic support|basic plan","Basic support","Free with every account: docs, forums, 7 core Trusted Advisor checks, and account/billing cases only."],
+["technical account manager|\\bTAM\\b","Technical Account Manager","Named AWS advisor for proactive guidance; Enterprise only (pooled in Enterprise On-Ramp)."],
+["concierge","Concierge Support Team","Billing and account experts for Enterprise customers — not a technical support channel."],
+["infrastructure event management|\\bIEM\\b","Infrastructure Event Management","Short-term AWS engineering support around a launch or spike; Enterprise (and On-Ramp) plans."],
+["trusted advisor","AWS Trusted Advisor","Automated checks across cost, performance, security, fault tolerance, service limits. Full set needs Business or above."],
+["cost explorer","AWS Cost Explorer","Visualise and forecast past/future spend with filters and grouping; also shows RI/Savings Plans recommendations."],
+["aws budgets|\\bbudget","AWS Budgets","Set cost/usage/RI thresholds and get alerted before spend goes over — proactive, unlike Cost Explorer."],
+["cost and usage report|\\bCUR\\b|cost & usage report","Cost and Usage Report","The most granular billing data available, delivered to S3 for analysis in Athena, Redshift or QuickSight."],
+["cost anomaly detection","Cost Anomaly Detection","Machine learning that flags unusual spend spikes and emails the owner."],
+["pricing calculator","AWS Pricing Calculator","Estimates the cost of a planned AWS architecture before you build it."],
+["\\bTCO\\b|total cost of ownership","TCO comparison","Compares on-premises total cost against AWS, including power, cooling, space and admin labour."],
+["consolidated billing","Consolidated billing","One bill for all accounts in an Organization; usage is aggregated so volume tiers and RIs are shared."],
+["cost allocation tag","Cost allocation tags","Key-value tags activated in the billing console so costs can be grouped by project, team or environment."],
+["billing conductor","AWS Billing Conductor","Produces customised billing views and rates for internal chargeback."],
+["free tier","AWS Free Tier","Always-free, 12-month, and trial offers for new accounts — a starting allowance, not a pricing model."],
+["savings plan","Savings Plans","Commit to a dollars-per-hour spend for 1 or 3 years for up to ~72% off; more flexible than RIs."],
+["reserved instance|\\bRI\\b","Reserved Instances","1 or 3-year commitment to a specific instance family/region for a large discount; best for steady, predictable load."],
+["spot instance|spot fleet|spot pricing","Spot Instances","Up to 90% off spare capacity that AWS can reclaim with 2 minutes' notice; only for fault-tolerant, interruptible work."],
+["on-?demand","On-Demand pricing","Pay per second/hour with no commitment; the default for short, unpredictable, or first-time workloads."],
+["dedicated host","Dedicated Hosts","A whole physical server allocated to you, with socket/core visibility — the option for BYOL licensing."],
+["dedicated instance","Dedicated Instances","Instances on hardware isolated to your account, but without the host-level visibility of Dedicated Hosts."],
+["aws marketplace|marketplace","AWS Marketplace","Catalogue of third-party software you can buy and deploy, billed through your AWS invoice."],
+["license manager","AWS License Manager","Tracks and enforces software licence usage across AWS and on-premises."],
+["service quota|service limit","Service Quotas","Per-account, per-region caps on resources; view and request increases centrally."],
+
+// --- security, identity, compliance ---
+["identity and access management|\\bIAM\\b(?! identity)","AWS IAM","Controls who can do what in the account through users, groups, roles and JSON policies. Free, global."],
+["iam identity center|single sign-?on|\\bSSO\\b","IAM Identity Center","Central workforce sign-in across many AWS accounts, with an external identity provider if you have one."],
+["iam role|assume.*role","IAM role","Temporary credentials assumed by a service, instance or user — the right way to grant access without long-lived keys."],
+["iam group","IAM group","A collection of users that share one permission set; groups cannot be nested and cannot be a principal."],
+["iam policy|resource-based policy|identity-based policy","IAM policy","JSON document granting or denying actions; an explicit deny always wins over any allow."],
+["root user|root account","Root user","The account owner with unrestricted access. Lock it with MFA, delete its access keys, and use IAM for daily work."],
+["multi-?factor|\\bMFA\\b","Multi-factor authentication","A second factor on top of the password; AWS's top recommendation for the root user and privileged IAM users."],
+["least privilege","Least privilege","Grant only the permissions a task needs, then tighten over time — a core IAM best practice."],
+["access key","Access keys","Long-lived programmatic credentials. Rotate them, never embed them in code, and prefer roles instead."],
+["\\bcognito\\b","Amazon Cognito","Sign-up, sign-in and identity federation for your own mobile and web app users — not for AWS console access."],
+["directory service|managed microsoft ad|\\bAD connector\\b","AWS Directory Service","Managed Microsoft Active Directory in AWS, or a connector to your existing on-premises AD."],
+["\\bkms\\b|key management service","AWS KMS","Creates and controls encryption keys, integrated with most AWS services; multi-tenant and FIPS 140-2 Level 3 validated."],
+["cloudhsm","AWS CloudHSM","Single-tenant, FIPS 140-2 Level 3 hardware security modules you alone control — for strict key-custody rules."],
+["secrets manager","AWS Secrets Manager","Stores and automatically rotates database credentials, API keys and other secrets."],
+["parameter store","Systems Manager Parameter Store","Hierarchical storage for configuration data and secrets; cheaper than Secrets Manager but no auto-rotation."],
+["certificate manager|\\bACM\\b","AWS Certificate Manager","Provisions and auto-renews free public TLS certificates for ELB, CloudFront and API Gateway."],
+["shield advanced","AWS Shield Advanced","Paid tier adding DDoS cost protection, 24/7 DDoS response team and advanced attack visibility."],
+["\\bshield\\b","AWS Shield","Managed DDoS protection. Standard is free and automatic for all customers at the network/transport layer."],
+["\\bwaf\\b|web application firewall","AWS WAF","Layer-7 filtering of HTTP requests — blocks SQL injection, XSS and bad bots at CloudFront, ALB or API Gateway."],
+["firewall manager","AWS Firewall Manager","Centrally applies WAF, Shield and security group rules across every account in an Organization."],
+["network firewall","AWS Network Firewall","Managed stateful network firewall and intrusion prevention at the VPC perimeter."],
+["guardduty","Amazon GuardDuty","Continuous threat detection from CloudTrail, VPC Flow Logs and DNS logs — finds compromised instances and credentials."],
+["\\binspector\\b","Amazon Inspector","Automated vulnerability scanning of EC2 instances, container images and Lambda functions."],
+["\\bmacie\\b","Amazon Macie","Uses machine learning to find and classify sensitive data such as PII sitting in S3."],
+["\\bdetective\\b","Amazon Detective","Analyses security findings and builds a graph to help investigate the root cause of an incident."],
+["security hub","AWS Security Hub","Aggregates findings from GuardDuty, Inspector, Macie and partners into one prioritised view with standards checks."],
+["aws artifact|\\bartifact\\b","AWS Artifact","Self-service download of AWS audit reports (SOC, PCI, ISO) and agreements — the answer for compliance evidence."],
+["audit manager","AWS Audit Manager","Continuously collects evidence and maps it to compliance frameworks to prepare audits."],
+["\\bconfig\\b|aws config","AWS Config","Records resource configuration over time and evaluates it against rules — 'what does my configuration look like and is it compliant?'"],
+["cloudtrail","AWS CloudTrail","Logs every API call and who made it — the audit trail for 'who did what, when' in the account."],
+["shared responsibility","Shared responsibility model","AWS secures the cloud (hardware, facilities, managed service software); the customer secures what they put in it."],
+["security group","Security group","Stateful virtual firewall at the instance/ENI level; allow rules only, return traffic is automatic."],
+["network acl|\\bnacl\\b","Network ACL","Stateless firewall at the subnet level with numbered allow and deny rules evaluated in order."],
+["penetration test","Penetration testing","Permitted without prior approval against eight listed services; some other tests still need AWS sign-off."],
+["abuse team|aws abuse","AWS Abuse team","The contact for AWS resources being used for spam, port scanning or other abuse."],
+["\\bencryption at rest\\b|encrypt.*at rest","Encryption at rest","Protects stored data (S3, EBS, RDS, Glacier). Usually one checkbox plus a KMS key."],
+["encryption in transit|\\bTLS\\b|\\bSSL\\b","Encryption in transit","Protects data moving over the network, normally with TLS certificates from ACM."],
+
+// --- compute ---
+["elastic compute cloud|\\bEC2\\b","Amazon EC2","Resizable virtual machines. You control the OS and patching — IaaS, so the most flexible and the most work."],
+["\\blambda\\b","AWS Lambda","Runs code for up to 15 minutes with no servers to manage; billed per request and per millisecond of duration."],
+["\\bfargate\\b","AWS Fargate","Serverless compute for containers — runs ECS or EKS tasks without you managing EC2 instances."],
+["elastic container service|\\bECS\\b","Amazon ECS","AWS's own container orchestrator, running on EC2 or Fargate."],
+["elastic kubernetes|\\bEKS\\b","Amazon EKS","Managed Kubernetes control plane for teams that need standard Kubernetes tooling."],
+["elastic container registry|\\bECR\\b","Amazon ECR","Private registry for storing and versioning Docker container images."],
+["beanstalk","AWS Elastic Beanstalk","Upload code and AWS provisions the capacity, load balancer, scaling and monitoring for you — PaaS, resources stay visible."],
+["lightsail","Amazon Lightsail","Preconfigured virtual servers at a flat monthly price — the simplest way to get a small app or website running."],
+["\\bbatch\\b","AWS Batch","Schedules and runs large batch computing jobs, provisioning the compute automatically."],
+["outposts","AWS Outposts","AWS-managed racks of AWS hardware installed in your own data centre — true hybrid for low-latency or data-residency needs."],
+["local zone","AWS Local Zones","Extends a Region closer to a large metro for single-digit-millisecond latency."],
+["wavelength","AWS Wavelength","Runs workloads inside 5G carrier networks for ultra-low-latency mobile apps."],
+["app runner","AWS App Runner","Deploys a container or repo straight to a scaled, load-balanced web service."],
+["auto scaling","Auto Scaling","Adds and removes capacity automatically to match demand — the mechanism behind elasticity and cost control."],
+["application load balancer|\\bALB\\b","Application Load Balancer","Layer-7 load balancing with host and path-based routing for HTTP/HTTPS."],
+["network load balancer|\\bNLB\\b","Network Load Balancer","Layer-4 load balancing for extreme throughput, static IPs and TCP/UDP traffic."],
+["elastic load balanc|\\bELB\\b|load balanc","Elastic Load Balancing","Spreads incoming traffic across targets in multiple AZs — the standard building block for high availability."],
+["machine image|\\bAMI\\b","Amazon Machine Image","Template of an OS and software used to launch identical EC2 instances."],
+["instance store","Instance store","Ephemeral disk physically attached to the host — all data is lost when the instance stops or terminates."],
+["placement group","Placement group","Controls how instances are physically placed: cluster for low latency, spread for fault isolation."],
+
+// --- storage ---
+["s3 glacier deep archive|deep archive","S3 Glacier Deep Archive","The cheapest S3 storage class, for data retained for years and retrieved in hours."],
+["glacier instant retrieval","S3 Glacier Instant Retrieval","Archive pricing with millisecond access for rarely-read data that must come back immediately."],
+["glacier","Amazon S3 Glacier","Low-cost archival storage for long-term retention and compliance, with retrievals from minutes to hours."],
+["intelligent-?tiering","S3 Intelligent-Tiering","Moves objects between access tiers automatically — the right choice when the access pattern is unknown."],
+["one zone-?ia|one-?zone infrequent","S3 One Zone-IA","Infrequent-access storage in a single AZ; cheaper, but data is lost if that AZ is destroyed."],
+["standard-?ia|infrequent access","S3 Standard-IA","For data accessed rarely but needed instantly; lower storage price, retrieval fee applies."],
+["simple storage service|\\bS3\\b","Amazon S3","Object storage with 11 nines of durability, unlimited capacity, lifecycle rules and static website hosting."],
+["elastic file system|\\bEFS\\b","Amazon EFS","Shared POSIX file system many Linux instances can mount at once; scales automatically."],
+["\\bfsx\\b","Amazon FSx","Managed third-party file systems — Windows File Server, Lustre, NetApp ONTAP, OpenZFS."],
+["elastic block store|\\bEBS\\b","Amazon EBS","Network-attached block volumes for a single EC2 instance; persists independently and supports snapshots to S3."],
+["storage gateway","AWS Storage Gateway","Hybrid appliance giving on-premises apps low-latency access to effectively unlimited cloud storage."],
+["snowmobile","AWS Snowmobile","A shipping container on a truck for exabyte-scale data transfers."],
+["snowcone","AWS Snowcone","The smallest rugged edge device, for up to a few terabytes from harsh or space-limited sites."],
+["snowball","AWS Snowball","Physical appliance for petabyte-scale transfers when the network would take too long."],
+["aws backup","AWS Backup","Central policy-based backup and retention across EBS, RDS, DynamoDB, EFS and more."],
+["datasync","AWS DataSync","Automated, accelerated online transfer between on-premises storage and AWS."],
+["transfer family","AWS Transfer Family","Managed SFTP, FTPS and FTP endpoints backed by S3 or EFS."],
+
+// --- databases ---
+["\\baurora\\b","Amazon Aurora","MySQL and PostgreSQL-compatible engine built for the cloud — up to 5x MySQL throughput with 6-way replicated storage."],
+["multi-?az","Multi-AZ deployment","A synchronous standby in another AZ that fails over automatically. For availability, not for read scaling."],
+["read replica","Read replica","Asynchronous read-only copy that offloads read traffic. For scaling reads, not for automatic failover."],
+["relational database service|\\bRDS\\b","Amazon RDS","Managed relational databases (MySQL, PostgreSQL, MariaDB, Oracle, SQL Server, Aurora) — AWS handles patching, backups and failover."],
+["\\bDAX\\b","DynamoDB Accelerator","In-memory cache in front of DynamoDB that cuts read latency to microseconds."],
+["dynamodb","Amazon DynamoDB","Serverless NoSQL key-value database with single-digit-millisecond latency at any scale. No servers, no schema."],
+["elasticache","Amazon ElastiCache","Managed Redis or Memcached for in-memory caching and session stores."],
+["redshift","Amazon Redshift","Petabyte-scale data warehouse for analytics and BI queries over structured data — OLAP, not OLTP."],
+["\\bneptune\\b","Amazon Neptune","Managed graph database for highly connected data such as social or fraud networks."],
+["documentdb","Amazon DocumentDB","Managed MongoDB-compatible document database."],
+["\\bqldb\\b|quantum ledger","Amazon QLDB","Immutable, cryptographically verifiable ledger database."],
+["keyspaces","Amazon Keyspaces","Managed Apache Cassandra-compatible database."],
+["timestream","Amazon Timestream","Purpose-built time-series database for IoT and operational metrics."],
+["database migration service|\\bDMS\\b","AWS DMS","Migrates databases to AWS with minimal downtime; pairs with SCT when the engine changes."],
+["schema conversion","AWS Schema Conversion Tool","Converts schemas and code between different database engines before a DMS migration."],
+
+// --- networking & delivery ---
+["virtual private cloud|\\bVPC\\b","Amazon VPC","Your logically isolated network in AWS: subnets, route tables, gateways and firewalls, all under your control."],
+["\\bsubnet\\b","Subnet","A slice of a VPC in one Availability Zone; public if its route table points at an internet gateway."],
+["internet gateway","Internet gateway","Attaches to a VPC to give public subnets two-way internet access."],
+["nat gateway|nat instance","NAT gateway","Lets private-subnet resources reach the internet outbound without being reachable inbound."],
+["vpc peering","VPC peering","Private one-to-one routing between two VPCs; does not scale well to many VPCs."],
+["transit gateway","AWS Transit Gateway","Hub that connects thousands of VPCs and on-premises networks through a single point."],
+["privatelink|vpc endpoint","VPC endpoints / PrivateLink","Reaches AWS or partner services privately, keeping traffic off the public internet."],
+["direct connect","AWS Direct Connect","A dedicated private line from your data centre to AWS for consistent bandwidth and latency — takes weeks to provision."],
+["site-to-site vpn|\\bVPN\\b","AWS Site-to-Site VPN","Encrypted tunnel over the public internet to your VPC; quick to set up, but internet-dependent."],
+["route 53|route53","Amazon Route 53","Managed DNS with health checks, latency and geolocation routing, plus domain registration."],
+["cloudfront","Amazon CloudFront","Global CDN that caches content at edge locations to cut latency; also a place to attach WAF and Shield."],
+["global accelerator","AWS Global Accelerator","Static anycast IPs that route users onto the AWS backbone for faster, more reliable TCP/UDP traffic."],
+["api gateway","Amazon API Gateway","Managed front door for REST, HTTP and WebSocket APIs, with throttling, auth and caching."],
+["edge location","Edge locations","Hundreds of CDN sites used by CloudFront, Route 53 and Global Accelerator — far more numerous than Regions."],
+["availability zone","Availability Zone","One or more discrete data centres in a Region with independent power and networking. Use two or more for high availability."],
+["\\bregion\\b","AWS Region","A geographic area containing multiple isolated Availability Zones. Choose for latency, price, compliance and service availability."],
+["flow log","VPC Flow Logs","Records IP traffic metadata to and from network interfaces for troubleshooting and security analysis."],
+
+// --- management, monitoring, governance ---
+["cloudwatch logs","Amazon CloudWatch Logs","Central collection and search of application and system log files."],
+["cloudwatch","Amazon CloudWatch","Metrics, alarms and dashboards for performance monitoring — 'is my resource healthy and how busy is it?'"],
+["x-?ray","AWS X-Ray","Distributed tracing that shows where latency and errors occur across microservices."],
+["cloudformation","AWS CloudFormation","Infrastructure as code in JSON or YAML — provisions repeatable stacks and rolls back on failure. No extra charge."],
+["\\bCDK\\b|cloud development kit","AWS CDK","Defines infrastructure in a real programming language and synthesises CloudFormation."],
+["systems manager","AWS Systems Manager","Operational hub for patching, running commands, inventory and Session Manager access — no SSH keys needed."],
+["opsworks","AWS OpsWorks","Managed Chef and Puppet for configuration management."],
+["service catalog","AWS Service Catalog","Lets IT publish an approved list of products that users can launch within guardrails."],
+["control tower","AWS Control Tower","Sets up and governs a secure multi-account landing zone with guardrails, built on Organizations."],
+["organizations|service control polic|\\bSCP\\b","AWS Organizations","Central management of many accounts: consolidated billing, OUs, and SCPs that cap what accounts may do."],
+["personal health dashboard|health dashboard","AWS Health Dashboard","Personalised alerts about events affecting your specific resources, plus the public service status view."],
+["compute optimizer","AWS Compute Optimizer","Recommends right-sized instance types from your actual utilisation data."],
+["well-?architected tool","AWS Well-Architected Tool","Free self-review of a workload against the Well-Architected pillars, producing an improvement plan."],
+["well-?architected framework|pillars","Well-Architected Framework","Six pillars: operational excellence, security, reliability, performance efficiency, cost optimisation, sustainability."],
+["cloud adoption framework|\\bCAF\\b","AWS Cloud Adoption Framework","Six perspectives (business, people, governance, platform, security, operations) for planning a cloud programme."],
+["\\btag\\b|tagging|tags","Tagging","Key-value labels on resources used for cost allocation, automation, access control and search."],
+["resource group","AWS Resource Groups","Groups tagged resources so they can be viewed and acted on together."],
+["\\bcloudshell\\b","AWS CloudShell","Browser-based shell with the CLI pre-authenticated to your account."],
+["command line interface|\\bCLI\\b","AWS CLI","Scriptable command-line access to AWS APIs — the answer when a question asks for automation from a terminal."],
+["\\bSDK\\b","AWS SDKs","Language-specific libraries for calling AWS APIs from application code."],
+["management console|aws console","AWS Management Console","Browser interface for AWS — the manual option, contrasted with CLI, SDK and CloudFormation."],
+["launch wizard","AWS Launch Wizard","Guided sizing and deployment for enterprise applications like SAP and SQL Server."],
+
+// --- analytics, integration, ML, end-user ---
+["kinesis data firehose|firehose","Kinesis Data Firehose","Loads streaming data into S3, Redshift or OpenSearch with no code."],
+["kinesis","Amazon Kinesis","Ingests and processes streaming data in real time — clickstreams, logs, IoT telemetry."],
+["\\bathena\\b","Amazon Athena","Serverless SQL directly over data in S3; you pay per terabyte scanned, with nothing to provision."],
+["\\bglue\\b","AWS Glue","Serverless ETL and data catalogue for preparing data for analytics."],
+["\\bEMR\\b|elastic mapreduce","Amazon EMR","Managed Hadoop, Spark and Presto clusters for big data processing."],
+["quicksight","Amazon QuickSight","Serverless business intelligence dashboards with pay-per-session pricing."],
+["lake formation","AWS Lake Formation","Builds and secures a data lake on S3 with central permissions."],
+["opensearch|elasticsearch","Amazon OpenSearch Service","Managed search and log analytics with Kibana/OpenSearch Dashboards."],
+["\\bSQS\\b|simple queue","Amazon SQS","Fully managed message queue that decouples components so a slow or failed consumer can't break the producer."],
+["\\bSNS\\b|simple notification","Amazon SNS","Pub/sub notifications fanned out to many subscribers by email, SMS, HTTP, SQS or Lambda."],
+["eventbridge|cloudwatch events","Amazon EventBridge","Event bus that routes events from AWS services, SaaS apps and your own code to targets on rules."],
+["step functions","AWS Step Functions","Visual state machine that orchestrates multi-step serverless workflows with retries and error handling."],
+["amazon mq","Amazon MQ","Managed ActiveMQ or RabbitMQ — the migration path for apps already using standard message brokers."],
+["appsync","AWS AppSync","Managed GraphQL APIs with real-time and offline data sync."],
+["\\bSES\\b|simple email","Amazon SES","Bulk and transactional email sending and receiving."],
+["\\bpinpoint\\b","Amazon Pinpoint","Targeted multichannel customer messaging campaigns."],
+["sagemaker","Amazon SageMaker","End-to-end platform to build, train and deploy machine learning models."],
+["rekognition","Amazon Rekognition","Image and video analysis — objects, scenes, text and faces."],
+["\\bpolly\\b","Amazon Polly","Turns text into lifelike speech."],
+["transcribe","Amazon Transcribe","Converts speech to text."],
+["translate","Amazon Translate","Neural machine translation between languages."],
+["comprehend","Amazon Comprehend","Natural-language processing that finds sentiment, entities and key phrases in text."],
+["textract","Amazon Textract","Extracts text, forms and tables from scanned documents."],
+["\\blex\\b","Amazon Lex","Builds conversational chatbots with the technology behind Alexa."],
+["\\bkendra\\b","Amazon Kendra","Machine-learning enterprise search across internal document repositories."],
+["\\bforecast\\b","Amazon Forecast","Time-series forecasting for demand, inventory and financial planning."],
+["personalize","Amazon Personalize","Real-time product and content recommendations."],
+["fraud detector","Amazon Fraud Detector","Detects potentially fraudulent online activity."],
+["workspaces","Amazon WorkSpaces","Managed cloud desktops (DaaS) delivered to any device."],
+["appstream","Amazon AppStream 2.0","Streams individual desktop applications from the cloud to a browser."],
+["amazon connect","Amazon Connect","Cloud contact centre you can stand up in minutes with pay-per-use pricing."],
+["\\bchime\\b","Amazon Chime","Meetings, chat and business calling."],
+["workdocs","Amazon WorkDocs","Managed document storage and collaboration."],
+["\\bamplify\\b","AWS Amplify","Builds and hosts full-stack web and mobile front ends."],
+["iot core","AWS IoT Core","Connects and manages IoT devices and their messages at scale."],
+["device farm","AWS Device Farm","Tests apps against real mobile devices in the cloud."],
+
+// --- developer tools & migration ---
+["codecommit","AWS CodeCommit","Private managed Git repositories."],
+["codebuild","AWS CodeBuild","Compiles source and runs tests on managed build servers."],
+["codedeploy","AWS CodeDeploy","Automates deployments to EC2, Lambda, ECS and on-premises servers."],
+["codepipeline","AWS CodePipeline","Orchestrates the full build-test-deploy pipeline."],
+["codeartifact","AWS CodeArtifact","Private artifact repository for npm, Maven, PyPI packages."],
+["cloud9","AWS Cloud9","Browser-based IDE with a terminal into your AWS environment."],
+["migration hub","AWS Migration Hub","Single dashboard tracking migration progress across tools and accounts."],
+["application discovery","AWS Application Discovery Service","Inventories on-premises servers and their dependencies to plan a migration."],
+["application migration service|\\bMGN\\b|server migration","AWS Application Migration Service","Lift-and-shift replication of physical, virtual or cloud servers into EC2."],
+["rehost|lift and shift","Rehost (lift and shift)","Move a workload to AWS unchanged — fastest of the migration strategies, least optimisation."],
+["replatform","Replatform","Move with small cloud optimisations, such as swapping a self-managed database for RDS."],
+["refactor|re-?architect","Refactor / re-architect","Redesign the application for cloud-native services — most effort, most long-term benefit."],
+["repurchase","Repurchase","Replace the workload with a SaaS product instead of migrating it."],
+["retire\\b","Retire","Decommission a workload found to be unnecessary during portfolio discovery."],
+["retain\\b","Retain","Deliberately leave a workload where it is for now."],
+
+// --- concepts ---
+["economies of scale","Economies of scale","AWS's aggregated purchasing lowers prices for everyone — 'benefit from massive economies of scale'."],
+["capital expen|\\bcapex\\b|upfront investment","CapEx to OpEx","The cloud trades large upfront capital expense for variable operating expense you pay as you use."],
+["elasticity","Elasticity","Capacity grows and shrinks automatically with demand, so you stop guessing and stop over-provisioning."],
+["\\bagility\\b|agile","Agility","Resources in minutes instead of weeks, so teams can experiment and fail cheaply."],
+["high availability","High availability","Designing across multiple Availability Zones so a single failure does not take the workload down."],
+["fault tolerance","Fault tolerance","The workload keeps running correctly even while a component has failed."],
+["disaster recovery|\\bRTO\\b|\\bRPO\\b","Disaster recovery","Backup and restore, pilot light, warm standby, multi-site — cost rises as RTO and RPO fall."],
+["loose(ly)? coupl","Loose coupling","Components interact through queues or APIs so one failing part does not cascade into the rest."],
+["\\bIaaS\\b|infrastructure as a service","IaaS","You manage the OS and everything above it; AWS manages the hardware. EC2 is the classic example."],
+["\\bPaaS\\b|platform as a service","PaaS","AWS manages the platform so you only bring code and data — Elastic Beanstalk, RDS."],
+["\\bSaaS\\b|software as a service","SaaS","A finished application delivered over the internet, with almost nothing for you to manage."],
+["hybrid","Hybrid deployment","Some workloads on AWS and some on-premises, joined by Direct Connect, VPN, Outposts or Storage Gateway."],
+["undifferentiated heavy lifting","Undifferentiated heavy lifting","Racking, patching and capacity planning that add no business value — the work AWS takes over."],
+["sustainability","Sustainability pillar","Minimising the environmental impact of a workload, added as the sixth Well-Architected pillar."]
+];
+const GLOSS = GLOSS_RAW.map(([p,n,l])=>[new RegExp(p,"i"),n,l]);
+function glossFor(t){ for(const g of GLOSS) if(g[0].test(t)) return g; return null; }
+
+/* ---------------- explanations (fully offline) ---------------- */
+function setNote(optEl,text){
+  if(!optEl) return;
+  let n=optEl.querySelector(".opt-note");
+  if(!n){ n=document.createElement("span"); n.className="opt-note"; optEl.appendChild(n); }
+  n.textContent=text;
+}
+
+// Builds the rationale for one question from the built-in AWS glossary.
+// No network, no API, nothing to load - every note already lives in this file.
+function explainInto(q,whyEl,optEls){
+  const norm=x=>x.toLowerCase().replace(/[^a-z0-9]/g,"");
+  q.o.forEach(([k,t],i)=>{
+    const g=glossFor(t);
+    if(!g) return;
+    setNote(optEls[i], norm(t).includes(norm(g[1])) ? g[2] : g[1]+" \u2014 "+g[2]);
+  });
+  if(!whyEl) return;
+  const lines=[];
+  q.o.forEach(([k,t])=>{
+    if(!q.a.includes(k)) return;
+    const g=glossFor(t);
+    if(g) lines.push([k+" \u00b7 "+g[1], g[2]]);
+  });
+  if(!lines.length){
+    const g=glossFor(q.q);
+    if(g) lines.push([g[1], g[2]]);
+  }
+  if(!lines.length){ whyEl.style.display="none"; return; }
+  whyEl.className="why-box";
+  whyEl.innerHTML='<span class="why-lbl">Why this answer</span>'+
+    lines.map(([h,b])=>`<p class="why"><b>${esc(h)}</b> \u2014 ${esc(b)}</p>`).join("");
+}
+
+/* ---------------- quiz engine ---------------- */
+let R=null;
+function start(cfg){
+  if(!cfg.qs.length){ render(home()); return; }
+  R={...cfg, idx:0, picks:cfg.qs.map(()=>[]), checked:cfg.qs.map(()=>false),
+     flags:new Set(), left:cfg.timed||0, tick:null, startedAt:Date.now()};
+  if(cfg.timed){
+    R.tick=setInterval(()=>{
+      R.left--;
+      const t=document.getElementById("timer");
+      if(t){ t.textContent=mmss(Math.max(0,R.left)); t.classList.toggle("warn",R.left<300); }
+      if(R.left<=0){ clearInterval(R.tick); finish(); }
+    },1000);
+  }
+  drawQ();
+}
+function stopTick(){ if(R&&R.tick) clearInterval(R.tick); }
+
+function drawQ(){
+  const q=R.qs[R.idx], picks=R.picks[R.idx], checked=R.checked[R.idx];
+  const multi=q.a.length>1;
+  const el=$(`<div>
+    <div class="hud"><div class="hud-in">
+      <span class="lbl"><b>${R.idx+1}</b> / ${R.qs.length}</span>
+      <span class="lbl opt-hide">· ${esc(R.label)}</span>
+      <span class="spacer"></span>
+      ${R.timed?`<span class="timer" id="timer">${mmss(Math.max(0,R.left))}</span>`:""}
+      <button class="lbl" data-quit style="color:var(--dim)">Exit</button>
+    </div><div class="pbar"><i style="width:${(R.idx)/R.qs.length*100}%"></i></div></div>
+    <div class="wrap"><div class="qcard">
+      <div class="qmeta">
+        <span class="tag" style="color:${DOM[q.d].c};border-color:${DOM[q.d].c}44;background:${DOM[q.d].c}12">${DOM[q.d].th}</span>
+        <span class="eyebrow">${q.src==="svc"?"Service scenario · "+esc(CATNAME[q.cat]?CATNAME[q.cat].en:q.cat):"Set "+q.e+" · Q"+q.n}</span>
+      </div>
+      ${multi?`<p class="multi">Choose ${q.a.length} answers</p>`:""}
+      <p class="qtext">${esc(q.q)}</p>
+      <div class="opts"></div>
+      <div data-verdict></div>
+    </div></div>
+    <div class="dock"><div class="dock-in">
+      ${(!R.instant && R.idx>0)?`<button class="iconbtn" data-back title="Previous question">←</button>`:""}
+      <button class="iconbtn ${R.flags.has(R.idx)?"on":""}" data-flag title="Flag for review">⚑</button>
+      <button class="btn" data-main></button>
+    </div></div></div>`);
+
+  const ow=el.querySelector(".opts");
+  q.o.forEach(([k,txt])=>{
+    const on=picks.includes(k), isAns=q.a.includes(k);
+    let cls="opt", mark="";
+    if(checked){ cls+=" locked";
+      if(isAns){cls+=" right";mark="✓";}
+      else if(on){cls+=" wrong";mark="✕";}
+    } else if(on) cls+=" sel";
+    const b=$(`<button class="${cls}"><span class="k">${k}</span><span>${esc(txt)}</span><span class="mark">${mark}</span></button>`);
+    if(!checked) b.onclick=()=>{
+      if(multi){
+        const i=picks.indexOf(k);
+        if(i>=0) picks.splice(i,1);
+        else if(picks.length<q.a.length) picks.push(k);
+        else { picks.shift(); picks.push(k); }
+      } else { R.picks[R.idx]=[k]; }
+      drawQ();
+    };
+    ow.appendChild(b);
+  });
+
+  const main=el.querySelector("[data-main]");
+  const last=R.idx===R.qs.length-1;
+  if(R.instant && !checked){
+    main.textContent="Check answer"; main.disabled=picks.length===0;
+    main.onclick=()=>{ commit(); drawQ(); };
+  } else {
+    main.textContent = last ? "Submit · see results" : "Next question →";
+    main.onclick=()=>{
+      if(last){
+        const blank=R.picks.filter(p=>!p.length).length;
+        if(blank && !confirm(`${blank} question(s) left blank will be marked wrong. Submit anyway?`)) return;
+        finish();
+      } else { R.idx++; drawQ(); }
+    };
+  }
+
+  if(checked){
+    const ok=same(picks,q.a);
+    const vd=$(`<div class="verdict ${ok?"ok":"no"}">
+      <b>${ok?"Correct":"Incorrect — answer: "+q.a.join(", ")}</b>
+      ${auditHtml(q)}
+      <div data-why></div>
+      ${refHtml(q.x)}
+    </div>`);
+    el.querySelector("[data-verdict]").appendChild(vd);
+    explainInto(q, vd.querySelector("[data-why]"), [...ow.children]);
+  }
+
+  const back=el.querySelector("[data-back]");
+  if(back) back.onclick=()=>{ R.idx--; drawQ(); };
+  el.querySelector("[data-flag]").onclick=(e)=>{
+    R.flags.has(R.idx)?R.flags.delete(R.idx):R.flags.add(R.idx);
+    e.currentTarget.classList.toggle("on");
+  };
+  el.querySelector("[data-quit]").onclick=()=>{
+    if(confirm("Leave this round? Questions you already checked are saved.")){ stopTick(); render(home()); }
+  };
+  render(el);
+}
+
+function commit(){
+  if(R.checked[R.idx]) return;
+  const q=R.qs[R.idx], picks=R.picks[R.idx];
+  if(!picks.length && R.instant) return;
+  R.checked[R.idx]=true;
+  const ok=same(picks,q.a);
+  S.stats[q.d][1]++; if(ok) S.stats[q.d][0]++;
+  const wi=S.wrong.indexOf(q.i);
+  if(ok){ if(wi>=0) S.wrong.splice(wi,1); }
+  else if(wi<0) S.wrong.push(q.i);
+  saveS();
+}
+
+/* ---------------- results ---------------- */
+function finish(){
+  stopTick();
+  R.qs.forEach((_,i)=>{ R.idx=i; commit(); });
+  const rows=R.qs.map((q,i)=>({q,picks:R.picks[i],ok:same(R.picks[i],q.a),flag:R.flags.has(i)}));
+  const right=rows.filter(r=>r.ok).length, total=rows.length, p=pct(right,total), pass=p>=70;
+  if(R.key) S.done[R.key]=p;
+  saveS();
+
+  const per={};
+  rows.forEach(r=>{ per[r.q.d]=per[r.q.d]||[0,0]; per[r.q.d][1]++; if(r.ok) per[r.q.d][0]++; });
+  const C=2*Math.PI*52;
+  const el=$(`<div class="wrap">
+    <header class="mast">
+      <div class="eyebrow">Results · ${esc(R.label)}</div>
+      <div class="score">
+        <div class="ring">
+          <svg viewBox="0 0 118 118" width="118" height="118">
+            <circle cx="59" cy="59" r="52" fill="none" stroke="var(--track)" stroke-width="9"/>
+            <circle cx="59" cy="59" r="52" fill="none" stroke="${pass?"var(--ok)":"var(--no)"}" stroke-width="9"
+              stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-p/100)}"
+              transform="rotate(-90 59 59)"/>
+          </svg><b>${p}%</b>
+        </div>
+        <div>
+          <span class="pill ${pass?"pass":"fail"}">${pass?"Pass":"Below pass mark"}</span>
+          <h1 style="font-size:30px;margin:10px 0 2px">${right} / ${total}</h1>
+          <p class="sub">CLF-C02 passes at 700/1000 ≈ 70% · time taken ${mmss(Math.round((Date.now()-R.startedAt)/1000))}</p>
+        </div>
+      </div>
+    </header>
+    <div class="heat" style="margin-top:22px">
+      <div class="heat-head"><h2 style="margin:0">This round by domain</h2></div>
+      <div class="heat-row">${[1,2,3,4].filter(d=>per[d]).map(d=>{
+        const [r,t]=per[d], v=pct(r,t);
+        return `<div class="hd"><div class="hd-name"><i class="dot" style="background:${DOM[d].c}"></i><span>${DOM[d].th}</span></div>
+        <div class="hd-val">${v}% · ${r}/${t}</div>
+        <div class="track"><i class="fill" style="width:${v}%;background:${DOM[d].c}"></i></div></div>`;}).join("")}</div>
+    </div>
+    <div class="rev"><h2>Review answers</h2>
+      <div class="filters"></div><div data-list></div></div>
+    <div class="dock"><div class="dock-in">
+      <button class="btn ghost" data-home style="flex:0 0 auto">Home</button>
+      <button class="btn" data-again>Run it again</button></div></div>
+  </div>`);
+
+  const list=el.querySelector("[data-list]"), fw=el.querySelector(".filters");
+  let f="wrong";
+  const draw=()=>{
+    const set=rows.filter(r=> f==="all"?true : f==="wrong"?!r.ok : r.flag);
+    list.innerHTML = set.length?"":`<p class="empty">${f==="wrong"?"No wrong answers this round 🎉":"Nothing flagged"}</p>`;
+    set.forEach(r=>{
+      const det=$(`<details class="item">
+        <summary><span class="st" style="color:${r.ok?"var(--ok)":"var(--no)"}">${r.ok?"✓":"✕"}</span>
+          <span>${esc(r.q.q)}</span></summary>
+        <div class="body">
+          <div data-opts>${r.q.o.map(([k,t])=>`<p class="ans-line" style="color:${r.q.a.includes(k)?"var(--ok)":r.picks.includes(k)?"var(--no)":"var(--dim)"}"><b>${k}.</b> ${esc(t)}</p>`).join("")}</div>
+          <p class="ans-line" style="margin-top:10px">You answered <b>${r.picks.join(", ")||"—"}</b> · correct <b style="color:var(--ok)">${r.q.a.join(", ")}</b> · ${r.q.src==="svc"?"service scenario":"set "+r.q.e+", Q"+r.q.n}</p>
+          ${auditHtml(r.q)}
+          <div data-why></div>
+          ${refHtml(r.q.x)}
+        </div></details>`);
+      let loaded=false;
+      det.addEventListener("toggle",()=>{
+        if(!det.open||loaded) return;
+        loaded=true;
+        explainInto(r.q, det.querySelector("[data-why]"),
+                    [...det.querySelector("[data-opts]").children]);
+      });
+      list.appendChild(det);
+    });
+  };
+  [["wrong",`Wrong only (${rows.filter(r=>!r.ok).length})`],["flag",`Flagged (${rows.filter(r=>r.flag).length})`],["all",`All (${total})`]]
+    .forEach(([k,lb])=>{
+      const b=$(`<button class="chip ${k===f?"on":""}">${lb}</button>`);
+      b.onclick=()=>{ f=k; fw.querySelectorAll(".chip").forEach(x=>x.classList.remove("on")); b.classList.add("on"); draw(); };
+      fw.appendChild(b);
+    });
+  draw();
+  el.querySelector("[data-home]").onclick=()=>render(home());
+  el.querySelector("[data-again]").onclick=()=>{
+    const c={mode:R.mode,label:R.label,instant:R.instant,timed:R.timed,key:R.key};
+    if(R.mode==="sim") c.qs=shuffle(QUESTIONS).slice(0,65);
+    else if(R.mode==="wrong") c.qs=shuffle(S.wrong.map(i=>byId.get(i)).filter(Boolean));
+    else c.qs=shuffle(R.qs);
+    if(!c.qs.length){ render(home()); return; }
+    start(c);
+  };
+  render(el);
+}
+
+/* ---------------- keyboard ---------------- */
+document.addEventListener("keydown",e=>{
+  if(!R||document.querySelector(".qcard")===null) return;
+  if(e.metaKey||e.ctrlKey||e.altKey) return;
+  const k=e.key.toUpperCase();
+  const opts=[...document.querySelectorAll(".opt")];
+  if(/^[A-E]$/.test(k)){ const i="ABCDE".indexOf(k); if(opts[i]&&!opts[i].classList.contains("locked")){e.preventDefault();opts[i].click();} }
+  if(/^[1-5]$/.test(k)){ const i=+k-1; if(opts[i]&&!opts[i].classList.contains("locked")){e.preventDefault();opts[i].click();} }
+  if(e.key==="Enter"){ const m=document.querySelector("[data-main]"); if(m&&!m.disabled){e.preventDefault();m.click();} }
+});
+
+/* ---------------- boot ---------------- */
+(async()=>{ await loadS(); await loadSY(); applyTheme(); render(home()); })();
+</script>

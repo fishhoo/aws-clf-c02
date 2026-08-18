@@ -398,6 +398,10 @@ async function pullUrl(url){
 /* ---------------- helpers ---------------- */
 const $=(h)=>{const t=document.createElement("template");t.innerHTML=h.trim();return t.content.firstElementChild;};
 const esc=(s)=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+// A handful of questions appear in more than one practice set. Sets keep their
+// own copy, but a random round must never ask the same thing twice.
+const uniqQ=(list)=>{ const seen=new Set(); return list.filter(q=>{
+  const k=q.g?("g"+q.g):("i"+q.i); if(seen.has(k)) return false; seen.add(k); return true; }); };
 const shuffle=(a)=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
 const pct=(n,d)=>d?Math.round(n/d*100):0;
 const mmss=(s)=>`${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`;
@@ -507,12 +511,12 @@ function home(){
   </div>`);
 
   const GO={
-    sim:()=>start({mode:"sim",label:"Exam simulation",qs:shuffle(QUESTIONS).slice(0,65),timed:90*60,instant:false}),
+    sim:()=>start({mode:"sim",label:"Exam simulation",qs:uniqQ(shuffle(QUESTIONS)).slice(0,65),timed:90*60,instant:false}),
     set:()=>render(pickSet()),
     drill:()=>render(pickDrill()),
     svc:()=>render(pickSvc()),
     review:()=>render(reviewScreen()),
-    wrong:()=>start({mode:"wrong",label:"Mistakes",qs:shuffle(S.wrong.map(i=>byId.get(i)).filter(Boolean)),instant:true})
+    wrong:()=>start({mode:"wrong",label:"Mistakes",qs:uniqQ(shuffle(S.wrong.map(i=>byId.get(i)).filter(Boolean))),instant:true})
   };
   el.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>GO[b.dataset.go]());
   const dr=el.querySelector("[data-drill]");
@@ -766,7 +770,7 @@ function reviewScreen(){
 
 function startDrill(doms,n){
   const pool=QUESTIONS.filter(q=>doms.includes(q.d));
-  start({mode:"drill",label:doms.length===1?DOM[doms[0]].th:"Domain drill",qs:shuffle(pool).slice(0,n),instant:true});
+  start({mode:"drill",label:doms.length===1?DOM[doms[0]].th:"Domain drill",qs:uniqQ(shuffle(pool)).slice(0,n),instant:true});
 }
 
 /* ---------------- offline option notes ---------------- */
@@ -1028,6 +1032,18 @@ function setNote(optEl,text){
 // No network, no API, nothing to load - every note already lives in this file.
 function explainInto(q,whyEl,optEls){
   const norm=x=>x.toLowerCase().replace(/[^a-z0-9]/g,"");
+
+  // Questions written for this app carry a rationale for every option. Everything
+  // else falls back to the built-in glossary note for whichever service is named.
+  if(q.r){
+    q.o.forEach(([k],i)=>{ if(q.r[k]) setNote(optEls[i], q.r[k]); });
+    if(!whyEl) return;
+    whyEl.className="why-box";
+    whyEl.innerHTML='<span class="why-lbl">The point of this question</span>'+
+      `<p class="why">${esc(q.k||"")}</p>`;
+    return;
+  }
+
   q.o.forEach(([k,t],i)=>{
     const g=glossFor(t);
     if(!g) return;
@@ -1082,7 +1098,7 @@ function drawQ(){
     <div class="wrap"><div class="qcard">
       <div class="qmeta">
         <span class="tag" style="color:${DOM[q.d].c};border-color:${DOM[q.d].c}44;background:${DOM[q.d].c}12">${DOM[q.d].th}</span>
-        <span class="eyebrow">${q.src==="svc"?"Service scenario · "+esc(CATNAME[q.cat]?CATNAME[q.cat].en:q.cat):"Set "+q.e+" · Q"+q.n}</span>
+        <span class="eyebrow">${q.src==="svc"?"Service scenario · "+esc(CATNAME[q.cat]?CATNAME[q.cat].en:q.cat):q.src==="orig"?"Exam-style set · Q"+q.n:"Set "+q.e+" · Q"+q.n}</span>
       </div>
       ${multi?`<p class="multi">Choose ${q.a.length} answers</p>`:""}
       <p class="qtext">${esc(q.q)}</p>
@@ -1251,9 +1267,9 @@ function finish(){
   el.querySelector("[data-home]").onclick=()=>render(home());
   el.querySelector("[data-again]").onclick=()=>{
     const c={mode:R.mode,label:R.label,instant:R.instant,timed:R.timed,key:R.key};
-    if(R.mode==="sim") c.qs=shuffle(QUESTIONS).slice(0,65);
-    else if(R.mode==="wrong") c.qs=shuffle(S.wrong.map(i=>byId.get(i)).filter(Boolean));
-    else c.qs=shuffle(R.qs);
+    if(R.mode==="sim") c.qs=uniqQ(shuffle(QUESTIONS)).slice(0,65);
+    else if(R.mode==="wrong") c.qs=uniqQ(shuffle(S.wrong.map(i=>byId.get(i)).filter(Boolean)));
+    else c.qs=uniqQ(shuffle(R.qs));
     if(!c.qs.length){ render(home()); return; }
     start(c);
   };

@@ -2,12 +2,24 @@ services:
   - type: web
     name: clf-c02-drill
     runtime: static
-    staticPublishPath: .
+
+    # Render runs this on every push, so the built file never lives in the repo.
+    buildCommand: node build.mjs
+    staticPublishPath: dist
+
+    # Deploy straight away on every push to the tracked branch.
+    autoDeployTrigger: commit
+
+    envVars:
+      # build.mjs has no dependencies — skip Render's automatic npm install
+      - key: SKIP_INSTALL_DEPS
+        value: "true"
+
     headers:
-      # one file per deploy — make sure a redeploy isn't served from cache
       - path: /index.html
         name: Cache-Control
         value: public, max-age=0, must-revalidate
+
     routes:
       - type: rewrite
         source: /*

@@ -42,6 +42,7 @@ const templatePath  = locate('template.html',   'src/template.html', 'template.h
 const questionsPath = locate('questions.json',  'src/data/questions.json', 'src/questions.json', 'data/questions.json', 'questions.json');
 const reviewPath    = locate('review.json',     'src/data/review.json', 'src/review.json', 'data/review.json', 'review.json');
 const correctionsPath = locate('corrections.json', 'src/data/corrections.json', 'src/corrections.json', 'data/corrections.json', 'corrections.json');
+const examStylePath   = locate('exam-style.json', 'src/data/exam-style.json', 'src/exam-style.json', 'data/exam-style.json', 'exam-style.json');
 
 console.log('inputs:');
 for (const p of [templatePath, questionsPath, reviewPath, correctionsPath]) console.log('  ' + relative(root, p));
@@ -50,6 +51,10 @@ const template = read(templatePath);
 const questions = JSON.parse(read(questionsPath));
 const review = JSON.parse(read(reviewPath));
 const corrections = JSON.parse(read(correctionsPath));
+const examStyle = JSON.parse(read(examStylePath));
+
+// set 24 is written for this app and carries a rationale for every option
+for (const q of examStyle.questions) questions.push(q);
 
 // ---- apply audited answer-key corrections ----
 // `from` must still match what's in the bank, so a correction can never drift
@@ -89,13 +94,64 @@ for (const q of questions) {
   if (!q.q || !q.q.trim()) problems.push(`${at}: empty stem`);
   if (!Array.isArray(q.o) || q.o.length < 2) problems.push(`${at}: needs at least two options`);
   if (!Array.isArray(q.a) || !q.a.length) problems.push(`${at}: no answer key`);
-  const letters = new Set((q.o || []).map(o => o[0]));
-  for (const a of q.a || []) if (!letters.has(a)) problems.push(`${at}: answer ${a} is not one of the options`);
+  const keySet = new Set((q.o || []).map(o => o[0]));
+  for (const a of q.a || []) if (!keySet.has(a)) problems.push(`${at}: answer ${a} is not one of the options`);
   if (![1, 2, 3, 4].includes(q.d)) problems.push(`${at}: bad domain ${q.d}`);
   if (/<\s*\/?\s*(br|p|div|span)\b/i.test(q.q)) problems.push(`${at}: raw html left in the stem`);
+  // the source markdown sometimes leaves option A on the question's own line,
+  // which silently swallows it into the stem
+  if (/\s-\s*[A-F]\.\s/.test(q.q)) problems.push(`${at}: an option marker is stuck inside the stem`);
+  const letters = (q.o || []).map(o => o[0]);
+  const expected = 'ABCDEF'.slice(0, letters.length).split('');
+  if (letters.join('') !== expected.join('')) problems.push(`${at}: option letters are ${letters.join('')}, expected ${expected.join('')}`);
   const want = /choose two|select two/i.test(q.q) ? 2 : /choose three|select three/i.test(q.q) ? 3 : null;
   if (want && q.a.length !== want) problems.push(`${at}: says choose ${want} but the key has ${q.a.length}`);
 }
+// every question that ships a rationale must cover each option and say why the key is right
+for (const q of questions) {
+  if (!q.r && !q.k) continue;
+  const at = `question ${q.i}`;
+  if (!q.k) problems.push(`${at}: has per-option rationales but no key insight`);
+  if (!q.r) { problems.push(`${at}: has a key insight but no per-option rationales`); continue; }
+  for (const [letter] of q.o) {
+    if (!q.r[letter] || q.r[letter].trim().length < 15) problems.push(`${at}: option ${letter} has no usable rationale`);
+  }
+  for (const letter of Object.keys(q.r)) {
+    if (!q.o.some(o => o[0] === letter)) problems.push(`${at}: rationale for option ${letter}, which doesn't exist`);
+  }
+  for (const a of q.a) {
+    if (!/^correct\b/i.test(q.r[a] || '')) problems.push(`${at}: the rationale for keyed option ${a} should start by confirming it`);
+  }
+  for (const [letter] of q.o) {
+    if (!q.a.includes(letter) && /^correct\b/i.test(q.r[letter] || '')) problems.push(`${at}: option ${letter} is not keyed but its rationale says it is correct`);
+  }
+}
+
+// no set may ask the same question twice
+const norm = t => t.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+const perSet = new Map();
+for (const q of questions) {
+  if (!(q.e > 0)) continue;
+  const k = `${q.e}::${norm(q.q)}`;
+  if (perSet.has(k)) problems.push(`set ${q.e}: Q${perSet.get(k)} and Q${q.n} are the same question`);
+  else perSet.set(k, q.n);
+}
+// every question that shares a stem with another must carry the same group tag,
+// or the random modes can't tell they're the same
+const stems = new Map();
+for (const q of questions) {
+  const k = norm(q.q);
+  if (!stems.has(k)) stems.set(k, []);
+  stems.get(k).push(q);
+}
+for (const [, rows] of stems) {
+  if (rows.length < 2) continue;
+  const tags = new Set(rows.map(q => q.g));
+  if (tags.size !== 1 || tags.has(undefined)) {
+    problems.push(`questions ${rows.map(q => q.i).join(', ')} share a stem but are not grouped`);
+  }
+}
+
 if (!review.services?.length) problems.push('review: no services');
 if (!review.pairs?.length) problems.push('review: no comparison pairs');
 if (!review.cats?.length) problems.push('review: no categories');
@@ -123,9 +179,12 @@ if (/\bfetch\(\s*["'`]https?:/.test(out.replace(/https:\/\/api\.github\.com/g, '
 mkdirSync(join(root, 'dist'), { recursive: true });
 writeFileSync(join(root, 'dist/index.html'), out);
 
+const dupGroups = new Set(questions.filter(q => q.g).map(q => q.g)).size;
 const kb = (Buffer.byteLength(out) / 1024).toFixed(0);
 const sets = new Set(questions.filter(q => q.e > 0).map(q => q.e)).size;
 const svc = questions.filter(q => q.src === 'svc').length;
 console.log(`built dist/index.html — ${kb} KB, ${questions.length} questions ` +
             `(${sets} sets + ${svc} service scenarios), ${review.services.length} study notes, ` +
-            `${fixed} key correction(s), ${noted} disputed note(s)`);
+            `${fixed} key correction(s), ${noted} disputed note(s), ` +
+            `${dupGroups} stems shared between sets (de-duplicated in random modes), ` +
+            `${questions.filter(q => q.r).length} with full per-option rationales`);

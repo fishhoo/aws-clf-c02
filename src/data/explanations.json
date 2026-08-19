@@ -2055,6 +2055,1314 @@
     "B": "Flaws in the infrastructure are AWS's to fix.",
     "D": "AWS infrastructure devices are configured by AWS."
    }
+  },
+  "13": {
+   "r": {
+    "A": "Security in every layer is a security principle. It says nothing about capacity.",
+    "B": "Parallelising work spreads it across resources; it does not add or remove capacity as demand moves."
+   }
+  },
+  "14": {
+   "r": {
+    "B": "Security never stops being your concern. AWS secures its layer, you secure yours.",
+    "C": "Control of the physical infrastructure is what you give up when you move.",
+    "D": "AWS never operates customer applications."
+   }
+  },
+  "19": {
+   "r": {
+    "A": "Elasticity applies to AWS resources. Your own on-premises hardware cannot be conjured up on demand.",
+    "C": "Reducing interdependencies is loose coupling, a different principle.",
+    "D": "Correct. Provisioning up and releasing down as demand moves is exactly what elasticity means."
+   }
+  },
+  "23": {
+   "r": {
+    "D": "Correct as the odd one out. The three service models are IaaS, PaaS and SaaS — there is no NaaS in AWS's model."
+   }
+  },
+  "83": {
+   "r": {
+    "A": "Reserved capacity is a pricing option, and reserving is closer to the data-centre mindset than an advantage over it.",
+    "B": "Correct. Multiple Availability Zones let you remove the single points of failure a small data centre cannot.",
+    "C": "Correct. Infrastructure spread across Regions and AZs is something almost no company can build alone.",
+    "D": "Virtualisation existed long before the cloud. It is not what AWS adds."
+   }
+  },
+  "85": {
+   "r": {
+    "A": "Recovering gracefully from failure is the reliability pillar.",
+    "B": "Efficient use of computing resources is the performance efficiency pillar.",
+    "C": "Correct. Running and monitoring systems, then improving the processes around them, is operational excellence."
+   }
+  },
+  "109": {
+   "k": "Traffic from a distant continent is a latency problem, and the fix is to serve those users from somewhere closer.",
+   "r": {
+    "B": "Leaving AWS for a regional host throws away everything else the platform gives you.",
+    "C": "Rewriting the content changes nothing about how far the packets travel."
+   }
+  },
+  "149": {
+   "r": {
+    "B": "Availability Zones sit close together in one Region. Reaching global users faster needs another Region or CloudFront.",
+    "C": "Spreading across AZs does not add capacity; it changes where the same capacity sits."
+   }
+  },
+  "178": {
+   "r": {
+    "B": "Applying security at all layers is a security principle.",
+    "E": "Audit logging serves traceability, which belongs to the security pillar."
+   }
+  },
+  "188": {
+   "r": {
+    "A": "There is no pay-later arrangement. Credits exist, but the bill still arrives monthly.",
+    "B": "How fast AWS builds data centres is irrelevant to a startup's decision.",
+    "C": "Correct. Not building a data centre is what lets a small team ship in weeks rather than quarters."
+   }
+  },
+  "201": {
+   "r": {
+    "D": "Multi-threading is a code-level technique. It does nothing about a site going down."
+   }
+  },
+  "215": {
+   "r": {
+    "C": "Correct. Prices differ between Regions, sometimes considerably, so cost is a real input.",
+    "D": "You can create VPCs in any Region. The number planned does not steer the choice.",
+    "E": "Proximity to your office matters far less than proximity to your users."
+   }
+  },
+  "240": {
+   "r": {
+    "B": "Correct. Bringing licences you already own avoids buying them twice, which is a direct saving."
+   }
+  },
+  "246": {
+   "r": {
+    "A": "Elastic coupling is not a term AWS uses.",
+    "C": "Scalable coupling is not a term either.",
+    "D": "Tight coupling is the problem being described, not the practice that fixes it."
+   }
+  },
+  "248": {
+   "r": {
+    "A": "A private connection to your data centre is Direct Connect, which is unrelated to inter-AZ links.",
+    "C": "Automated provisioning is CloudFormation and Auto Scaling.",
+    "D": "Correct. The links are fast enough for synchronous replication, which is what makes Multi-AZ possible."
+   }
+  },
+  "255": {
+   "r": {
+    "A": "You still monitor your own applications. CloudWatch helps, but nobody watches them for you.",
+    "B": "AWS handles its own compliance. Yours stays yours.",
+    "C": "AWS offers a wide catalogue of instance types, not custom hardware to your specification.",
+    "D": "Correct. Capacity on demand is precisely what removes the forecasting problem."
+   }
+  },
+  "264": {
+   "r": {
+    "B": "Mixed is not one of the deployment models. The three are cloud, hybrid and on-premises."
+   }
+  },
+  "325": {
+   "r": {
+    "D": "Correct. Treating servers as disposable and replaceable is what lets you automate and scale freely."
+   }
+  },
+  "328": {
+   "r": {
+    "A": "AWS gives you the building blocks. Redundancy across AZs and Regions is something you must design in."
+   }
+  },
+  "375": {
+   "r": {
+    "A": "Change management is still needed; loose coupling just makes changes safer.",
+    "C": "Privileged access is an IAM concern, unrelated to how components talk to each other.",
+    "D": "Correct. Changing one component without touching the others is the whole point of decoupling."
+   }
+  },
+  "379": {
+   "r": {
+    "C": "Traceability is about audit logs, which is CloudTrail's job.",
+    "D": "Replication protects the data; it does not change how you reach the volume."
+   }
+  },
+  "387": {
+   "r": {
+    "B": "Data centres spread across countries describe Regions, not a single Availability Zone.",
+    "C": "A logically isolated network in AWS is a VPC."
+   }
+  },
+  "388": {
+   "r": {
+    "A": "Correct. Surviving the loss of a whole geographic area requires a second Region.",
+    "B": "Transportation devices are the Snow family, for moving data rather than surviving disaster.",
+    "C": "Support plans buy help, not resilience."
+   }
+  },
+  "397": {
+   "r": {
+    "B": "Correct. Regions, Availability Zones and edge locations together are what AWS calls its global infrastructure."
+   }
+  },
+  "412": {
+   "r": {
+    "D": "Encryption is a practice inside the security pillar, not a pillar of its own."
+   }
+  },
+  "414": {
+   "r": {
+    "A": "Manual monitoring is what the principles argue against — automate instead.",
+    "B": "Fixed servers are the monolithic habit being replaced.",
+    "D": "Relying on individual components is the fragility you are re-architecting away from.",
+    "E": "Correct. Designing so the system can grow by adding resources is central to breaking up a monolith."
+   }
+  },
+  "415": {
+   "r": {
+    "A": "The largest instance is usually waste, and it is still a single point of failure.",
+    "B": "Provisioning for peak is the on-premises habit that elasticity removes.",
+    "C": "Scrum is a project management method, not an architectural principle."
+   }
+  },
+  "420": {
+   "r": {
+    "B": "Instance usage is not a category. The five are cost, performance, security, fault tolerance and service limits.",
+    "C": "Infrastructure is not one of the five categories either.",
+    "E": "Storage capacity is not a category; unused volumes appear under cost optimisation."
+   }
+  },
+  "432": {
+   "r": {
+    "A": "Scaling up leaves one bigger single point of failure. The principle is to scale out.",
+    "D": "Commercial database software is a purchasing decision, not a design principle."
+   }
+  },
+  "438": {
+   "r": {
+    "D": "Correct. Regions are the top-level unit, each containing multiple Availability Zones."
+   }
+  },
+  "449": {
+   "r": {
+    "C": "Open source is a licensing choice, not an architectural principle.",
+    "D": "Provisioning extra capacity is exactly what elasticity is meant to stop you doing."
+   }
+  },
+  "487": {
+   "r": {
+    "A": "This inverts the hierarchy: a Region contains Availability Zones, which contain data centres."
+   }
+  },
+  "496": {
+   "r": {
+    "C": "Correct. Isolating components so each can keep working when another fails is decoupling."
+   }
+  },
+  "499": {
+   "r": {
+    "A": "Automation is a separate principle. Spreading across AZs is about removing single points of failure."
+   }
+  },
+  "508": {
+   "r": {
+    "A": "No contract or approval is needed. You select the new Region and deploy."
+   }
+  },
+  "528": {
+   "r": {
+    "D": "Availability Zones sit close together. Latency to your users is barely affected by which one you use."
+   }
+  },
+  "530": {
+   "r": {
+    "A": "Single points of failure are what the principles tell you to remove."
+   }
+  },
+  "543": {
+   "r": {
+    "C": "Correct. Only a second Region survives an event that takes out an entire geographic area."
+   }
+  },
+  "551": {
+   "r": {
+    "D": "Private networking is not a component of the global infrastructure."
+   }
+  },
+  "555": {
+   "r": {
+    "C": "Correct. The SDKs, the CLI and the console are the three ways to reach AWS APIs.",
+    "D": "SaaS is a service model, not a way you interact with AWS."
+   }
+  },
+  "561": {
+   "r": {
+    "B": "AWS never operates your application.",
+    "D": "Correct. Capacity that follows demand is the clearest advantage over fixed on-premises hardware.",
+    "E": "Patching your application is yours. Only managed services shift that to AWS."
+   }
+  },
+  "566": {
+   "r": {
+    "A": "Alexa is a consumer product, not part of the global infrastructure."
+   }
+  },
+  "573": {
+   "r": {
+    "A": "Think parallel is about splitting work across resources, not about growth without degradation.",
+    "C": "Decoupling protects against cascading failure rather than supporting growth."
+   }
+  },
+  "574": {
+   "r": {
+    "A": "Fast deployment across Regions is global reach, not the end of capacity forecasting.",
+    "B": "Security of the cloud is a different benefit entirely."
+   }
+  },
+  "578": {
+   "r": {
+    "A": "An Auto Scaling group operates within one Region, across its Availability Zones.",
+    "C": "Putting static content near users is CloudFront.",
+    "D": "Distributing incoming requests is the load balancer's job, not the scaling group's."
+   }
+  },
+  "597": {
+   "r": {
+    "A": "Automation is a separate principle. Spreading across AZs is about removing single points of failure."
+   }
+  },
+  "607": {
+   "r": {
+    "A": "This inverts the hierarchy: a Region contains Availability Zones, which contain data centres."
+   }
+  },
+  "626": {
+   "r": {
+    "D": "Private networking is not a component of the global infrastructure."
+   }
+  },
+  "649": {
+   "r": {
+    "C": "Correct. The SDKs, the CLI and the console are the three ways to reach AWS APIs.",
+    "D": "SaaS is a service model, not a way you interact with AWS."
+   }
+  },
+  "650": {
+   "r": {
+    "B": "Correct. Regions, Availability Zones and edge locations together are what AWS calls its global infrastructure."
+   }
+  },
+  "659": {
+   "r": {
+    "A": "The largest instance is usually waste, and it is still a single point of failure.",
+    "B": "Provisioning for peak is the on-premises habit that elasticity removes.",
+    "C": "Scrum is a project management method, not an architectural principle."
+   }
+  },
+  "671": {
+   "r": {
+    "A": "Manual monitoring is what the principles argue against — automate instead.",
+    "B": "Fixed servers are the monolithic habit being replaced.",
+    "D": "Relying on individual components is the fragility you are re-architecting away from.",
+    "E": "Correct. Designing so the system can grow by adding resources is central to breaking up a monolith."
+   }
+  },
+  "681": {
+   "r": {
+    "A": "Single points of failure are what the principles tell you to remove."
+   }
+  },
+  "685": {
+   "r": {
+    "C": "Open source is a licensing choice, not an architectural principle.",
+    "D": "Provisioning extra capacity is exactly what elasticity is meant to stop you doing."
+   }
+  },
+  "703": {
+   "r": {
+    "A": "Think parallel is about splitting work across resources, not about growth without degradation.",
+    "C": "Decoupling protects against cascading failure rather than supporting growth."
+   }
+  },
+  "722": {
+   "r": {
+    "B": "Instance usage is not a category. The five are cost, performance, security, fault tolerance and service limits.",
+    "C": "Infrastructure is not one of the five categories either.",
+    "E": "Storage capacity is not a category; unused volumes appear under cost optimisation."
+   }
+  },
+  "729": {
+   "r": {
+    "A": "No provider promises unlimited uptime. AWS publishes an SLA with a specific figure.",
+    "D": "Colocation is renting rack space in someone else's building — the model the cloud replaces."
+   }
+  },
+  "731": {
+   "r": {
+    "B": "A VPC is a logical network you define. It is not a physical location."
+   }
+  },
+  "760": {
+   "r": {
+    "A": "Loose coupling often adds a hop through a queue, so it does not reduce latency.",
+    "B": "Dependent workflows are what tight coupling produces.",
+    "C": "Correct. A queue or API between components stops one failure from taking the rest down."
+   }
+  },
+  "762": {
+   "r": {
+    "C": "Correct. Isolating components so each keeps working when another fails is decoupling."
+   }
+  },
+  "768": {
+   "r": {
+    "B": "Correct. Recovering from failure is the reliability pillar's central claim.",
+    "D": "Performing operations as code is an operational excellence principle."
+   }
+  },
+  "772": {
+   "r": {
+    "C": "Multi-threading is a coding technique, neither recommended nor discouraged as an architecture principle."
+   }
+  },
+  "787": {
+   "r": {
+    "C": "Correct. Only a second Region survives an event that takes out an entire geographic area."
+   }
+  },
+  "805": {
+   "r": {
+    "A": "Correct. Automating recovery means the system heals without waiting for a human.",
+    "C": "Documented manual processes are slower and more error-prone than automation.",
+    "D": "Testing only moderate demand tells you nothing about behaviour at peak.",
+    "E": "Backing up to on-premises reintroduces the data centre you were moving away from."
+   }
+  },
+  "812": {
+   "r": {
+    "A": "An Auto Scaling group operates within one Region, across its Availability Zones.",
+    "C": "Putting static content near users is CloudFront.",
+    "D": "Distributing incoming requests is the load balancer's job, not the scaling group's."
+   }
+  },
+  "823": {
+   "r": {
+    "A": "Scaling up leaves one bigger single point of failure. The principle is to scale out.",
+    "D": "Commercial database software is a purchasing decision, not a design principle."
+   }
+  },
+  "839": {
+   "r": {
+    "A": "Coupling is something you reduce, and adding Regions does not change it."
+   }
+  },
+  "845": {
+   "r": {
+    "D": "Encryption is a practice inside the security pillar, not a pillar of its own."
+   }
+  },
+  "847": {
+   "r": {
+    "D": "Availability Zones sit close together. Latency to your users is barely affected by which one you use."
+   }
+  },
+  "857": {
+   "r": {
+    "B": "AWS never operates your application.",
+    "D": "Correct. Capacity that follows demand is the clearest advantage over fixed on-premises hardware.",
+    "E": "Patching your application is yours. Only managed services shift that to AWS."
+   }
+  },
+  "862": {
+   "r": {
+    "A": "More IT staff is a cost, not a benefit, and the cloud tends to need fewer.",
+    "C": "Control of the infrastructure is what you give up when you move to the cloud.",
+    "E": "AWS is responsible for security OF the cloud. Security IN it stays with you."
+   }
+  },
+  "887": {
+   "r": {
+    "C": "Provisioned IOPS buys predictable disk performance, not availability.",
+    "D": "Enhanced monitoring gives you more metrics. It changes nothing about failover."
+   }
+  },
+  "890": {
+   "r": {
+    "A": "Tight coupling is the anti-pattern.",
+    "B": "A single point of failure is exactly what best practice tells you to remove."
+   }
+  },
+  "903": {
+   "r": {
+    "A": "Fixed dependencies are tight coupling.",
+    "B": "Putting everything on one instance concentrates risk instead of spreading it.",
+    "D": "Correct. Spreading load across resources removes the single point of failure and lets the system scale."
+   }
+  },
+  "907": {
+   "r": {
+    "A": "Correct. Surviving the loss of one Availability Zone is the definition of highly available.",
+    "C": "Economy of scale is about AWS's purchasing power lowering prices."
+   }
+  },
+  "920": {
+   "r": {
+    "A": "Correct. Maintaining the hardware, facilities and hypervisor is entirely AWS's work.",
+    "B": "Securing what you build on AWS is yours.",
+    "D": "AWS never develops your applications.",
+    "E": "Cost planning is your decision, though Cost Explorer and Budgets help."
+   }
+  },
+  "929": {
+   "r": {
+    "A": "No contract or approval is needed. You select the new Region and deploy."
+   }
+  },
+  "958": {
+   "r": {
+    "A": "Economy of scale is about AWS's purchasing power, not about adding instances."
+   }
+  },
+  "963": {
+   "r": {
+    "A": "Alexa is a consumer product, not part of the global infrastructure."
+   }
+  },
+  "967": {
+   "r": {
+    "C": "Automation is about removing manual steps, not about reducing interdependency.",
+    "D": "Automatic scaling adjusts capacity; it does not decouple components from one another."
+   }
+  },
+  "972": {
+   "k": "Prices keep falling because AWS's scale keeps lowering its own unit costs, and it passes the reductions on.",
+   "r": {
+    "A": "Pay-as-you-go describes how you are charged, not why the rate drops over time.",
+    "B": "The global infrastructure is what you buy, not the reason it gets cheaper.",
+    "D": "There is no such thing as reserved storage pricing driving the trend."
+   }
+  },
+  "980": {
+   "r": {
+    "A": "Provisioning from past usage and theoretical peaks is exactly the guesswork the cloud removes.",
+    "B": "Correct. Scaling with actual demand, and ahead of predicted demand, is elasticity put to work.",
+    "C": "Physical access to a data centre is not something AWS offers, nor a best practice."
+   }
+  },
+  "991": {
+   "r": {
+    "D": "Data centres sit inside Availability Zones and serve Regions. Caching near users happens at edge locations."
+   }
+  },
+  "994": {
+   "r": {
+    "A": "Separate accounts isolate billing and permissions. They do not put your data in another geography."
+   }
+  },
+  "1014": {
+   "r": {
+    "A": "Correct. An Availability Zone is one or more discrete data centres with independent power and networking.",
+    "B": "A completely isolated geographic location describes a Region.",
+    "D": "A single source of power is the opposite of how an AZ is built — redundancy is the point."
+   }
+  },
+  "1018": {
+   "r": {
+    "A": "Fast deployment across Regions is global reach, not the end of capacity forecasting.",
+    "B": "Security of the AWS Cloud is a different benefit entirely."
+   }
+  },
+  "1026": {
+   "r": {
+    "A": "A VPN is a connection method, not an architecture type.",
+    "D": "A private cloud runs entirely on your own infrastructure, with no public cloud component."
+   }
+  },
+  "1057": {
+   "r": {
+    "B": "Services not servers is about using managed services instead of running your own.",
+    "C": "Removing single points of failure is about redundancy, not about interdependency between components."
+   }
+  },
+  "1078": {
+   "r": {
+    "B": "Manual recovery is slow and error-prone; the principle is to automate it.",
+    "C": "Correct. Testing recovery procedures is one of the reliability pillar's design principles.",
+    "D": "Changing infrastructure manually is what infrastructure as code replaces."
+   }
+  },
+  "1112": {
+   "r": {
+    "A": "Correct. One Availability Zone is one failure domain. Spreading across two removes it.",
+    "B": "More instances and cross-AZ data transfer cost more, not less.",
+    "E": "Where an instance sits does not change how much load the application handles."
+   }
+  },
+  "1124": {
+   "r": {
+    "C": "Regions protect against a disaster affecting a whole geography, but the question describes a local disruption, which AZs already cover."
+   }
+  },
+  "1126": {
+   "r": {
+    "B": "Measuring efficiency belongs to performance efficiency and cost optimisation.",
+    "C": "Correct. Testing recovery procedures is a reliability design principle.",
+    "D": "Adopting a consumption model is a cost optimisation principle.",
+    "E": "Correct. Automatic recovery from failure is the other reliability principle in the pair."
+   }
+  },
+  "8": {
+   "r": {
+    "A": "Correct. Snowball Edge carries compute as well as storage, so you can process data before it ships.",
+    "B": "A catalogue of third-party software is AWS Marketplace.",
+    "D": "Exabyte scale is Snowmobile, the truck. Snowball handles terabytes to petabytes.",
+    "E": "Correct. Encrypted, tamper-evident transfer of large data sets in both directions is its purpose."
+   }
+  },
+  "10": {
+   "r": {
+    "B": "A domain name changes the address, not the distance. The packets still cross the Pacific."
+   }
+  },
+  "15": {
+   "r": {
+    "A": "Treating the application as one cohesive unit is the monolith that decoupling breaks apart.",
+    "B": "Correct. Reducing interdependency means one component failing does not take the others with it."
+   }
+  },
+  "39": {
+   "r": {
+    "C": "Athena queries data in S3. It detects nothing and reacts to nothing."
+   }
+  },
+  "44": {
+   "r": {
+    "A": "Correct. The dashboard gives event detail and remediation guidance for issues touching your own resources.",
+    "D": "Vulnerabilities in your applications are Amazon Inspector's territory."
+   }
+  },
+  "66": {
+   "r": {
+    "A": "Environmental events at data centres are managed by AWS.",
+    "C": "Physical access to Regions is controlled by AWS alone."
+   }
+  },
+  "79": {
+   "r": {
+    "A": "You monitor the performance of your own workloads, using CloudWatch.",
+    "C": "Correct. The hypervisor is AWS's layer, built and maintained entirely by them."
+   }
+  },
+  "90": {
+   "r": {
+    "B": "Correct. Matching the storage class to how often data is read is the single biggest lever on an S3 bill."
+   }
+  },
+  "96": {
+   "r": {
+    "A": "Correct. The schema is your data model, and AWS has no opinion about it.",
+    "B": "RDS takes automated backups for you within the retention window you choose.",
+    "C": "Correct. Parameter groups and configuration settings are yours to tune.",
+    "E": "AWS installs the database software. That is what makes RDS managed."
+   }
+  },
+  "100": {
+   "r": {
+    "A": "Elasticity is about capacity following demand, not about surviving a crash.",
+    "C": "Encryption protects data. It does nothing for availability.",
+    "D": "Scalability is about growing. Staying up through three failures is fault tolerance."
+   }
+  },
+  "108": {
+   "r": {
+    "C": "Automatic patching keeps the engine current. It is convenient, but it does not raise availability."
+   }
+  },
+  "115": {
+   "r": {
+    "C": "Scalable shared file storage is Amazon EFS.",
+    "D": "A NoSQL database is DynamoDB."
+   }
+  },
+  "131": {
+   "r": {
+    "D": "Buckets are an S3 concept and are free to create. They have no bearing on an EC2 bill.",
+    "E": "Private IPs come with the instance at no extra charge."
+   }
+  },
+  "135": {
+   "r": {
+    "A": "Correct. AWS handles installation, patching, backups and failover, which is the point of a managed service.",
+    "B": "You get no host access on RDS. That is the trade you accept.",
+    "C": "Correct. You can resize the instance class as load changes, without rebuilding the database.",
+    "E": "Document and key-value structures are DynamoDB and DocumentDB, not RDS."
+   }
+  },
+  "136": {
+   "r": {
+    "B": "AWS IQ connects you with freelance experts. It is not a network service."
+   }
+  },
+  "153": {
+   "r": {
+    "A": "Your application code and its behaviour stay yours on Lambda.",
+    "B": "Correct. Lambda scales itself, so capacity planning moves entirely to AWS.",
+    "E": "Your data remains your responsibility on every service."
+   }
+  },
+  "154": {
+   "r": {
+    "D": "Correct. Health checks stop the load balancer from sending traffic to an instance that is failing."
+   }
+  },
+  "162": {
+   "r": {
+    "B": "S3 provides no compute. A CPU-heavy site needs EC2 or a container service.",
+    "C": "S3 is not a database. It stores logs well, but the option pairs the two.",
+    "E": "Processing data streams is Kinesis."
+   }
+  },
+  "170": {
+   "r": {
+    "A": "Protecting your credentials is always yours.",
+    "B": "You decide what to log and where, using CloudTrail and CloudWatch.",
+    "E": "Access policies are written by the customer, on every service."
+   }
+  },
+  "175": {
+   "r": {
+    "C": "Correct. Read and write volume drives the choice between relational, NoSQL and caching.",
+    "D": "Correct. Complex joins point at relational; simple key lookups point at NoSQL.",
+    "E": "Software bugs are a code problem, not a database selection criterion."
+   }
+  },
+  "184": {
+   "r": {
+    "C": "There is no product called AWS Managed Servers. Virtual servers in AWS are EC2 instances."
+   }
+  },
+  "190": {
+   "r": {
+    "B": "Deduplication saves space. It protects nothing.",
+    "C": "Correct. Bucket policies and IAM permissions decide who can reach the object at all.",
+    "D": "Decryption is the opposite of protection.",
+    "E": "Conversion is not an S3 feature."
+   }
+  },
+  "191": {
+   "r": {
+    "A": "Correct. MAP pairs customers with trained partners, alongside AWS Professional Services and funding."
+   }
+  },
+  "192": {
+   "r": {
+    "B": "Correct as the odd one out. Launch configurations are free, so deleting them saves nothing."
+   }
+  },
+  "208": {
+   "r": {
+    "C": "Automated backups protect data. They serve no read traffic."
+   }
+  },
+  "212": {
+   "r": {
+    "A": "Test automation checks software behaviour, not infrastructure provisioning.",
+    "C": "Correct. Defining infrastructure in code makes every environment identical and repeatable."
+   }
+  },
+  "229": {
+   "r": {
+    "D": "Rewriting the code to handle all requests on one server is the opposite of high availability."
+   }
+  },
+  "230": {
+   "r": {
+    "A": "Correct. Staff time spent racking and patching is a real cost that shrinks on AWS.",
+    "B": "Correct. Power and cooling are pure data-centre costs that disappear entirely.",
+    "D": "Software architecture is the same either way.",
+    "E": "Compatibility is a technical constraint, not a cost line."
+   }
+  },
+  "234": {
+   "r": {
+    "C": "Auto Scaling adds and removes instances. It does not configure what runs on them."
+   }
+  },
+  "250": {
+   "r": {
+    "A": "X-Ray observes; it never changes your architecture.",
+    "B": "Correct. Following a request across services is exactly what tracing is for.",
+    "C": "Correct. Seeing where the time goes is the first step to making it faster.",
+    "E": "Deploying to on-premises servers is CodeDeploy."
+   }
+  },
+  "263": {
+   "r": {
+    "A": "Deploying without worrying about infrastructure describes Elastic Beanstalk.",
+    "C": "Correct. Stacks are created, updated and rolled back as one controlled unit.",
+    "D": "Correct. The whole environment lives in a single JSON or YAML template.",
+    "E": "Compiling and building code is CodeBuild."
+   }
+  },
+  "273": {
+   "r": {
+    "A": "Correct. EBS bills on provisioned size per month, whether or not you fill the volume.",
+    "B": "Compute capacity is an EC2 charge, billed separately.",
+    "D": "Compute time is likewise an EC2 charge, not an EBS one."
+   }
+  },
+  "292": {
+   "r": {
+    "C": "Duplicating resources across Regions raises cost and complicates analysis rather than clarifying it."
+   }
+  },
+  "299": {
+   "r": {
+    "B": "Import/Export was the predecessor to the Snow family and has been retired."
+   }
+  },
+  "303": {
+   "r": {
+    "C": "Correct. Standard, Standard-IA, Glacier and the rest all carry different per-gigabyte rates.",
+    "E": "Correct. Total volume stored is the other half of the S3 storage charge."
+   }
+  },
+  "304": {
+   "r": {
+    "A": "Tracking user activity and API usage is CloudTrail.",
+    "D": "Very cheap archival storage is S3 Glacier.",
+    "E": "Correct. Caching at edge locations to shorten the distance to users is CloudFront's purpose."
+   }
+  },
+  "317": {
+   "r": {
+    "B": "Upfront discounts require a commitment, which is the wrong fit for capacity that varies heavily."
+   }
+  },
+  "330": {
+   "r": {
+    "A": "Correct. CloudFront bills per request as well as per gigabyte.",
+    "B": "Correct. Rates differ by geographic region, so where your users are changes the price.",
+    "C": "Volumes are an EBS concept and have nothing to do with a CDN.",
+    "E": "Storage classes belong to S3."
+   }
+  },
+  "339": {
+   "r": {
+    "C": "S3 stores the file. Converting the format needs a media service such as Elastic Transcoder or MediaConvert."
+   }
+  },
+  "358": {
+   "r": {
+    "A": "Correct. Instances across Availability Zones remove the single point of failure a physical server carries.",
+    "B": "Remote access is not new — you could always reach a traditional server over the network.",
+    "D": "Backups are not automatic on EC2. You configure snapshots or AWS Backup.",
+    "E": "Correct. Adding instances takes minutes rather than a procurement cycle."
+   }
+  },
+  "364": {
+   "r": {
+    "A": "Storage is not a Lambda charge. Only the deployment package counts, and only past a generous limit.",
+    "B": "Correct. Every invocation is a billed request.",
+    "C": "Volumes belong to EBS.",
+    "E": "Correct. Duration multiplied by allocated memory gives the GB-seconds you pay for."
+   }
+  },
+  "366": {
+   "r": {
+    "A": "Buckets are S3, not EBS.",
+    "B": "There are no reservations for EBS. Reservations apply to compute.",
+    "D": "Correct. Moving from provisioned IOPS to gp3 or gp2 can cut the cost sharply.",
+    "E": "Spreading requests across volumes changes performance, not price."
+   }
+  },
+  "384": {
+   "r": {
+    "A": "Correct. ElastiCache is an in-memory store, which is what makes it fast.",
+    "C": "Correct. Serving repeated reads from memory takes load off the database and speeds up the app.",
+    "D": "Chef is configuration management, and ElastiCache speaks Redis and Memcached.",
+    "E": "Distributing requests across instances is a load balancer's job."
+   }
+  },
+  "386": {
+   "r": {
+    "A": "On-Demand is not free. The Free Tier is a separate, limited allowance.",
+    "C": "Correct. Because you can add capacity on the spot, there is no need to own idle headroom.",
+    "D": "Instances launch in minutes, not days.",
+    "E": "Correct. Scaling in both directions with demand is the core of the On-Demand model."
+   }
+  },
+  "399": {
+   "r": {
+    "A": "Low latency between components is a performance concern, not an availability pattern.",
+    "C": "Correct. Assuming any single component can fail, and designing around it, is the pattern."
+   }
+  },
+  "402": {
+   "r": {
+    "A": "Correct. Handing installation, patching, backups and failover to AWS is what RDS simplifies.",
+    "C": "RDS does not scale itself automatically. You resize the instance or add read replicas."
+   }
+  },
+  "416": {
+   "r": {
+    "A": "Logging into each instance by hand does not scale and invites mistakes. Systems Manager patches them centrally."
+   }
+  },
+  "425": {
+   "r": {
+    "A": "Correct. Scale lowers AWS's unit costs, which is why prices have been cut many times.",
+    "C": "Scaling on demand is elasticity, a separate benefit."
+   }
+  },
+  "430": {
+   "r": {
+    "C": "You cannot choose or deploy to a data centre directly. The unit you work with is the Availability Zone."
+   }
+  },
+  "433": {
+   "r": {
+    "D": "AWS Health reports events affecting your resources. It records no user actions."
+   }
+  },
+  "437": {
+   "r": {
+    "A": "Correct. Deploying near each market is the direct way to cut the distance packets travel."
+   }
+  },
+  "442": {
+   "r": {
+    "A": "Managed services replace failing instances themselves. That is the point.",
+    "C": "Correct. Patching the operating system and engine moves to AWS."
+   }
+  },
+  "453": {
+   "r": {
+    "C": "CloudWatch Logs is billed on ingestion and storage. There is a free tier, but it is not free.",
+    "D": "Correct. Log events are available for search and metric filters within seconds.",
+    "E": "Correct. Retention is set per log group, from one day to forever."
+   }
+  },
+  "454": {
+   "r": {
+    "A": "Simple Workflow coordinates tasks. It is not a compute service."
+   }
+  },
+  "465": {
+   "r": {
+    "C": "Infrequently coupled is not a term. The principle is loose coupling.",
+    "D": "Frequently coupled is not a term either, and tight coupling is what you avoid."
+   }
+  },
+  "470": {
+   "r": {
+    "A": "Machine Learning builds models. It caches nothing."
+   }
+  },
+  "475": {
+   "r": {
+    "B": "Correct. Access keys sign API calls made by the CLI, an SDK or any other programmatic client."
+   }
+  },
+  "481": {
+   "r": {
+    "D": "Mobile Hub was retired and folded into Amplify. It is not part of the serverless platform."
+   }
+  },
+  "484": {
+   "r": {
+    "A": "Cloud-native means built entirely for the cloud. Half the system sitting in a data centre makes this hybrid."
+   }
+  },
+  "485": {
+   "r": {
+    "B": "Automatic failover moves work to a standby. It changes availability, not capacity.",
+    "C": "Round robin is a request distribution method, not a way to add capacity."
+   }
+  },
+  "488": {
+   "r": {
+    "A": "Correct. Independent files are the textbook case for splitting the work across many instances at once.",
+    "B": "One large instance processes the files serially, taking far longer for the same money.",
+    "C": "Dedicated hardware costs more and adds nothing for a batch job."
+   }
+  },
+  "491": {
+   "r": {
+    "B": "The underlying infrastructure is maintained by AWS.",
+    "D": "Correct. How traffic reaches your application — routing, load balancing, DNS — is yours to configure."
+   }
+  },
+  "493": {
+   "r": {
+    "C": "Rekognition analyses images; it does not resize them."
+   }
+  },
+  "494": {
+   "r": {
+    "A": "Correct. Auto Scaling adds and removes instances against demand, so nobody has to forecast capacity."
+   }
+  },
+  "495": {
+   "r": {
+    "B": "Correct. AWS maintains the operating system under RDS, which you never see.",
+    "D": "You choose the database engine. AWS does not manage that decision for you."
+   }
+  },
+  "507": {
+   "r": {
+    "A": "Correct. On a managed database AWS applies the engine and OS patches for you.",
+    "B": "Testing your own releases stays with your team.",
+    "C": "Correct. Automated backups with point-in-time recovery come with the managed service.",
+    "D": "The schema is your data model and always yours."
+   }
+  },
+  "509": {
+   "r": {
+    "A": "There is no conversion between load balancer types; you create the one you need.",
+    "C": "Correct. Absorbing traffic that rises and falls, and routing around unhealthy targets, is the point.",
+    "D": "The balancer distributes traffic; Auto Scaling adjusts capacity. And ELB is not free."
+   }
+  },
+  "537": {
+   "r": {
+    "A": "There is no AWS service called appGateway."
+   }
+  },
+  "545": {
+   "r": {
+    "A": "A main website must stay up. Spot capacity can vanish with two minutes' notice.",
+    "C": "A heavily used legacy database is the last thing to put on interruptible capacity."
+   }
+  },
+  "554": {
+   "r": {
+    "B": "Correct. Serving from a nearby edge instead of the origin Region is what shortens the round trip.",
+    "C": "Frequently changing data is exactly what a cache handles badly; it must go back to the origin.",
+    "D": "Cache lifetime is controlled by TTL headers, not a fixed daily refresh."
+   }
+  },
+  "602": {
+   "r": {
+    "D": "AWS Health reports events affecting your resources. It records no user actions."
+   }
+  },
+  "612": {
+   "r": {
+    "B": "Correct. Serving from a nearby edge instead of the origin Region is what shortens the round trip.",
+    "C": "Frequently changing data is exactly what a cache handles badly; it must go back to the origin.",
+    "D": "Cache lifetime is controlled by TTL headers, not a fixed daily refresh."
+   }
+  },
+  "620": {
+   "r": {
+    "A": "Low latency between components is a performance concern, not an availability pattern.",
+    "C": "Correct. Assuming any single component can fail, and designing around it, is the pattern."
+   }
+  },
+  "621": {
+   "r": {
+    "C": "Infrequently coupled is not a term. The principle is loose coupling.",
+    "D": "Frequently coupled is not a term either, and tight coupling is what you avoid."
+   }
+  },
+  "624": {
+   "r": {
+    "A": "Correct. Handing installation, patching, backups and failover to AWS is what RDS simplifies.",
+    "C": "RDS does not scale itself automatically. You resize the instance or add read replicas."
+   }
+  },
+  "635": {
+   "r": {
+    "A": "Correct. Independent files are the textbook case for splitting the work across many instances at once.",
+    "B": "One large instance processes the files serially, taking far longer for the same money.",
+    "C": "Dedicated hardware costs more and adds nothing for a batch job."
+   }
+  },
+  "640": {
+   "r": {
+    "C": "CloudWatch Logs is billed on ingestion and storage. There is a free tier, but it is not free.",
+    "D": "Correct. Log events are available for search and metric filters within seconds.",
+    "E": "Correct. Retention is set per log group, from one day to forever."
+   }
+  },
+  "652": {
+   "r": {
+    "A": "Cloud-native means built entirely for the cloud. Half the system sitting in a data centre makes this hybrid."
+   }
+  },
+  "653": {
+   "r": {
+    "A": "Managed services replace failing instances themselves. That is the point.",
+    "C": "Correct. Patching the operating system and engine moves to AWS."
+   }
+  },
+  "687": {
+   "r": {
+    "B": "Correct. AWS maintains the operating system under RDS, which you never see.",
+    "D": "You choose the database engine. AWS does not manage that decision for you."
+   }
+  },
+  "688": {
+   "r": {
+    "A": "Machine Learning builds models. It caches nothing."
+   }
+  },
+  "693": {
+   "r": {
+    "A": "Correct. Scale lowers AWS's unit costs, which is why prices have been cut many times.",
+    "C": "Scaling on demand is elasticity, a separate benefit."
+   }
+  },
+  "695": {
+   "r": {
+    "A": "Correct. On a managed database AWS applies the engine and OS patches for you.",
+    "B": "Testing your own releases stays with your team.",
+    "C": "Correct. Automated backups with point-in-time recovery come with the managed service.",
+    "D": "The schema is your data model and always yours."
+   }
+  },
+  "696": {
+   "r": {
+    "A": "A main website must stay up. Spot capacity can vanish with two minutes' notice.",
+    "C": "A heavily used legacy database is the last thing to put on interruptible capacity."
+   }
+  },
+  "697": {
+   "r": {
+    "C": "You cannot choose or deploy to a data centre directly. The unit you work with is the Availability Zone."
+   }
+  },
+  "707": {
+   "r": {
+    "D": "Mobile Hub was retired and folded into Amplify. It is not part of the serverless platform."
+   }
+  },
+  "711": {
+   "r": {
+    "B": "Automatic failover moves work to a standby. It changes availability, not capacity.",
+    "C": "Round robin is a request distribution method, not a way to add capacity."
+   }
+  },
+  "736": {
+   "r": {
+    "D": "Replacing failed drives happens inside AWS data centres, which customers never enter."
+   }
+  },
+  "737": {
+   "r": {
+    "D": "Compliance documents speed up an audit. They have nothing to do with capacity moving with demand.",
+    "E": "Governing environments with code is infrastructure as code, a different principle."
+   }
+  },
+  "739": {
+   "r": {
+    "B": "Correct. Power is a pure data-centre cost that disappears when the workload moves.",
+    "C": "Correct. The labour of refreshing hardware is one of the largest hidden on-premises costs.",
+    "D": "Developer time is spent either way, so it does not swing the comparison.",
+    "E": "Database engine capacity is a sizing decision, not a cost category in a TCO model."
+   }
+  },
+  "748": {
+   "r": {
+    "B": "AWS does not scan a customer's estate for them. Application Discovery Service is something you deploy and run."
+   }
+  },
+  "749": {
+   "r": {
+    "B": "Patching keeps the engine current. It offers nothing across geographies.",
+    "D": "Provisioned IOPS buys predictable disk speed, not redundancy."
+   }
+  },
+  "758": {
+   "r": {
+    "C": "Automation is a separate principle. A standby exists to survive failure, not to remove manual work.",
+    "D": "Services not servers is about using managed offerings, which RDS already is either way."
+   }
+  },
+  "771": {
+   "r": {
+    "A": "Simple Workflow coordinates tasks. It is not a compute service."
+   }
+  },
+  "795": {
+   "r": {
+    "B": "Application code is always the customer's.",
+    "C": "Your application's traffic is yours to route and manage.",
+    "D": "Correct. The physical network — switches, routers, cabling — is operated entirely by AWS."
+   }
+  },
+  "816": {
+   "r": {
+    "A": "GameLift hosts multiplayer game servers. It provisions nothing from a template."
+   }
+  },
+  "836": {
+   "r": {
+    "A": "Correct. Deploying near each market is the direct way to cut the distance packets travel."
+   }
+  },
+  "840": {
+   "r": {
+    "B": "Requiring payment up front is the opposite of pay-as-you-go. That describes an All Upfront reservation."
+   }
+  },
+  "859": {
+   "r": {
+    "B": "Correct. Separate accounts produce separate invoices, which is the cleanest split there is."
+   }
+  },
+  "864": {
+   "r": {
+    "A": "Storage Gateway stores data in S3, which is durable, but the gateway itself makes no such promise about your on-premises disks.",
+    "B": "Shipping petabytes on physical devices is the Snow family.",
+    "D": "Correct. It presents cloud storage to on-premises applications as if it were local."
+   }
+  },
+  "865": {
+   "r": {
+    "C": "Correct. Geographically isolated means separate Regions, which are the only truly independent locations."
+   }
+  },
+  "869": {
+   "r": {
+    "B": "Correct. The CLI signs each request with an access key ID and secret access key.",
+    "C": "A managed policy grants permissions once you are authenticated. It is not a credential."
+   }
+  },
+  "891": {
+   "r": {
+    "D": "Running enough instances for peak permanently is exactly the waste that varying workloads make expensive."
+   }
+  },
+  "895": {
+   "r": {
+    "A": "Third-party applications you install are yours to configure.",
+    "B": "Correct. Maintaining and replacing physical hardware is AWS's alone.",
+    "C": "Securing access to your application and its data is the customer's."
+   }
+  },
+  "902": {
+   "r": {
+    "E": "Points of presence are edge locations, which cache content. Availability of a three-tier app comes from multiple AZs."
+   }
+  },
+  "911": {
+   "r": {
+    "B": "Correct. An intrusion attempt originating from an AWS address is precisely what the Abuse team exists for.",
+    "D": "Changing a payment method is a billing request, not abuse."
+   }
+  },
+  "914": {
+   "r": {
+    "A": "Objects are an S3 concept.",
+    "C": "Buckets are S3 as well. A VPC is built from subnets, route tables and gateways."
+   }
+  },
+  "925": {
+   "r": {
+    "B": "An elastic network interface is the virtual network card itself. Recording the traffic across it is Flow Logs."
+   }
+  },
+  "926": {
+   "r": {
+    "A": "Correct. Auto Scaling adds and removes instances against demand, so nobody has to forecast capacity."
+   }
+  },
+  "936": {
+   "r": {
+    "D": "Lumberyard was a game engine, since succeeded by Open 3D Engine."
+   }
+  },
+  "942": {
+   "r": {
+    "A": "Encrypting data in transit needs a certificate from ACM, not DNS.",
+    "B": "Correct. Route 53 registers domains as well as resolving them.",
+    "D": "A dedicated network connection is Direct Connect."
+   }
+  },
+  "947": {
+   "r": {
+    "A": "Scaling your containerised application is your decision, expressed through ECS or Auto Scaling settings."
+   }
+  },
+  "965": {
+   "r": {
+    "B": "Correct. Absorbing traffic that rises and falls, and routing around unhealthy targets, is the point.",
+    "C": "Adjusting capacity is Auto Scaling's job, not the load balancer's.",
+    "D": "Elastic Load Balancing is charged by the hour and by capacity units."
+   }
+  },
+  "974": {
+   "r": {
+    "A": "Correct. Billing cases are free on every plan, including Basic, and go to AWS Support."
+   }
+  },
+  "976": {
+   "r": {
+    "A": "Correct. RDS is managed, so AWS patches the guest operating system and the engine.",
+    "B": "On RDS there is no OS access for a DBA to patch.",
+    "C": "Managed partners are third parties; they have no role in RDS maintenance."
+   }
+  },
+  "978": {
+   "r": {
+    "A": "Global Accelerator adds a charge. It buys performance, not savings.",
+    "D": "Correct. Traffic enters the AWS backbone at the nearest edge, which shortens and steadies the path.",
+    "E": "It changes the network path, not how data at rest is protected."
+   }
+  },
+  "982": {
+   "r": {
+    "A": "Hypervisor patching is AWS's, and customers have no access to that layer."
+   }
+  },
+  "988": {
+   "r": {
+    "B": "Correct. Assuming everything can fail, and designing so that it does not matter, is the core principle.",
+    "D": "Open-source code is a licensing choice, not an availability principle."
+   }
+  },
+  "1002": {
+   "r": {
+    "A": "Logging into each instance by hand does not scale and invites mistakes. Systems Manager patches them centrally."
+   }
+  },
+  "1021": {
+   "r": {
+    "C": "Correct. A separate account per department captures every charge cleanly, including the ones tags cannot reach."
+   }
+  },
+  "1037": {
+   "r": {
+    "C": "An internet gateway imposes no bandwidth limit. It simply provides the path in and out."
+   }
+  },
+  "1080": {
+   "r": {
+    "B": "Correct. How traffic reaches your application — routing, load balancing, DNS — is yours to configure.",
+    "D": "The underlying infrastructure is maintained by AWS."
+   }
+  },
+  "1083": {
+   "r": {
+    "A": "Reserving storage capacity is not how S3 works; you pay for what you store.",
+    "C": "Correct. Objects move between frequent and infrequent tiers automatically as access patterns change.",
+    "D": "The lowest cost archival storage is Glacier Deep Archive."
+   }
+  },
+  "1115": {
+   "r": {
+    "C": "RDS runs automated backups for you, with point-in-time recovery inside the retention window.",
+    "D": "AWS replaces a failed DB instance, which is what Multi-AZ failover is for."
+   }
+  },
+  "1128": {
+   "r": {
+    "B": "The public internet is neither private nor predictable, which is exactly what the question rules out."
+   }
   }
  }
 }

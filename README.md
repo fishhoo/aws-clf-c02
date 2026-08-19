@@ -138,28 +138,26 @@ other paid question bank. Concepts are not copyrightable; wording is.
 
 ### Explanations
 
-Three layers sit under a checked answer, in order of quality:
+Every option of every question is explained. Three layers produce that, in order
+of quality:
 
 1. **Hand-written rationales** in `explanations.json` — a line per option saying
    why it is right or wrong. Entries may be partial: write only the options the
-   glossary cannot reach and it fills the rest. 323 questions carry these today.
+   glossary cannot reach and it fills the rest. 540 questions carry these.
 2. **The built-in glossary** — 474 entries. When an option names a service or a
    concept, its note explains what that thing is and when it is the right answer.
 3. **The source notes** from the community repo, shown underneath where they exist.
 
-Coverage stands at **92.1% of all options** and **1,109 of 1,326 questions explained
-end to end**. Two whole domains are complete — billing, pricing and support, and
-security and compliance — with a line under every option of every question. Both
-are enforced by a test, so a new question in either domain cannot ship bare. What
-remains is 92 questions in cloud concepts and 125 in technology and services,
-about 440 bare options.
+Coverage is **5,574 of 5,574 options** across all 1,326 questions, with no bare
+option left in any of the four domains. A test asserts this per domain, so a new
+question cannot ship without its rationales.
 
-Closing that gap is writing, not coding. `node tools/next-batch.mjs 25` prints
-the worst offenders with their options and any glossary match, ready to write
-against. Add entries to `explanations.json` keyed by question id. The build
-enforces the format: no stub lines, a keyed option's line must begin with
-"Correct" if it has one, and no distractor may claim to be correct. Set 24 is
-held to a stricter rule — it must explain every option and carry a key insight.
+`node tools/next-batch.mjs` prints anything that slips below the line, which
+should now be nothing. Add entries to `explanations.json` keyed by question id.
+The build enforces the format: no stub lines, a keyed option's line must begin
+with "Correct" if it has one, and no distractor may claim to be correct. Set 24
+is held to a stricter rule — it must explain every option itself and carry a key
+insight naming the idea under test.
 
 ### Duplicates
 

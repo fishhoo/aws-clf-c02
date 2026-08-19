@@ -4,4 +4,3 @@ dist/
 # Windows alternate-data-stream junk that appears when files are copied
 # from a Windows download folder into WSL
 *:Zone.Identifier
-*.zip

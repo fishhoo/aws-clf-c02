@@ -1,0 +1,18 @@
+{
+  "name": "aws-clf-c02-drill",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Offline AWS Certified Cloud Practitioner (CLF-C02) question bank and study notes, built into one static file.",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node test/integrity.mjs && node test/ui.mjs",
+    "check": "npm run build && npm test"
+  },
+  "devDependencies": {
+    "jsdom": "^24.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

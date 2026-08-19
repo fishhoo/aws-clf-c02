@@ -8,6 +8,8 @@ network calls.
 src/template.html        markup, styles, and all app logic (with two data placeholders)
 src/data/questions.json  1,141 questions across 23 community practice sets + 155 service scenarios
 src/data/exam-style.json set 24 — 30 original questions, each with a rationale per option
+src/data/explanations.json hand-written rationales for questions the glossary can't reach
+tools/next-batch.mjs      lists the questions still missing a rationale, worst first
 src/data/review.json     155 study notes and 30 easily-confused comparison groups
 build.mjs                validates the data, inlines it, writes dist/index.html
 test/integrity.mjs       checks the built file: counts, self-containment, contrast
@@ -133,6 +135,31 @@ distractor may claim to be correct. Getting that wrong fails the build.
 
 Nothing in this set is copied from AWS's official practice questions or any
 other paid question bank. Concepts are not copyrightable; wording is.
+
+### Explanations
+
+Three layers sit under a checked answer, in order of quality:
+
+1. **Hand-written rationales** in `explanations.json` — a line per option saying
+   why it is right or wrong. Entries may be partial: write only the options the
+   glossary cannot reach and it fills the rest. 323 questions carry these today.
+2. **The built-in glossary** — 474 entries. When an option names a service or a
+   concept, its note explains what that thing is and when it is the right answer.
+3. **The source notes** from the community repo, shown underneath where they exist.
+
+Coverage stands at **92.1% of all options** and **1,109 of 1,326 questions explained
+end to end**. Two whole domains are complete — billing, pricing and support, and
+security and compliance — with a line under every option of every question. Both
+are enforced by a test, so a new question in either domain cannot ship bare. What
+remains is 92 questions in cloud concepts and 125 in technology and services,
+about 440 bare options.
+
+Closing that gap is writing, not coding. `node tools/next-batch.mjs 25` prints
+the worst offenders with their options and any glossary match, ready to write
+against. Add entries to `explanations.json` keyed by question id. The build
+enforces the format: no stub lines, a keyed option's line must begin with
+"Correct" if it has one, and no distractor may claim to be correct. Set 24 is
+held to a stricter rule — it must explain every option and carry a key insight.
 
 ### Duplicates
 

@@ -53,11 +53,14 @@ const questionsPath = locate('questions.json',  'src/data/questions.json', 'src/
 const reviewPath    = locate('review.json',     'src/data/review.json', 'src/review.json', 'data/review.json', 'review.json');
 const correctionsPath = locate('corrections.json', 'src/data/corrections.json', 'src/corrections.json', 'data/corrections.json', 'corrections.json');
 const examStylePath   = locateOptional('src/data/exam-style.json', 'src/exam-style.json', 'data/exam-style.json', 'exam-style.json');
+const explainPath     = locateOptional('src/data/explanations.json', 'src/explanations.json', 'data/explanations.json', 'explanations.json');
 
 console.log('inputs:');
 for (const p of [templatePath, questionsPath, reviewPath, correctionsPath]) console.log('  ' + relative(root, p));
 console.log('  ' + (examStylePath ? relative(root, examStylePath)
   : 'exam-style.json  << NOT FOUND, so set 24 is missing from this build'));
+console.log('  ' + (explainPath ? relative(root, explainPath)
+  : 'explanations.json  << NOT FOUND, hand-written rationales will be missing'));
 
 const template = read(templatePath);
 const questions = JSON.parse(read(questionsPath));
@@ -65,6 +68,17 @@ const review = JSON.parse(read(reviewPath));
 const corrections = JSON.parse(read(correctionsPath));
 // set 24 is written for this app and carries a rationale for every option
 if (examStylePath) for (const q of JSON.parse(read(examStylePath)).questions) questions.push(q);
+
+// hand-written rationales for questions the glossary cannot reach
+if (explainPath) {
+  const byIdForExpl = new Map(questions.map(q => [String(q.i), q]));
+  const expl = JSON.parse(read(explainPath)).explanations;
+  for (const [id, e] of Object.entries(expl)) {
+    const q = byIdForExpl.get(id);
+    if (!q) { console.error(`build failed - explanations.json targets missing question ${id}`); process.exit(1); }
+    q.k = e.k; q.r = e.r;
+  }
+}
 
 // ---- apply audited answer-key corrections ----
 // `from` must still match what's in the bank, so a correction can never drift
@@ -135,16 +149,24 @@ for (const q of questions) {
 for (const q of questions) {
   if (!q.r && !q.k) continue;
   const at = `question ${q.i}`;
-  if (!q.k) problems.push(`${at}: has per-option rationales but no key insight`);
   if (!q.r) { problems.push(`${at}: has a key insight but no per-option rationales`); continue; }
-  for (const [letter] of q.o) {
-    if (!q.r[letter] || q.r[letter].trim().length < 15) problems.push(`${at}: option ${letter} has no usable rationale`);
+  // set 24 is authored whole, so it must explain every option; the patch file
+  // written against the glossary only needs to cover the options it claims to
+  if (q.src === 'orig') {
+    if (!q.k) problems.push(`${at}: has per-option rationales but no key insight`);
+    for (const [letter] of q.o) {
+      if (!q.r[letter] || q.r[letter].trim().length < 15) problems.push(`${at}: option ${letter} has no usable rationale`);
+    }
+  } else {
+    for (const [letter, line] of Object.entries(q.r)) {
+      if (line.trim().length < 15) problems.push(`${at}: the rationale for option ${letter} is too short to be useful`);
+    }
   }
   for (const letter of Object.keys(q.r)) {
     if (!q.o.some(o => o[0] === letter)) problems.push(`${at}: rationale for option ${letter}, which doesn't exist`);
   }
   for (const a of q.a) {
-    if (!/^correct\b/i.test(q.r[a] || '')) problems.push(`${at}: the rationale for keyed option ${a} should start by confirming it`);
+    if (q.r[a] && !/^correct\b/i.test(q.r[a])) problems.push(`${at}: the rationale for keyed option ${a} should start by confirming it`);
   }
   for (const [letter] of q.o) {
     if (!q.a.includes(letter) && /^correct\b/i.test(q.r[letter] || '')) problems.push(`${at}: option ${letter} is not keyed but its rationale says it is correct`);

@@ -1,0 +1,2060 @@
+{
+ "_about": "Patch file of per-option rationales. Merged on top of the built-in glossary, which still fills any option left out here, so an entry only needs the lines the glossary cannot supply. Keyed options start with 'Correct'. Loaded by build.mjs and enforced there.",
+ "explanations": {
+  "61": {
+   "k": "Cloud architecture is cheap to change, so the best practice is to automate and experiment rather than to get it right once up front.",
+   "r": {
+    "A": "The opposite of the cloud model. Redeploying is cheap here, so heavy up-front design is wasted effort.",
+    "B": "Reservations mean a 1 or 3 year commitment. Test environments come and go, so On-Demand or Spot fits them.",
+    "C": "Correct. Automation makes an experiment cost minutes, which is what lets architecture evolve instead of being frozen.",
+    "D": "That is over-provisioning for a peak. Auto Scaling handles spikes without paying for idle capacity."
+   }
+  },
+  "70": {
+   "k": "ElastiCache is a managed in-memory cache — Redis or Memcached — that sits in front of a database to absorb repeated reads.",
+   "r": {
+    "A": "Correct. Caching hot data in memory is exactly what ElastiCache is for, and read-heavy apps benefit most.",
+    "B": "ElastiCache speaks Redis and Memcached. Ehcache is a Java library and is not one of its engines.",
+    "C": "That describes AWS Marketplace, where you buy and launch third-party software.",
+    "D": "DNS in the cloud is Amazon Route 53."
+   }
+  },
+  "74": {
+   "k": "The AWS design principles are about automating change and removing anything that can fail alone — not about picking global services or fixing prices.",
+   "r": {
+    "A": "Region choice is driven by latency, cost and compliance. Neither global nor regional is automatically right.",
+    "B": "Pay-as-you-go is a pricing model, not a design principle, and committing can be the cheaper choice.",
+    "C": "Treating servers as fixed is the on-premises habit the cloud replaces — treat them as disposable instead.",
+    "D": "Correct. Automation is what makes deployments repeatable and experiments cheap.",
+    "E": "Correct. Removing single points of failure is the core of designing for failure."
+   }
+  },
+  "103": {
+   "k": "Committing to 1 or 3 years in exchange for a lower rate is the Reserved Instance model, which AWS markets as 'save when you reserve'.",
+   "r": {
+    "A": "AWS does lower prices over time, but that is not a payment model you opt into.",
+    "B": "Pay as you go is On-Demand — no commitment and no discount.",
+    "C": "Pay less by using more is volume tiering, as in S3 storage pricing.",
+    "D": "Correct. A 1 or 3 year commitment for a lower rate is the Reserved Instance model."
+   }
+  },
+  "114": {
+   "k": "Glacier is archival storage: cheap to keep, slow to retrieve. It suits data you must keep but rarely read.",
+   "r": {
+    "A": "Correct. Active archives are read occasionally and kept for years, which is Glacier's exact use case.",
+    "B": "Website assets must load in milliseconds. Serve them from S3 Standard, ideally behind CloudFront.",
+    "C": "Correct. Long-term analytic data is queried infrequently and retained for compliance or trend analysis.",
+    "D": "A live database needs millisecond access. Glacier retrievals take minutes to hours.",
+    "E": "Cached data is by definition hot. That belongs in ElastiCache or CloudFront."
+   }
+  },
+  "129": {
+   "k": "A TCO comparison counts the costs that differ between running on-premises and running on AWS — mostly the data-centre costs you stop paying.",
+   "r": {
+    "A": "You write the same application either way, so development cost does not change with the hosting decision.",
+    "B": "Market research has nothing to do with where the workload runs.",
+    "C": "Business analysis is a project cost, unaffected by the hosting model.",
+    "D": "Correct. Servers, racks, power, cooling and space are exactly what disappears from the bill when you migrate."
+   }
+  },
+  "134": {
+   "k": "Agility means the time between deciding you need a resource and having it drops from weeks to minutes.",
+   "r": {
+    "A": "Deploying in many Regions is global reach, a different advantage.",
+    "B": "AWS does not sell customisable hardware — that is closer to what you give up when you leave the data centre.",
+    "C": "Correct. Resources in minutes is the definition of agility, and it is what makes experimenting cheap.",
+    "D": "Paying upfront for a discount is a pricing option, not agility."
+   }
+  },
+  "150": {
+   "k": "Media destruction is part of the physical security AWS owns outright — a decommissioned device never leaves with data on it.",
+   "r": {
+    "A": "AWS never resells storage media. It is destroyed before it could leave the facility.",
+    "B": "Correct. AWS follows NIST 800-88 style techniques and destroys media that cannot be securely wiped.",
+    "C": "Remanufacturing would mean the device leaves AWS's control while it may still hold data.",
+    "D": "Storing a dead device indefinitely is not a disposal process, and it leaves the data in existence."
+   }
+  },
+  "161": {
+   "k": "A managed service trades control for speed: AWS runs the undifferentiated parts, so your team spends its time on the application.",
+   "r": {
+    "A": "Complete control is what you keep with EC2. Managed services deliberately take that control away.",
+    "B": "Correct. Not having to build and operate the platform is what shortens time to launch.",
+    "C": "Correct. Patching, backups and failover move to AWS, which is a direct drop in operational load.",
+    "D": "Encryption is still the customer's decision on a managed service. Nothing removes that responsibility.",
+    "E": "Managed services take patching away from developers rather than handing it to them."
+   }
+  },
+  "165": {
+   "k": "Everything in AWS is an API call, so the point of the API is automation — the console, CLI and SDKs all sit on top of it.",
+   "r": {
+    "A": "Calling a resource through the API does not make the resource itself faster.",
+    "B": "Provisioning speed comes from the cloud model. Clicking in the console is just as fast for one resource.",
+    "C": "Automation changes what developers spend time on, but it is not a headcount argument.",
+    "D": "Correct. Programmatic management is what makes scripting, infrastructure as code and CI/CD possible."
+   }
+  },
+  "169": {
+   "k": "Service Catalog is a governance tool: IT publishes an approved list of products, and users may launch only those.",
+   "r": {
+    "A": "Descriptions and use cases live in the AWS documentation and the service pages.",
+    "B": "Browsing AWS services is what the console and the product pages are for.",
+    "C": "Correct. Publishing an approved, governed set of products for users to launch is exactly its purpose.",
+    "D": "Defining infrastructure in a programming language is the AWS CDK."
+   }
+  },
+  "177": {
+   "k": "AWS defines three control types: inherited, shared, and customer-specific. Shared controls apply to both layers, each side in its own context.",
+   "r": {
+    "A": "Controls that are solely the customer's are customer-specific controls, not shared ones.",
+    "B": "Controls a customer inherits wholly from AWS are inherited controls — the physical and environmental ones.",
+    "C": "Correct. AWS's wording is that shared controls apply to both the infrastructure layer and customer layers.",
+    "D": "AWS is explicit that the two sides act in separate contexts rather than collaborating on the same control."
+   }
+  },
+  "179": {
+   "k": "On EC2 the customer owns everything from the guest operating system upward, including their data and any software they install.",
+   "r": {
+    "A": "Correct. Your data is always yours to classify, encrypt and control, on every AWS service.",
+    "B": "The underlying infrastructure — host, hypervisor, network fabric — is patched by AWS.",
+    "C": "Managed databases are set up and operated by AWS. That is what makes them managed.",
+    "D": "Hardware is AWS's, and customers never touch it.",
+    "E": "Correct. Anything you install on the instance is yours to configure, license and patch."
+   }
+  },
+  "180": {
+   "k": "The reasons to move are economic and operational — capacity that follows demand, and no data centre to fund.",
+   "r": {
+    "A": "Commercial licences still cost money on AWS. Some are bundled into the hourly rate, but nothing is free.",
+    "B": "Only Basic support is free, and it does not include technical help.",
+    "C": "Correct. Capacity that grows and shrinks with demand is something a fixed data centre cannot offer.",
+    "D": "Customers cannot visit AWS data centres. Auditing is done through AWS Artifact reports instead.",
+    "E": "Correct. Paying for what you use, with no idle hardware, is the headline financial argument."
+   }
+  },
+  "189": {
+   "k": "DynamoDB is serverless NoSQL: no instances to size, no schema to define, and latency that stays flat as the table grows.",
+   "r": {
+    "A": "Correct. Throughput scales without you provisioning anything, which is the point of a serverless database.",
+    "B": "Choosing instance sizes is RDS and EC2. DynamoDB has no instances to resize.",
+    "C": "DynamoDB is NoSQL only. Relational workloads belong on RDS or Aurora.",
+    "D": "Correct. Single-digit millisecond response at any scale is DynamoDB's headline characteristic.",
+    "E": "DynamoDB is its own engine. MongoDB compatibility is DocumentDB; CouchDB is not offered at all."
+   }
+  },
+  "204": {
+   "k": "Per-second billing with a 60-second minimum applies to Amazon Linux and Ubuntu. Other distributions still bill by the hour, rounded up.",
+   "r": {
+    "A": "Rounding the Amazon Linux instance up to whole hours ignores per-second billing.",
+    "B": "Billing CentOS by the second is the trap. Per-second billing does not cover it.",
+    "C": "Correct. Amazon Linux bills to the second; the CentOS instance rounds up from 4h23m to 5 hours.",
+    "D": "This has both halves backwards."
+   }
+  },
+  "227": {
+   "k": "Cloud Directory stores hierarchical data with more than one hierarchy over the same objects — org charts, device registries, course catalogues.",
+   "r": {
+    "A": "Correct. Multiple hierarchies over one set of objects is exactly what Cloud Directory was built for.",
+    "B": "Real-time stream analysis is Kinesis.",
+    "C": "Signing in with existing Active Directory credentials is AWS Directory Service.",
+    "D": "Domain registration and DNS are Amazon Route 53."
+   }
+  },
+  "228": {
+   "k": "Business Support answers a production system down case within one hour; the 15-minute target belongs to Enterprise for business-critical outages.",
+   "r": {
+    "A": "12 hours is the Developer plan's target for a system impaired case, not a production outage.",
+    "B": "15 minutes applies to a business-critical system down case on Enterprise Support.",
+    "C": "24 hours is the general guidance target, the lowest urgency there is.",
+    "D": "Correct. One hour is the published target for production system down on Business Support and above."
+   }
+  },
+  "278": {
+   "k": "Economies of scale means AWS's aggregated purchasing across millions of customers lowers unit costs, and AWS passes those savings on.",
+   "r": {
+    "A": "Saving more as you consume more is volume tiering, a different pricing idea.",
+    "B": "Prices have fallen repeatedly over the years, not risen with time.",
+    "C": "Correct. Scale lowers AWS's unit costs, which is why it has cut prices many times.",
+    "D": "Pay as you go is the On-Demand model, unrelated to scale."
+   }
+  },
+  "286": {
+   "k": "Penetration testing means deliberately attacking your own systems to find exploitable weaknesses before someone else does.",
+   "r": {
+    "A": "Measuring response time from different locations is performance or latency testing.",
+    "B": "Correct. Probing your own environment for weaknesses an attacker could use is what penetration testing is.",
+    "C": "Checking which instances are unhealthy is what load balancer and Route 53 health checks do.",
+    "D": "Finding bugs and errors is functional testing, which has nothing to do with security posture."
+   }
+  },
+  "287": {
+   "k": "EMR runs managed big data frameworks — Spark, Hadoop, Hive, Presto — over large data sets on a cluster you can scale.",
+   "r": {
+    "A": "Cheap bulk backup is S3 and Glacier, not a compute cluster.",
+    "B": "Exabyte-scale physical transfer is Snowmobile.",
+    "C": "Correct. Processing very large data sets quickly is what a managed cluster is for.",
+    "D": "Correct. Running and scaling Spark and Hadoop without building the cluster yourself is EMR's core job.",
+    "E": "Docker orchestration is ECS, EKS or Fargate."
+   }
+  },
+  "291": {
+   "k": "On RDS, AWS handles installation, patching, backups and failover. The customer keeps everything about access and network protection.",
+   "r": {
+    "A": "Correct. AWS installs and configures the database engine — you never touch the underlying software.",
+    "B": "Protecting network traffic to the database, including TLS and security groups, remains yours.",
+    "C": "Correct. The operating system underneath RDS is invisible to you and maintained by AWS.",
+    "D": "Who may connect and with which credentials is always the customer's decision.",
+    "E": "Security group rules are configured by the customer, on every service."
+   }
+  },
+  "294": {
+   "k": "Storage Gateway is the hybrid bridge: on-premises applications see local storage while the data actually lives in AWS.",
+   "r": {
+    "A": "Building and running ETL jobs is AWS Glue.",
+    "B": "Physical devices for shipping data are the Snow family.",
+    "C": "Correct. Giving on-premises systems low-latency access to cloud storage is exactly what the gateway does.",
+    "D": "Hardware-based key storage for compliance is AWS CloudHSM."
+   }
+  },
+  "298": {
+   "k": "Route 53 does two things in exam questions: it is your DNS, and its routing policies steer traffic globally.",
+   "r": {
+    "A": "Point-to-point connectivity to a data centre is Direct Connect or Site-to-Site VPN.",
+    "B": "Detecting configuration change is AWS Config.",
+    "C": "Correct. Route 53 is a managed DNS service, including domain registration.",
+    "D": "Correct. Latency, weighted, failover and geolocation policies are how it steers global traffic.",
+    "E": "Infrastructure optimisation recommendations come from Trusted Advisor."
+   }
+  },
+  "307": {
+   "k": "Reserved Instances come in two types: Standard for the deepest discount, and Convertible when you may need to change family.",
+   "r": {
+    "A": "Correct. Convertible RIs can be exchanged for a different family or OS during the term.",
+    "B": "Expedited is a Glacier retrieval tier, not an RI type.",
+    "C": "There is no bulk RI. Volume tiering is a separate pricing idea.",
+    "D": "Spot is its own purchase option with no commitment, not a class of Reserved Instance.",
+    "E": "Correct. Standard RIs give the largest discount but lock you to an instance family."
+   }
+  },
+  "318": {
+   "k": "RDS supports six engines: MySQL, PostgreSQL, MariaDB, Oracle, SQL Server and Aurora. Anything else on the list is the answer to a 'not supported' question.",
+   "r": {
+    "A": "PostgreSQL is one of the six supported engines.",
+    "B": "Oracle is supported, including bring-your-own-licence.",
+    "C": "SQL Server is supported across several editions.",
+    "D": "Correct. Teradata is a data warehouse product and is not an RDS engine."
+   }
+  },
+  "338": {
+   "k": "DynamoDB is serverless, so capacity and scaling sit on AWS's side of the shared responsibility line.",
+   "r": {
+    "A": "A security team configures access controls; it does not add capacity to a managed service.",
+    "B": "Developers design the table and its keys, but the scaling itself is not theirs to run.",
+    "C": "Correct. Scaling the underlying capacity of a managed serverless database is AWS's job.",
+    "D": "There is no infrastructure exposed for a DevOps team to scale."
+   }
+  },
+  "390": {
+   "k": "S3 has no capacity to provision and no account-level ceiling. The only hard limit is 5 TB per individual object.",
+   "r": {
+    "A": "There is no 100 PB cap. The figure is invented.",
+    "B": "Correct. Total storage is effectively unlimited; you simply pay for what you keep.",
+    "C": "5 TB is the maximum size of a single object, not of the account.",
+    "D": "No exabyte ceiling exists either."
+   }
+  },
+  "396": {
+   "k": "Two Availability Zones is the minimum that survives the loss of one. A single AZ is a single point of failure.",
+   "r": {
+    "A": "One AZ means one failure domain, which is the definition of not being highly available.",
+    "B": "Correct. Two AZs is the smallest deployment that keeps running when one fails.",
+    "C": "Three adds more headroom and is common for quorum systems, but it is not the minimum.",
+    "D": "Four or more is beyond what the question asks and beyond what most Regions offer."
+   }
+  },
+  "419": {
+   "k": "The benefit of the cloud is that the undifferentiated work goes away, freeing the team for work that makes money.",
+   "r": {
+    "A": "Permissive security is a risk, never a benefit, and AWS advises least privilege instead.",
+    "B": "Correct. Handing racking, patching and capacity planning to AWS is what frees the team.",
+    "C": "You do not control cloud network hardware — that is something you give up.",
+    "D": "Choosing hardware vendors is an on-premises activity that the cloud removes."
+   }
+  },
+  "469": {
+   "k": "Convertible RIs trade a little discount for the right to exchange into a different configuration of equal or greater value.",
+   "r": {
+    "A": "Dedicated RIs are about hardware tenancy, not about changing attributes.",
+    "B": "Scheduled RIs reserve capacity in recurring time windows and are no longer offered for new purchases.",
+    "C": "Correct. Exchange for equal or greater value is the defining feature of a Convertible RI.",
+    "D": "Standard RIs can be sold on the marketplace but cannot be exchanged for a different family."
+   }
+  },
+  "471": {
+   "k": "Spot capacity can be reclaimed with two minutes' notice, so it fits anything that can be interrupted and restarted.",
+   "r": {
+    "A": "Correct. Non-production work can absorb an interruption without anyone being affected.",
+    "B": "Stateful work loses its state when the instance is reclaimed unless you engineer around it.",
+    "C": "Applications that cannot be interrupted are the exact case Spot rules out.",
+    "D": "Correct. Fault-tolerant and time-flexible is precisely the profile Spot was designed for.",
+    "E": "A sensitive database needs to stay up, which Spot cannot promise."
+   }
+  },
+  "477": {
+   "k": "Provisioning is fast because it is an API call away — no purchase order, no delivery, no racking.",
+   "r": {
+    "A": "A ticketing platform is the slow process the cloud replaces.",
+    "B": "Code validation has nothing to do with how quickly infrastructure appears.",
+    "C": "Correct. Resources already exist in AWS's fleet and are allocated to you programmatically in minutes.",
+    "D": "AWS does not automate your vendor purchasing; it removes the need for it."
+   }
+  },
+  "479": {
+   "k": "S3 is object storage: keys and objects in buckets, eleven nines of durability, reached over HTTP rather than mounted.",
+   "r": {
+    "A": "There is no global file system. S3 buckets live in a Region.",
+    "B": "Correct. Objects addressed by key inside buckets is what object storage means.",
+    "C": "A local file store attached to an instance is instance store or EBS.",
+    "D": "A mountable network file system is Amazon EFS.",
+    "E": "Correct. S3 Standard is designed for 99.999999999% durability."
+   }
+  },
+  "538": {
+   "k": "Edge locations are caches. They bring copies of content near users and take repeat requests off the origin.",
+   "r": {
+    "A": "Applications run in Regions. Only Lambda@Edge runs limited code at the edge.",
+    "B": "Correct. Serving from a nearby edge instead of the origin Region is the whole point.",
+    "C": "NoSQL caching is DynamoDB Accelerator, which runs in a Region.",
+    "D": "Correct. A cache hit never reaches the origin, so origin load drops.",
+    "E": "Sending notifications is Amazon SNS."
+   }
+  },
+  "541": {
+   "k": "Moving to AWS removes the data-centre work, so the business spends its effort on what the business actually does.",
+   "r": {
+    "A": "The bill changes shape from capital to operating expense; it does not disappear.",
+    "B": "Putting a server in each customer's data centre is the opposite of centralising in the cloud.",
+    "C": "Correct. Handing infrastructure operations to AWS is what frees the business to focus on its own work.",
+    "D": "Guest operating systems still need patching. The responsibility stays with the customer."
+   }
+  },
+  "552": {
+   "k": "On-Demand charges only for the time an instance actually runs, with no commitment and no upfront payment.",
+   "r": {
+    "A": "Bidding on price is Spot.",
+    "B": "There is no daily rate — billing is per second or per hour depending on the OS.",
+    "C": "Correct. Paying only for the time used, with nothing owed when the instance is stopped, is the On-Demand model.",
+    "D": "Pre-paying for a lower rate describes Reserved Instances."
+   }
+  },
+  "556": {
+   "k": "The cloud's value proposition is that you can start and stop at will — no contract, no purchase cycle, no idle hardware.",
+   "r": {
+    "A": "AWS is responsible for security OF the cloud. Security IN the cloud is the customer's.",
+    "B": "Correct. On-Demand requires no long-term contract, which is what makes trying things cheap.",
+    "C": "Servers arrive in minutes, not days — that is the point.",
+    "D": "AWS never manages your application code."
+   }
+  },
+  "576": {
+   "k": "The cloud lowers both halves: no upfront hardware purchase, and a lower per-unit running cost thanks to AWS's scale.",
+   "r": {
+    "A": "Both being greater would mean the cloud is simply more expensive, which is not the argument.",
+    "B": "Usage costs vary with what you run; they are not fixed.",
+    "C": "There is no large upfront cost to speak of, which is the main financial draw.",
+    "D": "Correct. Lower upfront investment and lower variable cost together are the standard TCO claim."
+   }
+  },
+  "603": {
+   "k": "S3 is object storage: keys and objects in buckets, eleven nines of durability, reached over HTTP rather than mounted.",
+   "r": {
+    "A": "There is no global file system. S3 buckets live in a Region.",
+    "B": "Correct. Objects addressed by key inside buckets is what object storage means.",
+    "C": "A local file store attached to an instance is instance store or EBS.",
+    "D": "A mountable network file system is Amazon EFS.",
+    "E": "Correct. S3 Standard is designed for 99.999999999% durability."
+   }
+  },
+  "611": {
+   "k": "The cloud lowers both halves: no upfront hardware purchase, and a lower per-unit running cost thanks to AWS's scale.",
+   "r": {
+    "A": "Both being greater would mean the cloud is simply more expensive, which is not the argument.",
+    "B": "Usage costs vary with what you run; they are not fixed.",
+    "C": "There is no large upfront cost to speak of, which is the main financial draw.",
+    "D": "Correct. Lower upfront investment and lower variable cost together are the standard TCO claim."
+   }
+  },
+  "615": {
+   "k": "Convertible RIs trade a little discount for the right to exchange into a different configuration of equal or greater value.",
+   "r": {
+    "A": "Dedicated RIs are about hardware tenancy, not about changing attributes.",
+    "B": "Scheduled RIs reserve capacity in recurring time windows and are no longer offered for new purchases.",
+    "C": "Correct. Exchange for equal or greater value is the defining feature of a Convertible RI.",
+    "D": "Standard RIs can be sold on the marketplace but cannot be exchanged for a different family."
+   }
+  },
+  "628": {
+   "k": "Two Availability Zones is the minimum that survives the loss of one. A single AZ is a single point of failure.",
+   "r": {
+    "A": "One AZ means one failure domain, which is the definition of not being highly available.",
+    "B": "Correct. Two AZs is the smallest deployment that keeps running when one fails.",
+    "C": "Three adds more headroom and is common for quorum systems, but it is not the minimum.",
+    "D": "Four or more is beyond what the question asks and beyond what most Regions offer."
+   }
+  },
+  "629": {
+   "k": "Moving to AWS removes the data-centre work, so the business spends its effort on what the business actually does.",
+   "r": {
+    "A": "The bill changes shape from capital to operating expense; it does not disappear.",
+    "B": "Putting a server in each customer's data centre is the opposite of centralising in the cloud.",
+    "C": "Correct. Handing infrastructure operations to AWS is what frees the business to focus on its own work.",
+    "D": "Guest operating systems still need patching. The responsibility stays with the customer."
+   }
+  },
+  "663": {
+   "k": "The benefit of the cloud is that the undifferentiated work goes away, freeing the team for work that makes money.",
+   "r": {
+    "A": "Permissive security is a risk, never a benefit, and AWS advises least privilege instead.",
+    "B": "Correct. Handing racking, patching and capacity planning to AWS is what frees the team.",
+    "C": "You do not control cloud network hardware — that is something you give up.",
+    "D": "Choosing hardware vendors is an on-premises activity that the cloud removes."
+   }
+  },
+  "700": {
+   "k": "Provisioning is fast because it is an API call away — no purchase order, no delivery, no racking.",
+   "r": {
+    "A": "A ticketing platform is the slow process the cloud replaces.",
+    "B": "Code validation has nothing to do with how quickly infrastructure appears.",
+    "C": "Correct. Resources already exist in AWS's fleet and are allocated to you programmatically in minutes.",
+    "D": "AWS does not automate your vendor purchasing; it removes the need for it."
+   }
+  },
+  "701": {
+   "k": "Edge locations are caches. They bring copies of content near users and take repeat requests off the origin.",
+   "r": {
+    "A": "Applications run in Regions. Only Lambda@Edge runs limited code at the edge.",
+    "B": "Correct. Serving from a nearby edge instead of the origin Region is the whole point.",
+    "C": "NoSQL caching is DynamoDB Accelerator, which runs in a Region.",
+    "D": "Correct. A cache hit never reaches the origin, so origin load drops.",
+    "E": "Sending notifications is Amazon SNS."
+   }
+  },
+  "705": {
+   "k": "On-Demand charges only for the time an instance actually runs, with no commitment and no upfront payment.",
+   "r": {
+    "A": "Bidding on price is Spot.",
+    "B": "There is no daily rate — billing is per second or per hour depending on the OS.",
+    "C": "Correct. Paying only for the time used, with nothing owed when the instance is stopped, is the On-Demand model.",
+    "D": "Pre-paying for a lower rate describes Reserved Instances."
+   }
+  },
+  "738": {
+   "k": "Spot suits work whose start time is negotiable, because AWS can take the capacity back at two minutes' notice.",
+   "r": {
+    "A": "Correct. Flexibility about when the job runs is what lets you absorb an interruption.",
+    "B": "Mission-critical means it must not stop, which rules Spot out.",
+    "C": "Dedicated capacity is Capacity Reservations or Dedicated Hosts.",
+    "D": "If an instance must not be stopped, Spot is the wrong purchase option by definition."
+   }
+  },
+  "740": {
+   "k": "Lambda bills on two dimensions only: the number of requests, and duration multiplied by the memory you allocated.",
+   "r": {
+    "A": "Bidding on an hourly price is Spot.",
+    "B": "Upfront terms are Reserved Instances and Savings Plans, and there is no 5-year term.",
+    "C": "Lambda charges nothing for permanent storage — that would be S3, EFS or a database bill.",
+    "D": "Correct. Requests plus compute time, measured in GB-seconds, is the whole Lambda price."
+   }
+  },
+  "755": {
+   "k": "Security IN the cloud is the customer's: your data, your encryption choices, and the network rules around your resources.",
+   "r": {
+    "A": "Virtualisation is AWS's layer. Customers have no access to the hypervisor.",
+    "B": "Hardware is AWS's responsibility in every case.",
+    "C": "Correct. Whether and how to encrypt your data is always your decision.",
+    "D": "Facilities — buildings, power, cooling — are wholly AWS's.",
+    "E": "Correct. Security groups and network ACLs are configured by the customer."
+   }
+  },
+  "770": {
+   "k": "Because capacity can be added and removed on demand, you never have to predict how much hardware to buy.",
+   "r": {
+    "A": "Correct. Stop guessing capacity is one of the six advantages, and it is what elasticity buys you.",
+    "B": "Existing hardware contracts are what you are moving away from.",
+    "C": "Costs move with usage. Fixing them regardless of traffic is the on-premises model.",
+    "D": "AWS Artifact helps with audits — it does not let you avoid them."
+   }
+  },
+  "801": {
+   "k": "The advantage is elasticity: capacity follows demand, so no one has to forecast a peak years ahead.",
+   "r": {
+    "A": "AWS does not inspect customer data. Ownership and access stay with you.",
+    "B": "Nothing is secure by default. Encryption and access control are choices you make.",
+    "C": "Correct. Capacity that scales on demand removes the guesswork from planning.",
+    "D": "AWS supplies evidence through Artifact, but your compliance remains yours to manage."
+   }
+  },
+  "807": {
+   "k": "High availability means the application keeps answering when an individual component or Availability Zone fails.",
+   "r": {
+    "A": "Round-the-clock support is a Support plan feature, not an architectural property.",
+    "B": "Correct. Staying accessible through a component failure is the definition of high availability.",
+    "C": "Paying on demand is a pricing model.",
+    "D": "Deploying worldwide is global reach; it improves latency, not necessarily availability."
+   }
+  },
+  "814": {
+   "k": "Amazon Linux bills per second with a 60-second minimum, so the customer pays for the exact runtime.",
+   "r": {
+    "A": "Dropping the seconds would be per-minute billing, which AWS does not use.",
+    "B": "Correct. Per-second billing applies to Amazon Linux, so the exact 3h5m6s is charged.",
+    "C": "Rounding up to the next minute is not how the meter works.",
+    "D": "Rounding to whole hours applies to Windows and some commercial Linux distributions, not Amazon Linux."
+   }
+  },
+  "851": {
+   "k": "Infrastructure as code means the environment is defined in a template that can be versioned, reviewed and re-run.",
+   "r": {
+    "A": "Moving physical hardware into AWS data centres is not something customers do at all.",
+    "B": "Third-party audits are unrelated to how you define infrastructure.",
+    "C": "You never hand application code to AWS to run on your behalf.",
+    "D": "Correct. Templates provision the environment repeatably, which is the whole idea."
+   }
+  },
+  "854": {
+   "k": "CloudFormation takes a JSON or YAML template and creates, updates and deletes the described resources as one stack.",
+   "r": {
+    "A": "Correct. Modelling resources in a template and provisioning them from it is what CloudFormation does.",
+    "B": "Updating application code is CodeDeploy and the rest of the developer tools.",
+    "C": "Setting up a data lake is AWS Lake Formation.",
+    "D": "Billing reports come from Cost Explorer and the Cost and Usage Report."
+   }
+  },
+  "868": {
+   "k": "The model is called shared for a reason: AWS secures the cloud, the customer secures what they put in it.",
+   "r": {
+    "A": "The customer owns their half, but not the facilities, hardware or hypervisor.",
+    "B": "AWS owns its half, but never your data, your IAM policies or your security groups.",
+    "C": "Correct. Both parties hold responsibilities, and where the line falls depends on the service.",
+    "D": "Governing bodies define standards. They hold no responsibility for your environment."
+   }
+  },
+  "876": {
+   "k": "Hybrid means part of the workload runs in AWS and part stays on-premises, joined by Direct Connect, VPN, Outposts or Storage Gateway.",
+   "r": {
+    "A": "Everything on-premises is the traditional model, not hybrid.",
+    "B": "A colocation centre is still someone else's data centre, not the AWS Cloud.",
+    "C": "Everything in AWS is the cloud deployment model.",
+    "D": "Correct. A foot in both places is exactly what hybrid means."
+   }
+  },
+  "901": {
+   "k": "The cloud replaces a large capital purchase made in advance with a smaller variable charge for what you actually consume.",
+   "r": {
+    "A": "This states the trade backwards — variable costs are what you move to, not away from.",
+    "B": "Correct. Capital investment becomes variable spend, which is why the upfront cost falls.",
+    "C": "Provisioning for peak is the over-buying habit the cloud removes.",
+    "D": "Fixed scale is the opposite of what elasticity offers."
+   }
+  },
+  "937": {
+   "k": "The cloud's value proposition is that you can start and stop at will — no contract, no purchase cycle, no idle hardware.",
+   "r": {
+    "A": "AWS is responsible for security OF the cloud. Security IN the cloud is the customer's.",
+    "B": "Correct. On-Demand requires no long-term contract, which is what makes trying things cheap.",
+    "C": "Servers arrive in minutes, not days — that is the point.",
+    "D": "AWS never manages your application code."
+   }
+  },
+  "939": {
+   "k": "The customer owns the application and everything above the operating system. AWS owns the hardware, hypervisor and facilities.",
+   "r": {
+    "A": "Physical hardware is AWS's, and customers never touch it.",
+    "B": "The hypervisor is part of the infrastructure AWS maintains.",
+    "C": "Nobody from the customer visits an AWS data centre, so there is no access list to provide.",
+    "D": "Correct. Your application and its updates are always yours to manage."
+   }
+  },
+  "971": {
+   "k": "Elasticity means capacity is added when demand rises and released when it falls, so performance holds without over-buying.",
+   "r": {
+    "A": "Spreading traffic across Regions is Route 53 or Global Accelerator, not elasticity.",
+    "B": "Archiving logs to cut storage cost is an S3 lifecycle policy.",
+    "C": "AWS never picks services for you.",
+    "D": "Correct. Adjusting capacity to match demand, in both directions, is exactly what elasticity is."
+   }
+  },
+  "975": {
+   "k": "The Simple Monthly Calculator priced a described architecture before you built it. It has since been replaced by the Pricing Calculator.",
+   "r": {
+    "A": "Comparing on-premises with colocation is what a TCO analysis does, not a monthly estimate.",
+    "B": "Correct. It estimates the monthly bill from the resources you say you plan to run.",
+    "C": "Power consumption at your own data centre is an input to a TCO study, not to this tool.",
+    "D": "CPU utilisation is measured by CloudWatch on resources that already exist."
+   }
+  },
+  "981": {
+   "k": "The first cost lever in the cloud is simply not paying for idle capacity — you consume what you need and stop.",
+   "r": {
+    "A": "Correct. Paying only for what is used is the baseline saving, before any commitment discount.",
+    "B": "Buying hardware ahead of need is exactly the waste the cloud removes.",
+    "C": "Manual provisioning tends to leave resources running; automation is what stops the bleed.",
+    "D": "Provisioning for the maximum possible load means paying for a peak that rarely arrives."
+   }
+  },
+  "1042": {
+   "k": "Fault tolerance is about redundancy already being in place, so the application keeps working correctly while a component is broken.",
+   "r": {
+    "A": "Accommodating growth without redesign is scalability.",
+    "B": "Restoring lost data quickly describes backup and recovery, measured by RTO and RPO.",
+    "C": "How secure the application is belongs to the security pillar.",
+    "D": "Correct. Built-in redundancy is what lets a component fail without the application failing."
+   }
+  },
+  "1071": {
+   "k": "An S3 bucket policy statement has four main elements. Principal is the who; Action is the what; Resource is the which.",
+   "r": {
+    "A": "Correct. Principal names the user, role or account the statement applies to.",
+    "B": "Action lists the API calls being allowed or denied, such as s3:GetObject.",
+    "C": "Resource identifies the bucket or objects the statement covers.",
+    "D": "Statement is the container holding all of the above, not the field naming the user."
+   }
+  },
+  "1082": {
+   "k": "RDS is managed: AWS runs the operational chores. What stays yours is the data model and how the database is used.",
+   "r": {
+    "A": "Correct. Automated backups with point-in-time recovery come with RDS and would be your job on EC2.",
+    "B": "You design the schema either way. RDS does not do that for you.",
+    "C": "Indexing is a data modelling decision that stays with the customer.",
+    "D": "Correct. AWS patches the engine and the operating system underneath it.",
+    "E": "ETL is AWS Glue's territory, not a benefit of RDS."
+   }
+  },
+  "1116": {
+   "k": "Lambda is fully managed, so the customer's remaining responsibility is the function itself — its code, its configuration and its permissions.",
+   "r": {
+    "A": "There is no operating system exposed to configure on Lambda.",
+    "B": "Correct. Your code, its dependencies and its IAM role are what you manage.",
+    "C": "The platform running the function is AWS's responsibility.",
+    "D": "Lambda encrypts environment variables and the deployment package by default."
+   }
+  },
+  "9": {
+   "r": {
+    "C": "Customer Service handles billing and account questions on every plan, including Basic. Free, and the right door for an invoice query.",
+    "D": "There is no AWS Operations Support offering. Invented name."
+   }
+  },
+  "17": {
+   "k": "Consolidated billing merges usage across accounts, so everyone reaches volume tiers sooner and reservations are shared.",
+   "r": {
+    "A": "No plan halves your prices. Consolidation changes how usage is counted, not the rate card.",
+    "C": "Correct. Usage from every account is added together, so the whole organisation reaches volume tiers faster.",
+    "D": "The free tier applies once across the organisation, not once per member account."
+   }
+  },
+  "35": {
+   "r": {
+    "B": "Support engineers answer technical and account questions; they do not produce spend breakdowns for you.",
+    "D": "There is no customer-facing AWS Finance team."
+   }
+  },
+  "37": {
+   "k": "Resources being abused is a security event, and the Abuse team accepts reports from any account regardless of Support plan.",
+   "r": {
+    "A": "Customer Service handles billing and account admin. A compromise is not a billing question.",
+    "D": "There is no direct line to an AWS security team. Reports go through the Abuse team or a support case."
+   }
+  },
+  "56": {
+   "k": "On-Demand has no upfront fee, no start-up fee and no termination fee — you pay only for the time the instance runs.",
+   "r": {
+    "A": "Correct as the false statement. There is no start-up fee on EC2; that is what makes On-Demand the no-commitment option."
+   }
+  },
+  "73": {
+   "r": {
+    "A": "Only Basic support is free, and it excludes technical help. Enterprise support is the most expensive plan.",
+    "B": "Nothing is protected automatically. Backups, versioning and encryption are all choices you make.",
+    "D": "AWS never manages customer applications. That stays on your side of the responsibility line."
+   }
+  },
+  "146": {
+   "r": {
+    "A": "Reserved capacity is guaranteed for the term. Being reclaimed at short notice is Spot behaviour."
+   }
+  },
+  "159": {
+   "r": {
+    "A": "There is no plan called Premium. The four are Basic, Developer, Business and Enterprise.",
+    "D": "There is no plan called Standard either."
+   }
+  },
+  "176": {
+   "k": "Tags are metadata for grouping. Their two big payoffs are finding related resources and splitting the bill.",
+   "r": {
+    "A": "Correct. Filtering by a project tag is the fastest way to find everything that belongs to one workload.",
+    "B": "Finding software solutions is what AWS Marketplace is for.",
+    "D": "A deleted resource is gone, and its tags with it. CloudTrail records the deletion, not the tags.",
+    "E": "Correct. Activated as cost allocation tags, they let you break the bill down by project or team."
+   }
+  },
+  "197": {
+   "k": "Per-second billing with a 60-second minimum means short-lived instances cost what they actually used.",
+   "r": {
+    "A": "There is no monthly maintenance charge on EC2 at all.",
+    "C": "Correct. Amazon Linux and Ubuntu bill by the second, so a 90-second job is not charged as an hour.",
+    "D": "There are no start-up fees to be low."
+   }
+  },
+  "198": {
+   "r": {
+    "A": "There is no customer-facing AWS Security Team as a service offering."
+   }
+  },
+  "202": {
+   "k": "For any given term, the more you pay upfront the lower the total. All Upfront beats Partial, which beats No Upfront.",
+   "r": {
+    "A": "Correct. Paying the whole term in advance earns the largest discount of the three payment options.",
+    "C": "Partial Upfront sits in the middle: some money down, a lower hourly rate for the rest.",
+    "D": "No Upfront gives the smallest discount because AWS carries the whole commitment risk."
+   }
+  },
+  "205": {
+   "r": {
+    "B": "No such offering exists. The programmatic route is the AWS Support API, which needs Business or above."
+   }
+  },
+  "218": {
+   "k": "The gap widens because AWS keeps cutting prices as its own scale grows, while data-centre costs do not fall.",
+   "r": {
+    "B": "AWS automates its own infrastructure, not yours. You still operate what you deploy.",
+    "C": "Correct. Repeated price reductions driven by economies of scale are what widen the gap over time.",
+    "D": "AWS secures its own layer at no charge, but that is a constant, not a growing saving."
+   }
+  },
+  "252": {
+   "r": {
+    "A": "Correct. Round-the-clock access to customer service comes with every plan, Business included.",
+    "B": "Business-hours email only describes the Developer plan. Business adds 24/7 phone and chat."
+   }
+  },
+  "261": {
+   "k": "Nobody at AWS can grant permissions inside your account. Only the root user or an existing administrator can.",
+   "r": {
+    "A": "Correct. The account owner, or an IAM administrator they have already empowered, grants the access.",
+    "C": "There is no AWS security team with a key to your account.",
+    "D": "Support engineers help you do it, but they cannot change your IAM policies for you."
+   }
+  },
+  "269": {
+   "k": "Cost Explorer looks backwards at spend you have already incurred and projects that trend forward, up to twelve months.",
+   "r": {
+    "A": "Comparing cloud with on-premises is a TCO exercise, not something Cost Explorer does.",
+    "B": "Estimating a service before you run it is the Pricing Calculator's job.",
+    "D": "Correct. It forecasts up to twelve months ahead from your own usage history."
+   }
+  },
+  "277": {
+   "k": "The purchase options are On-Demand, Reserved, Savings Plans, Spot and Dedicated. Paying upfront to lower the hourly rate is the Reserved model.",
+   "r": {
+    "A": "Bidding is the old Spot mental model, and even Spot no longer works as an auction.",
+    "D": "Correct. Committing and paying in advance for a lower hourly rate is exactly what Reserved Instances offer."
+   }
+  },
+  "288": {
+   "k": "Chat and phone access to engineers start at the Business plan. If the option is missing, the account is on Basic or Developer.",
+   "r": {
+    "A": "Chat does exist — it just is not included below the Business plan.",
+    "B": "There is no per-use fee for chat. It comes with the plan or it does not."
+   }
+  },
+  "290": {
+   "k": "Pay-as-you-go replaces a large fixed purchase with a smaller charge that moves with what you actually use.",
+   "r": {
+    "A": "This inverts the trade. The upfront expense is the large one you are getting rid of.",
+    "B": "Fixed payments are what the cloud moves away from.",
+    "C": "The upfront half is right but the result is variable spend, not a fixed payment."
+   }
+  },
+  "314": {
+   "k": "AWS's cost governance pillars are visibility, controls, forecasting and architecture optimisation. Reworking a workload to use less is the last one.",
+   "r": {
+    "B": "Correct. Refining a running workload to use fewer or cheaper resources is architecture optimisation.",
+    "D": "Resource controls limit who may create what. Useful, but it does not improve an existing design."
+   }
+  },
+  "332": {
+   "r": {
+    "A": "Correct. Security bulletins are published publicly and need no account or paid plan.",
+    "C": "The Support API requires the Business plan or above."
+   }
+  },
+  "340": {
+   "k": "Organizations does two things at once: it consolidates the bill and it applies governance across every member account.",
+   "r": {
+    "A": "Correct. Service control policies cap what member accounts are allowed to do.",
+    "C": "Payment methods sit on the payer account. Organizations does not manage them per member.",
+    "D": "Delivering business outcomes is what Professional Services and partners do.",
+    "E": "Correct. One invoice with pooled usage is the billing half of Organizations."
+   }
+  },
+  "342": {
+   "r": {
+    "B": "Amazon DevPay was retired years ago. AWS Marketplace is the current answer."
+   }
+  },
+  "347": {
+   "r": {
+    "B": "There is no public cost dashboard. Your spend lives in the Billing console, behind your login.",
+    "D": "There is no public security dashboard either."
+   }
+  },
+  "353": {
+   "k": "Independent accounts each pay full price. Joining them under one payer pools the usage so volume tiers and reservations are shared.",
+   "r": {
+    "A": "Deleting accounts loses their isolation, which is usually there for a reason.",
+    "C": "Tracking charges tells you what you spent. It does not reduce the bill.",
+    "D": "Tiered pricing is automatic on the services that have it. There is nothing to enable."
+   }
+  },
+  "355": {
+   "r": {
+    "C": "The 15-minute target belongs to Enterprise. Business promises one hour for a production outage.",
+    "E": "Proactive technical account management means a TAM, which is Enterprise only."
+   }
+  },
+  "359": {
+   "k": "AWS pricing is consumption-based: pay for what you use, no contract required, and no fee for starting a service.",
+   "r": {
+    "B": "Third-party licences still cost money, whether bundled into the hourly rate or brought yourself.",
+    "C": "Correct. Paying per service with no long-term contract is the heart of the model.",
+    "D": "No AWS service charges a start-up fee.",
+    "E": "Reservations very much exist — Reserved Instances and Savings Plans are how you buy a discount."
+   }
+  },
+  "373": {
+   "r": {
+    "B": "There is no Premium plan.",
+    "D": "There is no Standard plan either. The four are Basic, Developer, Business and Enterprise."
+   }
+  },
+  "378": {
+   "r": {
+    "A": "AWS does scan listings, but that is not one of the benefits usually claimed for Marketplace.",
+    "B": "Per-second billing is an EC2 characteristic, not a Marketplace feature.",
+    "D": "Correct. Hourly, annual, BYOL and free-trial pricing all sit alongside each other in the catalogue.",
+    "E": "Correct. Some listings are SaaS or container products that can run beyond a single AWS account."
+   }
+  },
+  "400": {
+   "r": {
+    "B": "The shared responsibility model defines who secures what. It has no bearing on cost."
+   }
+  },
+  "409": {
+   "r": {
+    "A": "Calling support requires the Business plan or above, which is paid.",
+    "D": "University classes are not an AWS offering, and AWS classroom training is paid."
+   }
+  },
+  "424": {
+   "r": {
+    "A": "Correct. The Billing and Cost Management console is where invoices, payment methods, Cost Explorer and Budgets all live."
+   }
+  },
+  "435": {
+   "r": {
+    "D": "AWS does not offer deferred payment plans. Credits and Activate benefits exist but are a different thing.",
+    "E": "AWS is not a lender and offers no credit lines."
+   }
+  },
+  "440": {
+   "r": {
+    "B": "Support does not assemble bills by hand. Consolidation is a self-service feature.",
+    "C": "Correct. The payer account creates the organisation and invites the others, which merges the invoices."
+   }
+  },
+  "441": {
+   "r": {
+    "B": "Antivirus licensing is roughly the same wherever the server runs, so it does not swing the comparison.",
+    "D": "You write the same software either way. Development cost is unaffected by the hosting choice."
+   }
+  },
+  "459": {
+   "k": "AWS pricing is variable and consumption-based. Anything describing a fixed term or a fixed rate is describing the model it replaces.",
+   "r": {
+    "A": "Fixed-term contracts are what the cloud removes, and even reservations do not lock the whole bill.",
+    "C": "Colocation is renting rack space in someone else's data centre — a different industry entirely.",
+    "D": "Planned capacity is the on-premises habit of buying for a forecast.",
+    "E": "Correct. Spend moves with usage, which is the defining property of the model."
+   }
+  },
+  "461": {
+   "r": {
+    "A": "Moving every resource into one account throws away the isolation that separate accounts provide, and the question asks for minimal impact."
+   }
+  },
+  "466": {
+   "r": {
+    "A": "Correct. Round-the-clock chat and phone access to engineers begins at the Business plan.",
+    "C": "Correct. Business removes the cap on how many cases you may open and who may open them.",
+    "D": "A 15-minute target is Enterprise. Business promises one hour for a production outage.",
+    "E": "Annual operational reviews come with Enterprise, delivered through the TAM."
+   }
+  },
+  "472": {
+   "r": {
+    "A": "A detailed billing report shows what you have already spent. It estimates nothing.",
+    "E": "There is no service called Cost Estimator."
+   }
+  },
+  "483": {
+   "r": {
+    "D": "Detailed billing reports what you spent. It offers no recommendations and checks nothing."
+   }
+  },
+  "501": {
+   "r": {
+    "B": "Third-party licences are still your cost on AWS.",
+    "D": "AWS never manages customer applications."
+   }
+  },
+  "502": {
+   "r": {
+    "B": "Correct. Online Tech Talks are live sessions with an AWS presenter, which is what instructor-led means."
+   }
+  },
+  "506": {
+   "r": {
+    "A": "Correct. A single invoice covering every member account is the headline feature.",
+    "C": "There is no flat discount. What you get is pooled usage reaching volume tiers sooner.",
+    "D": "Correct. Combining usage across accounts pushes the whole organisation into cheaper tiers.",
+    "E": "Support plans are bought per account. The payer's plan does not extend to members."
+   }
+  },
+  "512": {
+   "r": {
+    "B": "Solutions Architects give architectural guidance as part of your account relationship, not as a paid engagement.",
+    "D": "Account Managers own the commercial relationship; they do not deliver the work."
+   }
+  },
+  "515": {
+   "r": {
+    "A": "Scanning application software for vulnerabilities is Amazon Inspector.",
+    "C": "Correct. Trusted Advisor flags security groups and bucket permissions that are open too wide.",
+    "D": "It only reports. Nothing is changed automatically on your behalf."
+   }
+  },
+  "523": {
+   "r": {
+    "A": "Correct. Pooled usage across accounts reaches volume pricing tiers sooner than any account would alone.",
+    "B": "Consolidated billing merges invoices, not permissions. Access is still controlled per account by IAM.",
+    "C": "The whole point is one bill instead of many."
+   }
+  },
+  "542": {
+   "r": {
+    "A": "There is no Senior Support Engineer tier, and Basic includes no technical support at all."
+   }
+  },
+  "565": {
+   "r": {
+    "B": "Amazon Lumberyard was a game engine, since succeeded by Open 3D Engine. Not a software catalogue."
+   }
+  },
+  "586": {
+   "r": {
+    "A": "Cost moves with usage. A fixed monthly rate is the opposite of the model.",
+    "E": "Customers never get physical access to AWS data centres."
+   }
+  },
+  "589": {
+   "r": {
+    "D": "Correct. Getting compute in minutes instead of waiting weeks for hardware is the textbook example of agility."
+   }
+  },
+  "591": {
+   "r": {
+    "A": "Correct. A single invoice covering every member account is the headline feature.",
+    "C": "There is no flat discount. What you get is pooled usage reaching volume tiers sooner.",
+    "D": "Correct. Combining usage across accounts pushes the whole organisation into cheaper tiers.",
+    "E": "Support plans are bought per account. The payer's plan does not extend to members."
+   }
+  },
+  "595": {
+   "r": {
+    "B": "Solutions Architects give architectural guidance as part of your account relationship, not as a paid engagement.",
+    "D": "Account Managers own the commercial relationship; they do not deliver the work."
+   }
+  },
+  "599": {
+   "r": {
+    "D": "Detailed billing reports what you spent. It offers no recommendations and checks nothing."
+   }
+  },
+  "601": {
+   "r": {
+    "B": "The shared responsibility model defines who secures what. It has no bearing on cost."
+   }
+  },
+  "605": {
+   "r": {
+    "B": "Antivirus licensing is roughly the same wherever the server runs, so it does not swing the comparison.",
+    "D": "You write the same software either way. Development cost is unaffected by the hosting choice."
+   }
+  },
+  "608": {
+   "r": {
+    "A": "A detailed billing report shows what you have already spent. It estimates nothing.",
+    "E": "There is no service called Cost Eliminator."
+   }
+  },
+  "609": {
+   "r": {
+    "A": "Correct. A single invoice covering every member account is the headline feature.",
+    "C": "There is no flat discount. What you get is pooled usage reaching volume tiers sooner.",
+    "D": "Correct. Combining usage across accounts pushes the whole organisation into cheaper tiers.",
+    "E": "Support plans are bought per account. The payer's plan does not extend to members."
+   }
+  },
+  "614": {
+   "r": {
+    "A": "Calling support requires the Business plan or above, which is paid.",
+    "D": "University classes are not an AWS offering, and AWS classroom training is paid."
+   }
+  },
+  "633": {
+   "r": {
+    "D": "Correct. Getting compute in minutes instead of waiting weeks for hardware is the textbook example of agility."
+   }
+  },
+  "639": {
+   "r": {
+    "A": "Moving every resource into one account throws away the isolation that separate accounts provide, and the question asks for minimal impact."
+   }
+  },
+  "662": {
+   "r": {
+    "B": "Amazon Lumberyard was a game engine, since succeeded by Open 3D Engine. Not a software catalogue."
+   }
+  },
+  "675": {
+   "r": {
+    "A": "Correct. Pooled usage across accounts reaches volume pricing tiers sooner than any account would alone.",
+    "B": "Consolidated billing merges invoices, not permissions. Access is still controlled per account by IAM.",
+    "C": "The whole point is one bill instead of many."
+   }
+  },
+  "690": {
+   "r": {
+    "B": "Correct. Online Tech Talks are live sessions with an AWS presenter, which is what instructor-led means."
+   }
+  },
+  "692": {
+   "r": {
+    "B": "Support does not assemble bills by hand. Consolidation is a self-service feature.",
+    "C": "Correct. The payer account creates the organisation and invites the others, which merges the invoices."
+   }
+  },
+  "717": {
+   "r": {
+    "D": "AWS does not offer deferred payment plans. Credits and Activate benefits exist but are a different thing.",
+    "E": "AWS is not a lender and offers no credit lines."
+   }
+  },
+  "735": {
+   "k": "A TCO comparison counts what disappears from the bill when you migrate: the hardware and the data centre around it.",
+   "r": {
+    "A": "You write the same application either way, so development cost is unchanged.",
+    "C": "Correct. Disk arrays and their refresh cycle are a real on-premises cost that AWS absorbs.",
+    "D": "Correct. Buying, racking and replacing servers is the clearest cost that goes away.",
+    "E": "Antivirus licensing follows the workload rather than the hosting model."
+   }
+  },
+  "780": {
+   "k": "AWS pricing is variable and consumption-based. Anything describing a fixed term or a fixed rate is describing the model it replaces.",
+   "r": {
+    "A": "Fixed-term contracts are what the cloud removes, and even reservations do not lock the whole bill.",
+    "C": "Colocation is renting rack space in someone else's data centre — a different industry entirely.",
+    "D": "Planned capacity is the on-premises habit of buying for a forecast.",
+    "E": "Correct. Spend moves with usage, which is the defining property of the model."
+   }
+  },
+  "782": {
+   "r": {
+    "A": "Full control over the underlying resources is what you give up. AWS runs the hardware and the hypervisor.",
+    "D": "Every account has service quotas. They can be raised, but they are not absent."
+   }
+  },
+  "786": {
+   "k": "The one thing only Enterprise Support buys is a named human who knows your environment: the Technical Account Manager.",
+   "r": {
+    "A": "There is no Technical Project Manager role in AWS Support.",
+    "C": "Cloud Support Engineers answer cases from the Developer plan upward.",
+    "D": "Solutions Architects are available through the account team on other plans too."
+   }
+  },
+  "788": {
+   "r": {
+    "B": "Provisioning developer environments is useful but it is not where the money goes for a growing start-up.",
+    "C": "Customer relationship management is a business application, not an AWS cost lever."
+   }
+  },
+  "792": {
+   "k": "For a workload running on AWS, the TCO line items are the AWS charges themselves. Facilities and network hardware are what you stopped paying for.",
+   "r": {
+    "A": "Correct. Compute is normally the largest single line on an AWS bill.",
+    "B": "Facilities are an on-premises cost. Running on AWS, there is no building to fund.",
+    "C": "Correct. Storage is billed by volume and class, and it accumulates quietly.",
+    "D": "Correct. Data transfer out is the line most people forget and the one that surprises them.",
+    "E": "Network hardware belongs to AWS. You never buy a switch."
+   }
+  },
+  "794": {
+   "r": {
+    "B": "Business analysis is a project cost and is unaffected by where the workload runs.",
+    "D": "Operating system administration is one of the costs that genuinely differs, which makes it a valid TCO line item."
+   }
+  },
+  "811": {
+   "r": {
+    "C": "Reservations are a billing construct. They add no networking capability of any kind.",
+    "D": "Standard RIs cannot be upgraded to a newer type mid-term. Only Convertible RIs can be exchanged."
+   }
+  },
+  "831": {
+   "r": {
+    "B": "AWS secures the cloud, not everything in it. Your data and access controls stay yours.",
+    "C": "Correct. Provisioning on demand, without a purchase cycle, is the core benefit.",
+    "D": "Storage is effectively unlimited but it is certainly not free.",
+    "E": "Customers have no control over, and no access to, the physical infrastructure."
+   }
+  },
+  "833": {
+   "r": {
+    "A": "Trusted Advisor is software, not a person. The human equivalent is a Technical Account Manager.",
+    "B": "It is an AWS service, not a partner network."
+   }
+  },
+  "844": {
+   "r": {
+    "A": "There is no Senior Support Engineer tier, and Basic includes no technical support at all."
+   }
+  },
+  "875": {
+   "r": {
+    "B": "Correct. Independent vendors list their own products, so Marketplace is a selling channel as well as a shop.",
+    "C": "Correct. Buying third-party software that runs on AWS, billed through your invoice, is its main purpose.",
+    "D": "Compliance documents come from AWS Artifact, free of charge."
+   }
+  },
+  "878": {
+   "r": {
+    "B": "Third-party licences are still your cost on AWS.",
+    "D": "AWS never manages customer applications."
+   }
+  },
+  "880": {
+   "r": {
+    "A": "Cost moves with usage. A fixed monthly rate is the opposite of the model.",
+    "E": "Customers never get physical access to AWS data centres."
+   }
+  },
+  "881": {
+   "k": "A TCO comparison counts costs that differ between the two models — hardware and the labour to run it — and ignores costs the business would carry either way.",
+   "r": {
+    "A": "Payment processing fees follow your business, not your hosting decision.",
+    "B": "Correct. Buying and installing servers is the clearest cost that disappears on AWS.",
+    "C": "Correct. Patching, backups and recovery are labour costs that shrink markedly with managed services.",
+    "E": "Advertising spend has nothing to do with infrastructure."
+   }
+  },
+  "900": {
+   "r": {
+    "C": "The Billing console shows charges. It carries no policy about what you may run.",
+    "D": "Correct. The Acceptable Use Policy is the published list of what is not allowed on AWS infrastructure."
+   }
+  },
+  "905": {
+   "r": {
+    "B": "A support case answers a question. Hands-on migration help comes from Professional Services or a partner."
+   }
+  },
+  "906": {
+   "k": "Concierge is a billing and account team for Enterprise customers, not a technical one.",
+   "r": {
+    "A": "Application development help comes from Professional Services or a partner.",
+    "B": "Architecture guidance comes from your Solutions Architect or TAM.",
+    "C": "Correct. Billing analysis, account questions and cost queries are what the Concierge team handles."
+   }
+  },
+  "915": {
+   "r": {
+    "A": "Preventing a user from creating a resource is an IAM policy or a service control policy.",
+    "C": "Correct as keyed, though read it as 'set a budget'. Budgets alerts on thresholds; Service Quotas is what sets resource limits.",
+    "D": "Splitting a bill across payment methods is not something Budgets does."
+   }
+  },
+  "919": {
+   "r": {
+    "A": "Scanning application software for vulnerabilities is Amazon Inspector.",
+    "C": "Correct. Trusted Advisor flags security groups and bucket permissions that are open too wide.",
+    "D": "It only reports. Nothing is changed automatically on your behalf."
+   }
+  },
+  "923": {
+   "r": {
+    "A": "Correct. The Billing and Cost Management console is where invoices, payment methods, Cost Explorer and Budgets all live."
+   }
+  },
+  "941": {
+   "r": {
+    "B": "Product pages list prices. They know nothing about your account's usage."
+   }
+  },
+  "979": {
+   "r": {
+    "C": "A Solutions Architect advises on design. Reactivating a suspended account is an account and billing request."
+   }
+  },
+  "983": {
+   "r": {
+    "B": "Correct. Slicing spend by day, by service and by linked account is exactly what Cost Explorer is built for."
+   }
+  },
+  "995": {
+   "r": {
+    "A": "Team communication is not an AWS Organizations feature.",
+    "B": "NoSQL databases are DynamoDB's territory, unrelated to account governance.",
+    "C": "Automated security checks come from Security Hub, Config and Trusted Advisor.",
+    "E": "Correct. Service control policies enforce what member accounts may and may not do."
+   }
+  },
+  "997": {
+   "r": {
+    "A": "A detailed billing report describes spend in one account. It cannot merge separate accounts.",
+    "D": "A cost allocation report breaks spend down by tag. It does not combine invoices."
+   }
+  },
+  "998": {
+   "k": "The TCO Calculator compared running on-premises against running on AWS. Estimating a future AWS bill is the Pricing Calculator's job.",
+   "r": {
+    "B": "Correct. Its whole purpose was to model the saving from moving off your own hardware.",
+    "C": "Estimating a monthly AWS bill is what the Pricing Calculator does.",
+    "D": "Billing alerts are set up in CloudWatch or AWS Budgets."
+   }
+  },
+  "1022": {
+   "r": {
+    "B": "Correct. Usage from every account is added together, so the organisation reaches volume tiers faster.",
+    "C": "Merging invoices changes nothing about security. Each account keeps its own IAM."
+   }
+  },
+  "1040": {
+   "r": {
+    "B": "Auditing is not a Trusted Advisor category. The five are cost, performance, security, fault tolerance and service limits."
+   }
+  },
+  "1043": {
+   "r": {
+    "A": "Correct. Separate accounts produce separate invoices, which is the cleanest way to split environments.",
+    "C": "VPCs isolate networks inside one account. They do not split the bill."
+   }
+  },
+  "1045": {
+   "r": {
+    "B": "Memory optimised instances cost more and are the wrong family for compute-heavy work. That raises the bill, not lowers it."
+   }
+  },
+  "1053": {
+   "r": {
+    "D": "Sales representatives do not authorise testing. Under current policy the eight permitted services need no approval at all."
+   }
+  },
+  "1060": {
+   "r": {
+    "B": "Restricting who may create resources controls spend, but it does not allocate cost to a department.",
+    "C": "A second payment method changes how you pay, not how the cost is attributed.",
+    "D": "One account for everything makes allocation harder, not easier."
+   }
+  },
+  "1064": {
+   "k": "A member account can only leave once it can stand on its own — its own payment method, contact details and agreements.",
+   "r": {
+    "C": "Correct. The account must satisfy the standalone requirements before Organizations will release it.",
+    "D": "The member account can also remove itself, provided it meets those requirements."
+   }
+  },
+  "1070": {
+   "r": {
+    "B": "Correct. A separate account per department produces a clean per-department invoice with nothing to untangle.",
+    "C": "An account manager is a person at AWS. They do not appear in your cost breakdown."
+   }
+  },
+  "1079": {
+   "k": "Convertible RIs can be exchanged for others of equal or greater value, but the exchange stays within the Region and never shortens the term.",
+   "r": {
+    "B": "Exchanges happen within a Region. A Convertible RI cannot be moved to another one.",
+    "D": "Merging can lengthen a term but never shorten it. You are committed for the period you bought."
+   }
+  },
+  "1081": {
+   "r": {
+    "B": "Adding up published prices by hand is slow and misses the interactions between services, which is exactly what the calculator handles."
+   }
+  },
+  "1107": {
+   "r": {
+    "A": "Correct. The core checks are available on every plan, including Basic.",
+    "B": "The full set of checks requires the Business plan or above."
+   }
+  },
+  "1114": {
+   "r": {
+    "C": "The Billing Dashboard shows charges. Scheduled maintenance and infrastructure events appear in the AWS Health Dashboard."
+   }
+  },
+  "1134": {
+   "r": {
+    "A": "Correct. Pooled usage across accounts reaches volume tiers sooner than any account would alone.",
+    "B": "Consolidated billing is free. There is no fee for using it.",
+    "C": "Correct. One invoice covering every member account is the headline feature.",
+    "D": "AWS does not offer installment plans."
+   }
+  },
+  "1141": {
+   "r": {
+    "A": "AWS issues no refunds for changing instance size. You simply pay the new rate from that point.",
+    "B": "Correct. Scaling with demand means the bill follows usage instead of a capacity guess."
+   }
+  },
+  "4": {
+   "r": {
+    "B": "Correct. Provisioning to match demand is how a workload keeps serving traffic instead of falling over at a peak.",
+    "C": "Most AWS services are regional. Only IAM, Route 53, CloudFront and a few others are global.",
+    "D": "SLA credits compensate you after an outage. They do not make the service reliable.",
+    "E": "Correct. Recovering quickly from failure is the reliability pillar's definition."
+   }
+  },
+  "5": {
+   "r": {
+    "A": "Correct. The line moves with the service: on EC2 you own the OS, on Lambda you own only the code."
+   }
+  },
+  "18": {
+   "r": {
+    "D": "An external drive is outside AWS entirely and has to be managed by hand. Snapshots are the built-in answer."
+   }
+  },
+  "22": {
+   "r": {
+    "A": "Correct. Grant only what the task needs, only while it is needed — nothing broader, nothing permanent."
+   }
+  },
+  "36": {
+   "k": "The CLI signs every request with an access key ID and its secret access key. Console credentials do not work for it.",
+   "r": {
+    "B": "There is no credential called a secret token. Session tokens exist, but only alongside temporary keys from STS.",
+    "C": "A user ID identifies a principal internally; it is not something you authenticate with.",
+    "D": "A user name and password sign a human into the console, not the CLI."
+   }
+  },
+  "43": {
+   "r": {
+    "B": "Correct. Routers, switches and the rest of the network fabric are configured by AWS and invisible to customers."
+   }
+  },
+  "48": {
+   "r": {
+    "A": "Disk disposal happens inside AWS data centres, which customers never enter.",
+    "B": "Physical access control is one of the controls customers inherit wholly from AWS.",
+    "D": "Correct. The IAM password policy is yours to set — AWS ships no complexity rules for you.",
+    "E": "Correct. Security groups and network ACLs are configured by the customer on every account."
+   }
+  },
+  "58": {
+   "r": {
+    "A": "Encrypted keys protect data, not the sign-in step.",
+    "B": "Email verification confirms an address at sign-up. It is not a second factor at login."
+   }
+  },
+  "69": {
+   "r": {
+    "A": "There is no such thing as an instance password. Instances are reached with a key pair or Session Manager."
+   }
+  },
+  "81": {
+   "r": {
+    "B": "Security tokens accompany temporary credentials from STS; they are not the console sign-in.",
+    "C": "Correct. An IAM user signs into the console with a user name and password, ideally with MFA on top."
+   }
+  },
+  "84": {
+   "r": {
+    "C": "Who may do what inside your account is always the customer's decision.",
+    "D": "Correct. Firmware and hardware maintenance sit entirely on AWS's side.",
+    "E": "Correct. Physical security of Regions, Availability Zones and edge locations is AWS's alone."
+   }
+  },
+  "112": {
+   "r": {
+    "B": "Customers do not choose hardware vendors on AWS, so this cannot be a design practice.",
+    "D": "Correct. Decoupling lets one component fail or scale without dragging the others with it."
+   }
+  },
+  "117": {
+   "r": {
+    "B": "Database controls are shared at best. On RDS you still manage users, schema and network access."
+   }
+  },
+  "151": {
+   "r": {
+    "D": "IAM has a legacy server certificate store, which is why this option is arguable. ACM is the modern answer."
+   }
+  },
+  "163": {
+   "k": "Access keys are long-lived credentials, so AWS's advice is to rotate them, never share them, and keep them out of code.",
+   "r": {
+    "B": "Credentials are never shared, trusted person or not. Give each identity its own.",
+    "C": "Correct. Regular rotation limits how long a leaked key stays useful.",
+    "D": "Keys in source code end up in repositories. Use an instance role instead."
+   }
+  },
+  "194": {
+   "r": {
+    "B": "Reserving capacity is a customer decision — it is how you buy, not something AWS does for you.",
+    "D": "Compliance is shared: AWS certifies its layer, you certify yours.",
+    "E": "Correct. The security of the underlying infrastructure is AWS's responsibility alone."
+   }
+  },
+  "203": {
+   "r": {
+    "D": "Storage capacity has nothing to do with protecting data."
+   }
+  },
+  "206": {
+   "r": {
+    "C": "Correct. The SDKs call the same IAM APIs the console and CLI use."
+   }
+  },
+  "209": {
+   "r": {
+    "D": "Compliance resources describe AWS's certifications. Security notices go out as Security Bulletins."
+   }
+  },
+  "213": {
+   "r": {
+    "D": "There is no second password. The second factor is an MFA device."
+   }
+  },
+  "219": {
+   "r": {
+    "A": "Correct. The application and its data model are yours, which puts them squarely in security in the cloud.",
+    "B": "Replacing hardware happens inside AWS data centres.",
+    "C": "The hypervisor is AWS's layer. Customers never create or touch one.",
+    "E": "Correct. Whether to encrypt the file system, and with which key, is your decision."
+   }
+  },
+  "220": {
+   "r": {
+    "B": "Correct. A U2F key is one of the supported MFA devices, alongside virtual and hardware TOTP tokens."
+   }
+  },
+  "222": {
+   "r": {
+    "A": "Runtime is billed by the second or hour, so it very much affects the cost.",
+    "D": "Correct as a non-factor. Hosted zones are a Route 53 charge and have nothing to do with EC2.",
+    "E": "More instances means more instance-hours, so this is a factor."
+   }
+  },
+  "239": {
+   "r": {
+    "B": "Credentials in code get committed, copied and leaked. An instance role removes the need for them entirely."
+   }
+  },
+  "245": {
+   "r": {
+    "A": "Stopping everything is disruptive and premature. Rotate credentials and review CloudTrail first."
+   }
+  },
+  "274": {
+   "r": {
+    "C": "A team with no permissions cannot work. Least privilege means the minimum needed, not zero."
+   }
+  },
+  "275": {
+   "r": {
+    "A": "Correct. Compute is normally the largest line on an AWS bill.",
+    "B": "The number of distinct services matters far less than how much of each you consume.",
+    "C": "Data transfer into AWS is free, which is exactly the trap in this question.",
+    "D": "Correct. Data transfer out is charged and is the line that most often surprises people."
+   }
+  },
+  "301": {
+   "r": {
+    "B": "Encryption is always a decision you make. Nothing in S3 is encrypted unless you turn it on or set a default.",
+    "D": "Correct. Encrypting before upload is client-side encryption, and it keeps the key entirely in your hands."
+   }
+  },
+  "316": {
+   "r": {
+    "A": "There is no object called an IAM Identity. Permissions attach through policies, on the user or a group."
+   }
+  },
+  "331": {
+   "r": {
+    "D": "Correct. The Acceptable Use Policy is the published list of what is not allowed on AWS."
+   }
+  },
+  "334": {
+   "r": {
+    "B": "Auditing your own environment is the customer's job, using CloudTrail and Config.",
+    "C": "Monitoring your resource usage is yours, through CloudWatch.",
+    "D": "Who may reach your resources is decided by your IAM policies and security groups."
+   }
+  },
+  "337": {
+   "k": "AWS holds broad third-party certifications and publishes the evidence; your own compliance is then built on top of that.",
+   "r": {
+    "A": "Regulated workloads run on AWS every day, including PCI and HIPAA ones.",
+    "B": "AWS never becomes responsible for your regulatory obligations. That is the customer's half.",
+    "D": "Regular assessment is real, but it describes the process rather than what customers actually get."
+   }
+  },
+  "346": {
+   "r": {
+    "B": "Communications controls are shared, not inherited. You configure your own network paths."
+   }
+  },
+  "349": {
+   "r": {
+    "A": "Manual monitoring is exactly what the principles argue against — automate security best practices.",
+    "C": "Scaling horizontally is a reliability principle, not one of the security seven.",
+    "D": "Correct. Enable traceability is one of the seven, and it is why CloudTrail is always on the list.",
+    "E": "Sensitive data belongs in the cloud all the time, protected properly."
+   }
+  },
+  "351": {
+   "r": {
+    "B": "Correct. A security group is the firewall in front of the database, deciding which sources may connect.",
+    "D": "Distributing traffic across targets is a load balancer's job."
+   }
+  },
+  "357": {
+   "r": {
+    "C": "You choose whether to enable server-side encryption. AWS supplies the mechanism, not the decision.",
+    "D": "Application security is always the customer's."
+   }
+  },
+  "367": {
+   "r": {
+    "A": "Abuse reports are handled by the AWS Abuse team, not by GuardDuty.",
+    "B": "Correct. Continuous analysis of CloudTrail, VPC Flow Logs and DNS logs to spot compromise is exactly what it does.",
+    "C": "Investigating root cause across findings is Amazon Detective."
+   }
+  },
+  "383": {
+   "r": {
+    "A": "Saving copies of policies changes nothing. The urgent action is to revoke the credentials."
+   }
+  },
+  "389": {
+   "r": {
+    "C": "Correct. Restricting who may touch cardholder data and writing the policy around it is the customer's PCI obligation."
+   }
+  },
+  "393": {
+   "r": {
+    "B": "Internal approval is your own governance. It is not an AWS step.",
+    "C": "There is nobody to notify. Under current policy the eight permitted services need no notice at all.",
+    "D": "Correct as keyed, but out of date — since 2019 no AWS approval is needed for the eight permitted services."
+   }
+  },
+  "408": {
+   "r": {
+    "A": "Granting access to individuals and services is IAM, which is always the customer's.",
+    "B": "Encrypting data in transit is your choice of protocol and certificate.",
+    "D": "Updating the guest operating system on EC2 is the customer's job."
+   }
+  },
+  "411": {
+   "r": {
+    "A": "Application security is entirely the customer's.",
+    "D": "Client-side data is yours by definition — AWS never sees the plaintext."
+   }
+  },
+  "418": {
+   "r": {
+    "B": "Single tenancy means Dedicated Hosts or Instances, which cost more than shared tenancy.",
+    "C": "Correct. Paying only for the capacity you actually need, when you need it, is where the saving comes from.",
+    "D": "Encryption is free on most services but it saves nothing."
+   }
+  },
+  "421": {
+   "r": {
+    "A": "A code repository with commit features is CodeCommit.",
+    "B": "Correct. CloudWatch stores metrics and logs, and alarms fire on thresholds you set.",
+    "C": "A security configuration repository with threat analytics describes Security Hub."
+   }
+  },
+  "422": {
+   "r": {
+    "B": "Correct. Encrypting on the client side means the data is already ciphertext before AWS sees it.",
+    "C": "AWS trains its own data centre staff. Customers never meet them."
+   }
+  },
+  "423": {
+   "r": {
+    "C": "Zone security is physical, which customers inherit wholly rather than share.",
+    "D": "Data centre auditing is AWS's alone. You read the results through AWS Artifact."
+   }
+  },
+  "439": {
+   "r": {
+    "C": "Disposing of storage media is AWS's, and it happens inside their facilities.",
+    "D": "Environmental risk — flood, fire, power — is managed by AWS at the facility level."
+   }
+  },
+  "456": {
+   "r": {
+    "A": "The underlying infrastructure is patched by AWS.",
+    "D": "Network infrastructure belongs to AWS and is patched by AWS."
+   }
+  },
+  "457": {
+   "k": "Configuration management is one of the three shared controls, alongside patch management and awareness and training.",
+   "r": {
+    "A": "The customer configures their own resources, but AWS configures the infrastructure underneath.",
+    "B": "AWS configures its layer, but nobody configures your security groups for you.",
+    "C": "Correct. Both sides configure their own layer, which is what makes it a shared control."
+   }
+  },
+  "460": {
+   "r": {
+    "B": "NTP servers are part of the infrastructure AWS runs.",
+    "C": "Correct. Training your own people is the customer's half of the awareness and training shared control.",
+    "D": "Data centre access is controlled by AWS.",
+    "E": "Hardware disposal happens inside AWS facilities."
+   }
+  },
+  "490": {
+   "r": {
+    "C": "User names and passwords are for the console. The CLI signs requests with keys.",
+    "D": "SSH keys log you into an instance's operating system, not into the AWS API."
+   }
+  },
+  "518": {
+   "r": {
+    "A": "Wiping disks after use is AWS's, and it happens where customers cannot go.",
+    "B": "Firmware on hardware devices is AWS's responsibility.",
+    "D": "Customers never see the cabling, let alone specify its category."
+   }
+  },
+  "520": {
+   "r": {
+    "B": "Primary key is database terminology. It grants no AWS access.",
+    "D": "A user ID identifies a principal but is not used to authenticate a request.",
+    "E": "There is no secondary key in AWS credentials."
+   }
+  },
+  "544": {
+   "r": {
+    "A": "Connectivity from AWS to the internet is part of the infrastructure AWS operates.",
+    "B": "Flaws in the AWS Cloud infrastructure are AWS's to patch."
+   }
+  },
+  "546": {
+   "r": {
+    "A": "Correct. Latency to your users is usually the first thing that narrows the Region choice.",
+    "B": "AWS does not localise your application. That is your code's job.",
+    "D": "Cooling costs are AWS's problem and are already baked into the price.",
+    "E": "Nobody visits an AWS data centre, so proximity to your office is irrelevant."
+   }
+  },
+  "563": {
+   "r": {
+    "E": "Correct. An account-wide password policy setting length, complexity and expiry is a built-in IAM feature."
+   }
+  },
+  "575": {
+   "r": {
+    "A": "Correct. SOC, ISO, PCI and similar reports plus agreements are exactly what Artifact provides.",
+    "C": "Training materials come from AWS Skill Builder.",
+    "D": "Assessing your own deployed applications is Amazon Inspector's job."
+   }
+  },
+  "582": {
+   "r": {
+    "A": "Client-side encryption happens on your machine with your key. AWS cannot do it for you."
+   }
+  },
+  "583": {
+   "r": {
+    "A": "Firmware on network infrastructure is AWS's.",
+    "B": "Correct. The guest operating system on EC2 is yours to patch.",
+    "C": "The hypervisor is AWS's layer, invisible to customers."
+   }
+  },
+  "587": {
+   "r": {
+    "A": "Correct. Removing the wait for hardware is the productivity gain — teams start work the same day.",
+    "B": "An AWS server is not inherently faster than one you buy. What changes is how quickly you get it.",
+    "D": "Security and compliance work does not disappear; it shifts shape."
+   }
+  },
+  "616": {
+   "r": {
+    "B": "Single tenancy means Dedicated Hosts or Instances, which cost more than shared tenancy.",
+    "C": "Correct. Paying only for the capacity you actually need, when you need it, is where the saving comes from.",
+    "D": "Encryption is free on most services but it saves nothing."
+   }
+  },
+  "619": {
+   "r": {
+    "B": "Correct. Encrypting on the client side means the data is already ciphertext before AWS sees it.",
+    "C": "AWS trains its own data centre staff. Customers never meet them."
+   }
+  },
+  "622": {
+   "r": {
+    "E": "Correct. An account-wide password policy setting length, complexity and expiry is a built-in IAM feature."
+   }
+  },
+  "631": {
+   "r": {
+    "C": "User names and passwords are for the console. The CLI signs requests with keys.",
+    "D": "SSH keys log you into an instance's operating system, not into the AWS API."
+   }
+  },
+  "638": {
+   "r": {
+    "A": "The underlying infrastructure is patched by AWS.",
+    "D": "Network infrastructure belongs to AWS and is patched by AWS."
+   }
+  },
+  "642": {
+   "r": {
+    "A": "Correct. Latency to your users is usually the first thing that narrows the Region choice.",
+    "B": "AWS does not localise your application. That is your code's job.",
+    "D": "Cooling costs are AWS's problem and are already baked into the price.",
+    "E": "Nobody visits an AWS data centre, so proximity to your office is irrelevant."
+   }
+  },
+  "645": {
+   "r": {
+    "C": "Disposing of storage media is AWS's, and it happens inside their facilities.",
+    "D": "Environmental risk — flood, fire, power — is managed by AWS at the facility level."
+   }
+  },
+  "661": {
+   "r": {
+    "A": "Granting access to individuals and services is IAM, which is always the customer's.",
+    "B": "Encrypting data in transit is your choice of protocol and certificate.",
+    "D": "Updating the guest operating system on EC2 is the customer's job."
+   }
+  },
+  "667": {
+   "r": {
+    "A": "A code repository with commit features is CodeCommit.",
+    "B": "Correct. CloudWatch stores metrics and logs, and alarms fire on thresholds you set.",
+    "C": "A security configuration repository with threat analytics describes Security Hub."
+   }
+  },
+  "676": {
+   "r": {
+    "B": "Internal approval is your own governance. It is not an AWS step.",
+    "C": "There is nobody to notify. Under current policy the eight permitted services need no notice at all.",
+    "D": "Correct as keyed, but out of date — since 2019 no AWS approval is needed for the eight permitted services."
+   }
+  },
+  "689": {
+   "r": {
+    "A": "Patching the guest operating system is the customer's on EC2.",
+    "B": "Whether and how to encrypt is always your decision.",
+    "D": "Correct. Auditing the physical assets in a data centre is something only AWS can do."
+   }
+  },
+  "704": {
+   "r": {
+    "A": "Client-side encryption happens on your machine with your key. AWS cannot do it for you."
+   }
+  },
+  "709": {
+   "r": {
+    "C": "Zone security is physical, which customers inherit wholly rather than share.",
+    "D": "Data centre auditing is AWS's alone. You read the results through AWS Artifact."
+   }
+  },
+  "714": {
+   "r": {
+    "B": "NTP servers are part of the infrastructure AWS runs.",
+    "C": "Correct. Training your own people is the customer's half of the awareness and training shared control.",
+    "D": "Data centre access is controlled by AWS.",
+    "E": "Hardware disposal happens inside AWS facilities."
+   }
+  },
+  "727": {
+   "r": {
+    "A": "Application security is entirely the customer's.",
+    "D": "Client-side data is yours by definition — AWS never sees the plaintext."
+   }
+  },
+  "728": {
+   "r": {
+    "B": "Correct. A group is the object that carries one permission set for many users at once."
+   }
+  },
+  "732": {
+   "r": {
+    "A": "AWS being certified never makes your workload compliant. That claim contradicts the shared responsibility model outright.",
+    "D": "AWS chooses frameworks by customer demand and regulation, not by matching other cloud providers.",
+    "E": "New frameworks are adopted over time, which is true but weaker than the two keyed answers."
+   }
+  },
+  "734": {
+   "r": {
+    "A": "Correct. Physical and environmental controls at the data centre are what a customer inherits in full.",
+    "D": "User and access management is the clearest customer responsibility there is."
+   }
+  },
+  "750": {
+   "k": "AWS's name for granting only what a task needs is least privilege, and it is the first IAM best practice in every AWS document.",
+   "r": {
+    "A": "Restricted access is not the term AWS uses.",
+    "B": "As-needed access describes the idea loosely but is not the name.",
+    "D": "Token access refers to temporary credentials, a different concept."
+   }
+  },
+  "751": {
+   "r": {
+    "B": "Correct. One account per department produces a clean per-department invoice with nothing to untangle.",
+    "E": "Purchase orders change how you pay, not how the cost is attributed."
+   }
+  },
+  "752": {
+   "r": {
+    "A": "Securing the hardware, facilities and network is the definition of AWS's half.",
+    "C": "Correct. The operating system, network settings and firewall rules on your resources are all yours."
+   }
+  },
+  "759": {
+   "r": {
+    "A": "Least privilege is about scope of permissions, not the number of users.",
+    "C": "Handing out AdministratorAccess is the opposite of least privilege, however trustworthy the person.",
+    "D": "Correct. Only the permissions the task requires, and nothing else."
+   }
+  },
+  "766": {
+   "r": {
+    "A": "Correct. SOC, ISO, PCI and similar reports plus agreements are exactly what Artifact provides.",
+    "C": "Training materials come from AWS Skill Builder.",
+    "D": "Assessing your own deployed applications is Amazon Inspector's job."
+   }
+  },
+  "797": {
+   "r": {
+    "C": "A usage report shows consumption. It makes no judgement about whether a rule is dangerous."
+   }
+  },
+  "800": {
+   "r": {
+    "B": "Correct. Media that cannot be securely wiped is physically destroyed before it leaves an AWS facility."
+   }
+  },
+  "806": {
+   "r": {
+    "E": "Correct. After rotating credentials, opening a case gets AWS involved in containing the compromise."
+   }
+  },
+  "810": {
+   "k": "A role is a set of permissions that anything can assume temporarily — a service, an instance, or a federated user. It has no permanent credentials.",
+   "r": {
+    "A": "A user is a permanent identity. A role is not tied to one person.",
+    "B": "A group bundles users. It cannot be assumed by a service.",
+    "C": "Correct. A role defines permissions that are assumed temporarily rather than owned."
+   }
+  },
+  "822": {
+   "r": {
+    "A": "Correct. Marketplace software is metered hourly or monthly through your AWS bill, with no separate licence purchase.",
+    "E": "Nothing removes the need to test. Listings are vetted, but not for your use case."
+   }
+  },
+  "824": {
+   "r": {
+    "A": "Firmware on network infrastructure is AWS's.",
+    "B": "Correct. The guest operating system on EC2 is yours to patch.",
+    "C": "The hypervisor is AWS's layer, invisible to customers."
+   }
+  },
+  "827": {
+   "r": {
+    "A": "The customer configures their own resources, but AWS configures the infrastructure underneath.",
+    "B": "AWS configures its layer, but nobody configures your security groups for you.",
+    "C": "Correct. Both sides configure their own layer, which is what makes it a shared control."
+   }
+  },
+  "830": {
+   "r": {
+    "A": "There is no plan called Premium Support, and a support case is slower than the abuse channel here.",
+    "C": "A Solutions Architect advises on design. An attack in progress is not a design question."
+   }
+  },
+  "835": {
+   "r": {
+    "C": "AWS Health reports events affecting your resources. It holds no compliance reports."
+   }
+  },
+  "841": {
+   "r": {
+    "D": "Firewall configuration — security groups and network ACLs — is always the customer's."
+   }
+  },
+  "843": {
+   "k": "Security IN the cloud is what the customer configures. Security OF the cloud is what AWS runs underneath.",
+   "r": {
+    "C": "Correct. Configuring the firewall around your resources is the customer's work, so it is security in the cloud.",
+    "D": "Global infrastructure is AWS's layer, which makes it security of the cloud."
+   }
+  },
+  "874": {
+   "r": {
+    "A": "You write the same code either way. Development cost does not change with hosting.",
+    "C": "Correct. Not buying servers for a new application is the clearest expense the cloud removes.",
+    "D": "Test cases are written regardless of where the application runs."
+   }
+  },
+  "879": {
+   "r": {
+    "A": "Connectivity from AWS to the internet is part of the infrastructure AWS operates.",
+    "B": "Flaws in the AWS Cloud infrastructure are AWS's to patch."
+   }
+  },
+  "883": {
+   "r": {
+    "A": "Virtualisation is AWS's layer. Customers never touch the hypervisor.",
+    "B": "Network infrastructure belongs to AWS.",
+    "C": "Correct. The application you deploy, and its security, are always yours."
+   }
+  },
+  "885": {
+   "r": {
+    "A": "Correct. Removing the wait for hardware is the productivity gain — teams start work the same day.",
+    "B": "An AWS server is not inherently faster than one you buy. What changes is how quickly you get it.",
+    "D": "Security and compliance work does not disappear; it shifts shape."
+   }
+  },
+  "897": {
+   "r": {
+    "A": "Cloud Directory stores hierarchical data. It adds nothing to console sign-in."
+   }
+  },
+  "904": {
+   "r": {
+    "C": "Reusing a password across sites means one breach elsewhere becomes a breach here. Never recommended."
+   }
+  },
+  "917": {
+   "r": {
+    "B": "Service outages are reported by the AWS Health Dashboard, not Trusted Advisor.",
+    "D": "Available software patches inside your instances are Systems Manager or Inspector's territory.",
+    "E": "Trusted Advisor checks service limits and security posture, not how many users you have."
+   }
+  },
+  "918": {
+   "r": {
+    "C": "Correct. Creating, rotating and controlling access to encryption keys is exactly what KMS does."
+   }
+  },
+  "935": {
+   "r": {
+    "A": "Decommissioning physical storage is AWS's, inside their own facilities.",
+    "D": "Physical access to data centres is controlled by AWS alone."
+   }
+  },
+  "954": {
+   "r": {
+    "A": "Treating servers as non-disposable is the on-premises habit the cloud replaces.",
+    "B": "Synchronous integration tightens coupling. The principle is to decouple with queues and events."
+   }
+  },
+  "966": {
+   "r": {
+    "A": "Access to the facilities is managed by AWS.",
+    "D": "Protecting the networking infrastructure itself is AWS's; protecting your VPC configuration is yours."
+   }
+  },
+  "970": {
+   "r": {
+    "B": "Correct. Defending the network fabric against spoofing and sniffing is part of the infrastructure AWS operates."
+   }
+  },
+  "984": {
+   "r": {
+    "B": "Correct. On EC2 the guest OS is yours. Note the contrast with RDS, where AWS patches it for you."
+   }
+  },
+  "1000": {
+   "r": {
+    "C": "Correct. Security groups, network ACLs and route tables are configured by the customer."
+   }
+  },
+  "1019": {
+   "r": {
+    "B": "Primary key is database terminology. It grants no AWS access.",
+    "D": "A user ID identifies a principal but is not used to authenticate a request.",
+    "E": "There is no secondary key in AWS credentials."
+   }
+  },
+  "1027": {
+   "r": {
+    "C": "Correct. Granting only what a given task needs is least privilege, the first IAM best practice."
+   }
+  },
+  "1032": {
+   "r": {
+    "B": "Physical network devices, firewalls included, belong to AWS.",
+    "C": "Storage device decommissioning happens inside AWS facilities.",
+    "D": "Correct. Choosing to protect data in transit, and with what, is the customer's decision."
+   }
+  },
+  "1041": {
+   "k": "A handful of account-level actions are reserved for the root user because they change the account itself, not what runs inside it.",
+   "r": {
+    "A": "Correct. Only the root user can close the AWS account.",
+    "C": "Correct. Changing the Support plan is a root-only action."
+   }
+  },
+  "1075": {
+   "r": {
+    "D": "Correct. The hypervisor is part of the infrastructure AWS runs and patches."
+   }
+  },
+  "1089": {
+   "r": {
+    "A": "Container orchestration is ECS, EKS or Fargate. Trusted Advisor runs no workloads.",
+    "C": "Correct. Idle and underutilised resources are one of its cost optimisation checks.",
+    "D": "Correct. Open security groups, missing MFA and exposed keys are all flagged by the security checks."
+   }
+  },
+  "1090": {
+   "r": {
+    "A": "Correct. Scoping the developer's permissions to the job is least privilege applied to a new hire."
+   }
+  },
+  "1093": {
+   "r": {
+    "C": "Protecting communications and zone security stays with AWS whether you migrate or not, so nothing changes.",
+    "D": "Patching your own applications remains yours after the migration."
+   }
+  },
+  "1101": {
+   "r": {
+    "A": "Correct. The guest operating system and everything you install on it are yours to patch.",
+    "B": "Flaws in the infrastructure are AWS's to fix.",
+    "D": "AWS infrastructure devices are configured by AWS."
+   }
+  }
+ }
+}

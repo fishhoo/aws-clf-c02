@@ -115,6 +115,33 @@ async function step() {
   ok('service questions have four options', qa('.opt').length === 4);
   q('[data-quit]').click(); await wait(60);
 
+  // ---------- flagged questions during a round ----------
+  q('[data-go="sim"]').click(); await wait(60);
+  ok('no flag chip before anything is flagged', !q('[data-flaglist]'));
+  q('[data-flag]').click(); await wait(10);
+  ok('flag chip appears once something is flagged', !!q('[data-flaglist]'));
+  const firstStem = q('.qtext').textContent;
+  q('[data-main]').click(); await wait(10);
+  q('[data-main]').click(); await wait(10);
+  qa('.opt')[0].click();
+  q('[data-flag]').click(); await wait(10);
+  ok('chip tracks the count', /2/.test(q('[data-flaglist]').textContent));
+  q('[data-flaglist]').click(); await wait(20);
+  ok('the panel lists both', qa('.fq').length === 2);
+  ok('it shows which are answered', qa('.fq-s').some(x => x.classList.contains('done')));
+  qa('.fq')[0].click(); await wait(30);
+  ok('tapping a row jumps to that question', q('.qtext').textContent === firstStem);
+  ok('a way back to where you were is offered', !!q('[data-resume]'));
+  q('[data-resume]').click(); await wait(20);
+  ok('resume moves forward again', !q('[data-resume]'));
+  q('[data-flaglist]').click(); await wait(20);
+  q('.fq-x').click(); await wait(30);
+  ok('a flag can be dropped from the panel', qa('.fq').length === 1);
+  const openSheet = q('.sheet');
+  if (openSheet) q('[data-close]').click();
+  await wait(20);
+  q('[data-quit]').click(); await wait(60);
+
   // ---------- study notes ----------
   q('[data-go="review"]').click(); await wait(60);
   ok('study notes open', /What each service is for/.test(d.body.textContent));

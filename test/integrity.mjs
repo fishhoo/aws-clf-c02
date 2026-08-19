@@ -34,14 +34,27 @@ const Q = JSON.parse(qm[1]);
 ok('bank has every question', Q.length === 1326);
 ok('the exam-style set is present', Q.filter(q => q.e === 24).length === 30);
 const withR = Q.filter(q => q.r);
-ok('30 questions carry a full rationale', withR.length === 30);
-ok('every option in those has a rationale',
-   withR.every(q => q.o.every(([k]) => (q.r[k] || '').trim().length >= 15)));
-ok('each keyed option is confirmed in its own rationale',
-   withR.every(q => q.a.every(a => /^correct\b/i.test(q.r[a]))));
+ok('hand-written rationales are attached', withR.length === 323);
+const GLOSS = new Function('return [' + html.match(/const GLOSS_RAW = \[(.*?)\n\];/s)[1] +
+  '].map(([p,n,l])=>[new RegExp(p,"i"),n,l]);')();
+const explained = q => q.o.every(([k, v]) => (q.r && q.r[k]) || GLOSS.find(g => g[0].test(v)));
+ok('the billing domain is fully explained', Q.filter(q => q.d === 4).every(explained));
+ok('the security domain is fully explained', Q.filter(q => q.d === 2).every(explained));
+ok('every question shows something under at least one option', (() => {
+  const G = new Function('return [' + html.match(/const GLOSS_RAW = \[(.*?)\n\];/s)[1] +
+    '].map(([p,n,l])=>[new RegExp(p,"i"),n,l]);')();
+  return Q.every(q => q.r || q.o.some(([, v]) => G.find(g => g[0].test(v))));
+})());
+ok('set 24 explains every option',
+   Q.filter(q => q.src === 'orig').every(q => q.o.every(([k]) => (q.r[k] || '').trim().length >= 15)));
+ok('no patched rationale is a stub',
+   withR.every(q => Object.values(q.r).every(v => v.trim().length >= 15)));
+ok('a keyed option that has a rationale confirms itself',
+   withR.every(q => q.a.every(a => !q.r[a] || /^correct\b/i.test(q.r[a]))));
 ok('no distractor claims to be correct',
    withR.every(q => q.o.every(([k]) => q.a.includes(k) || !/^correct\b/i.test(q.r[k]))));
-ok('each carries a key insight', withR.every(q => (q.k || '').trim().length > 30));
+ok('set 24 carries a key insight on every question',
+   Q.filter(q => q.src === 'orig').every(q => (q.k || '').trim().length > 30));
 ok('the exam-style set spans all four domains',
    new Set(Q.filter(q => q.e === 24).map(q => q.d)).size === 4);
 ok('24 sets survived the build', new Set(Q.filter(q => q.e > 0).map(q => q.e)).size === 24);

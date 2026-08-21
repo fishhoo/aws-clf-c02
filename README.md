@@ -8,6 +8,7 @@ network calls.
 src/template.html        markup, styles, and all app logic (with two data placeholders)
 src/data/questions.json  1,141 questions across 23 community practice sets + 155 service scenarios
 src/data/exam-style.json set 24 — 30 original questions, each with a rationale per option
+src/data/caf-set.json     set 25 — 20 original questions on the Cloud Adoption Framework
 src/data/explanations.json hand-written rationales for questions the glossary can't reach
 tools/next-batch.mjs      lists the questions still missing a rationale, worst first
 src/data/review.json     155 study notes and 30 easily-confused comparison groups
@@ -118,6 +119,19 @@ the bank with a different key. Six of the nine disputes are wording problems
 rather than knowledge problems; two are questions that were correct when written
 and have since been overtaken by AWS policy changes (penetration testing).
 
+### Set 25 — the Cloud Adoption Framework
+
+A candidate who sat the live CLF-C02 in August 2026 reported noticeably more CAF
+content than the community bank carries: of 1,326 questions, exactly one asked
+about CAF at all, and it only asked what the acronym stands for.
+
+Set 25 is 20 original questions covering the six perspectives and what each one
+owns, the four transformation phases, the four transformation domains, and the
+distinction candidates most often miss — CAF assesses an *organisation*, while
+Well-Architected reviews a *workload*. The study notes gained a card per
+perspective plus two comparison groups: CAF versus Well-Architected, and the CAF
+phases versus the MAP phases.
+
 ### Set 24 — written for this app
 
 Sets 1–23 come from the community repo and mostly give you a link at best. Set
@@ -143,12 +157,12 @@ of quality:
 
 1. **Hand-written rationales** in `explanations.json` — a line per option saying
    why it is right or wrong. Entries may be partial: write only the options the
-   glossary cannot reach and it fills the rest. 540 questions carry these.
+   glossary cannot reach and it fills the rest. 560 questions carry these.
 2. **The built-in glossary** — 474 entries. When an option names a service or a
    concept, its note explains what that thing is and when it is the right answer.
 3. **The source notes** from the community repo, shown underneath where they exist.
 
-Coverage is **5,574 of 5,574 options** across all 1,326 questions, with no bare
+Coverage is **every option** across all 1,346 questions, with no bare
 option left in any of the four domains. A test asserts this per domain, so a new
 question cannot ship without its rationales.
 

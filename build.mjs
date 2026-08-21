@@ -54,6 +54,7 @@ const reviewPath    = locate('review.json',     'src/data/review.json', 'src/rev
 const correctionsPath = locate('corrections.json', 'src/data/corrections.json', 'src/corrections.json', 'data/corrections.json', 'corrections.json');
 const examStylePath   = locateOptional('src/data/exam-style.json', 'src/exam-style.json', 'data/exam-style.json', 'exam-style.json');
 const explainPath     = locateOptional('src/data/explanations.json', 'src/explanations.json', 'data/explanations.json', 'explanations.json');
+const cafPath         = locateOptional('src/data/caf-set.json', 'src/caf-set.json', 'data/caf-set.json', 'caf-set.json');
 
 console.log('inputs:');
 for (const p of [templatePath, questionsPath, reviewPath, correctionsPath]) console.log('  ' + relative(root, p));
@@ -61,6 +62,8 @@ console.log('  ' + (examStylePath ? relative(root, examStylePath)
   : 'exam-style.json  << NOT FOUND, so set 24 is missing from this build'));
 console.log('  ' + (explainPath ? relative(root, explainPath)
   : 'explanations.json  << NOT FOUND, hand-written rationales will be missing'));
+console.log('  ' + (cafPath ? relative(root, cafPath)
+  : 'caf-set.json  << NOT FOUND, so set 25 is missing from this build'));
 
 const template = read(templatePath);
 const questions = JSON.parse(read(questionsPath));
@@ -68,6 +71,8 @@ const review = JSON.parse(read(reviewPath));
 const corrections = JSON.parse(read(correctionsPath));
 // set 24 is written for this app and carries a rationale for every option
 if (examStylePath) for (const q of JSON.parse(read(examStylePath)).questions) questions.push(q);
+// set 25 covers the Cloud Adoption Framework, which the community bank barely touches
+if (cafPath) for (const q of JSON.parse(read(cafPath)).questions) questions.push(q);
 
 // hand-written rationales for questions the glossary cannot reach
 if (explainPath) {

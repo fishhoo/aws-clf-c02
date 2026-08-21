@@ -31,10 +31,11 @@ ok('nothing auto-loads on page open', !/fetch\(/.test(html.slice(html.indexOf('a
 const qm = html.match(/const QUESTIONS = (\[.*?\]);\nconst REVIEW/s);
 ok('question bank is present and parseable', !!qm);
 const Q = JSON.parse(qm[1]);
-ok('bank has every question', Q.length === 1326);
+ok('bank has every question', Q.length === 1346);
 ok('the exam-style set is present', Q.filter(q => q.e === 24).length === 30);
+ok('the CAF set is present', Q.filter(q => q.e === 25).length === 20);
 const withR = Q.filter(q => q.r);
-ok('hand-written rationales are attached', withR.length === 540);
+ok('hand-written rationales are attached', withR.length === 560);
 const GLOSS = new Function('return [' + html.match(/const GLOSS_RAW = \[(.*?)\n\];/s)[1] +
   '].map(([p,n,l])=>[new RegExp(p,"i"),n,l]);')();
 const explained = q => q.o.every(([k, v]) => (q.r && q.r[k]) || GLOSS.find(g => g[0].test(v)));
@@ -55,7 +56,9 @@ ok('set 24 carries a key insight on every question',
    Q.filter(q => q.src === 'orig').every(q => (q.k || '').trim().length > 30));
 ok('the exam-style set spans all four domains',
    new Set(Q.filter(q => q.e === 24).map(q => q.d)).size === 4);
-ok('24 sets survived the build', new Set(Q.filter(q => q.e > 0).map(q => q.e)).size === 24);
+ok('CAF is covered by more than a single question',
+   Q.filter(q => /cloud adoption framework|\bCAF\b/i.test(q.q)).length >= 10);
+ok('25 sets survived the build', new Set(Q.filter(q => q.e > 0).map(q => q.e)).size === 25);
 ok('155 service scenarios survived the build', Q.filter(q => q.src === 'svc').length === 155);
 ok('every question has a valid key', Q.every(q => q.a.every(a => q.o.some(o => o[0] === a))));
 ok('no stray markup in any stem', !Q.some(q => /<\s*\/?\s*(br|p|div|span)\b/i.test(q.q)));
@@ -143,8 +146,11 @@ ok('a full de-duplicated pass still covers every distinct question',
 const rm = html.match(/const REVIEW = (\{.*?\});\n/s);
 ok('study notes are present and parseable', !!rm);
 const R = JSON.parse(rm[1]);
-ok('155 study notes', R.services.length === 155);
-ok('30 comparison groups', R.pairs.length === 30);
+ok('163 study notes', R.services.length === 163);
+ok('32 comparison groups', R.pairs.length === 32);
+ok('the six CAF perspectives all appear in the study notes',
+   ['business','people','governance','platform','security','operations']
+     .every(p => R.services.some(s => s.n.toLowerCase() === 'caf: ' + p + ' perspective')));
 ok('study notes carry both languages', R.services.every(s => s.en && s.th));
 
 // ---- theming ----

@@ -46,7 +46,7 @@ async function step() {
 
   // ---------- practice set, with feedback ----------
   q('[data-go="set"]').click(); await wait(40);
-  ok('24 sets listed', qa('.exbtn').length === 24);
+  ok('25 sets listed', qa('.exbtn').length === 25);
   qa('.exbtn')[0].click(); await wait(40);
   ok('quiz opens', !!q('.qcard'));
   ok('check is disabled until something is picked', q('[data-main]').disabled);
@@ -153,7 +153,7 @@ async function step() {
   ok('thai copy available', /บริการและคอนเซปต์/.test(d.body.textContent));
   q('[data-lang="en"]').click(); await wait(30);
   q('[data-tab="pairs"]').click(); await wait(30);
-  ok('30 comparison groups render', qa('.rcard.pair').length === 30);
+  ok('32 comparison groups render', qa('.rcard.pair').length === 32);
   q('[data-tab="services"]').click(); await wait(20);
   q('[data-drill]').click(); await wait(60);
   ok('drilling straight from the notes works', !!q('.qcard'));

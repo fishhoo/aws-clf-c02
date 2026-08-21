@@ -1,0 +1,267 @@
+{
+  "_about": "Set 25 — the AWS Cloud Adoption Framework. Written from scratch after a candidate reported the live CLF-C02 exam leaning harder on CAF than the community question bank does. Same format as set 24: a rationale under every option and one line naming the idea under test. Not copied from AWS or any paid question bank.",
+
+  "questions": [
+    {
+      "i": 3101, "e": 25, "n": 1, "d": 1, "src": "orig",
+      "q": "An organisation is planning a cloud programme and wants a structure for identifying capability gaps across the whole business, not just in engineering. Which AWS framework is designed for this?",
+      "o": [["A", "AWS Well-Architected Framework"], ["B", "AWS Cloud Adoption Framework (AWS CAF)"], ["C", "The AWS Shared Responsibility Model"], ["D", "The Six Advantages of Cloud Computing"]],
+      "a": ["B"],
+      "k": "CAF looks at the organisation; Well-Architected looks at a workload. The word to catch is who or what is being assessed.",
+      "r": {
+        "A": "Well-Architected reviews a single workload's design against six pillars. It has nothing to say about staffing or governance.",
+        "B": "Correct. CAF exists to find capability gaps across business, people, governance, platform, security and operations.",
+        "C": "The shared responsibility model divides security duties between AWS and the customer. It is not a planning framework.",
+        "D": "The six advantages are a sales argument for the cloud, not a method for assessing readiness."
+      }
+    },
+    {
+      "i": 3102, "e": 25, "n": 2, "d": 1, "src": "orig",
+      "q": "How many perspectives make up the AWS Cloud Adoption Framework, and what are they?",
+      "o": [["A", "Four: people, process, technology and cost"], ["B", "Five: envision, align, launch, scale and optimise"], ["C", "Six: business, people, governance, platform, security and operations"], ["D", "Six: operational excellence, security, reliability, performance efficiency, cost optimisation and sustainability"]],
+      "a": ["C"],
+      "k": "Six perspectives. Note that the other six-item list belongs to Well-Architected, which is the classic trap on this question.",
+      "r": {
+        "A": "People, process and technology is a generic consulting model, not CAF.",
+        "B": "Envision, align, launch and scale are the four CAF transformation phases, not the perspectives — and there are four, not five.",
+        "C": "Correct. Business, people and governance cover the organisation; platform, security and operations cover the technology.",
+        "D": "That list is the six Well-Architected pillars. Different framework, different purpose."
+      }
+    },
+    {
+      "i": 3103, "e": 25, "n": 3, "d": 1, "src": "orig",
+      "q": "A CFO wants assurance that the cloud programme will produce a measurable return and that IT spending will map to business outcomes. Which CAF perspective covers this concern?",
+      "o": [["A", "Business perspective"], ["B", "Governance perspective"], ["C", "Platform perspective"], ["D", "Operations perspective"]],
+      "a": ["A"],
+      "k": "The business perspective is about making sure cloud investment produces business results — the stakeholders are the CFO, CIO and business unit leaders.",
+      "r": {
+        "A": "Correct. Aligning IT strategy and investment with measurable business outcomes is exactly what this perspective covers.",
+        "B": "Governance is about managing and measuring the programme itself — portfolio, risk, benefits realisation — rather than justifying the investment.",
+        "C": "Platform covers the architecture and the technical estate. It answers how, not why.",
+        "D": "Operations covers running services to the level the business agreed. It comes after the case is made."
+      }
+    },
+    {
+      "i": 3104, "e": 25, "n": 4, "d": 1, "src": "orig",
+      "q": "During a CAF assessment, a company finds that its staff lack cloud skills and that roles and incentives still assume an on-premises operating model. Which perspective addresses this?",
+      "o": [["A", "Business perspective"], ["B", "People perspective"], ["C", "Governance perspective"], ["D", "Security perspective"]],
+      "a": ["B"],
+      "k": "The people perspective is the bridge between technology and business: culture, skills, roles, org structure and change management.",
+      "r": {
+        "A": "The business perspective is about outcomes and investment, not about who does the work.",
+        "B": "Correct. Training, role design, culture and change management all sit under the people perspective.",
+        "C": "Governance would track whether the skills programme delivers, but it does not design it.",
+        "D": "Security covers protecting data and workloads, not workforce readiness."
+      }
+    },
+    {
+      "i": 3105, "e": 25, "n": 5, "d": 1, "src": "orig",
+      "q": "A programme office needs to manage the migration portfolio, track benefits and keep cloud risk visible to the board. Which CAF perspective is this?",
+      "o": [["A", "Operations perspective"], ["B", "Platform perspective"], ["C", "Governance perspective"], ["D", "People perspective"]],
+      "a": ["C"],
+      "k": "Governance is about orchestrating the initiative and measuring it — portfolio management, benefits, risk, data curation and programme control.",
+      "r": {
+        "A": "Operations keeps live services running to their agreed levels. It is day-to-day, not programme-level.",
+        "B": "Platform is about the technical architecture and the environments themselves.",
+        "C": "Correct. Portfolio management, benefits realisation and risk management sit squarely in the governance perspective.",
+        "D": "People handles skills and culture, not portfolio and risk tracking."
+      }
+    },
+    {
+      "i": 3106, "e": 25, "n": 6, "d": 1, "src": "orig",
+      "q": "An enterprise architect is defining the target architecture, the landing zone and the pattern for building new workloads on AWS. Which CAF perspective covers this work?",
+      "o": [["A", "Platform perspective"], ["B", "Operations perspective"], ["C", "Business perspective"], ["D", "Governance perspective"]],
+      "a": ["A"],
+      "k": "Platform is the engineering perspective — the CTO, architects and engineers building the target environment and the products that run in it.",
+      "r": {
+        "A": "Correct. Target architecture, platform engineering and modernisation all belong to the platform perspective.",
+        "B": "Operations takes over once workloads are live: monitoring, incidents, events and problems.",
+        "C": "The business perspective would justify the investment, not design the landing zone.",
+        "D": "Governance would set the standards the architecture must satisfy, but not draw it."
+      }
+    },
+    {
+      "i": 3107, "e": 25, "n": 7, "d": 1, "src": "orig",
+      "q": "A team is defining how incidents will be detected, escalated and resolved once workloads are live in AWS, and how service levels will be met. Which CAF perspective is this?",
+      "o": [["A", "Platform perspective"], ["B", "Security perspective"], ["C", "Governance perspective"], ["D", "Operations perspective"]],
+      "a": ["D"],
+      "k": "The operations perspective covers running and supporting cloud services to the level the business agreed — observability, incidents, problems and change.",
+      "r": {
+        "A": "Platform builds the environment. Keeping it healthy afterwards is a different perspective.",
+        "B": "Security covers threats and compliance, not general service delivery.",
+        "C": "Governance measures the programme; it does not run the service desk.",
+        "D": "Correct. Event, incident and problem management, and meeting agreed service levels, are the operations perspective."
+      }
+    },
+    {
+      "i": 3108, "e": 25, "n": 8, "d": 2, "src": "orig",
+      "q": "Which capabilities belong to the security perspective of the AWS Cloud Adoption Framework? (Choose two.)",
+      "o": [["A", "Identity and access management"], ["B", "Benefits realisation of the cloud programme"], ["C", "Incident response and threat detection"], ["D", "Workforce cloud skills training"], ["E", "Choosing which instance families to standardise on"]],
+      "a": ["A", "C"],
+      "k": "The security perspective covers confidentiality, integrity and availability: governance of security, identity, threat detection, vulnerability management, infrastructure and data protection, and incident response.",
+      "r": {
+        "A": "Correct. Identity and access management is one of the named security perspective capabilities.",
+        "B": "Benefits realisation belongs to the governance perspective.",
+        "C": "Correct. Threat detection and incident response are both security perspective capabilities.",
+        "D": "Skills training is the people perspective.",
+        "E": "Standardising instance families is a platform decision."
+      }
+    },
+    {
+      "i": 3109, "e": 25, "n": 9, "d": 1, "src": "orig",
+      "q": "AWS CAF describes four transformation phases. Which sequence is correct?",
+      "o": [["A", "Assess, mobilise, migrate and modernise"], ["B", "Envision, align, launch and scale"], ["C", "Plan, build, run and optimise"], ["D", "Rehost, replatform, refactor and retire"]],
+      "a": ["B"],
+      "k": "Envision the outcomes, align the stakeholders, launch pilots, then scale what works. Do not confuse these with the migration strategies or with the MAP phases.",
+      "r": {
+        "A": "Assess, mobilise, migrate and modernise are the phases of the Migration Acceleration Program, a different thing.",
+        "B": "Correct. Envision, align, launch, scale is the CAF transformation journey.",
+        "C": "Plan, build, run is generic IT lifecycle language, not CAF.",
+        "D": "Those are migration strategies — part of the 7 Rs — not transformation phases."
+      }
+    },
+    {
+      "i": 3110, "e": 25, "n": 10, "d": 1, "src": "orig",
+      "q": "In which CAF transformation phase does an organisation identify and prioritise the business outcomes it expects the cloud to deliver?",
+      "o": [["A", "Envision"], ["B", "Align"], ["C", "Launch"], ["D", "Scale"]],
+      "a": ["A"],
+      "k": "Envision comes first and is about outcomes, not technology: what should be different for the business once this is done?",
+      "r": {
+        "A": "Correct. Envision identifies and prioritises the transformation opportunities tied to business outcomes.",
+        "B": "Align comes next and is about finding capability gaps and building stakeholder agreement.",
+        "C": "Launch is about delivering pilots in production to demonstrate value.",
+        "D": "Scale expands what the pilots proved, to the level of demand."
+      }
+    },
+    {
+      "i": 3111, "e": 25, "n": 11, "d": 1, "src": "orig",
+      "q": "A company has run two successful production pilots on AWS and now wants to expand them to full business scale while sustaining the benefits. Which CAF phase describes this?",
+      "o": [["A", "Envision"], ["B", "Align"], ["C", "Launch"], ["D", "Scale"]],
+      "a": ["D"],
+      "k": "Launch proves value in production on a small scale; scale expands that to the level the business needs and keeps the benefits going.",
+      "r": {
+        "A": "Envision happens before anything is built.",
+        "B": "Align is where capability gaps and stakeholder concerns are worked through, well before pilots run.",
+        "C": "Launch is the pilot stage itself, which this company has already completed.",
+        "D": "Correct. Expanding proven pilots to full scale and sustaining the benefits is the scale phase."
+      }
+    },
+    {
+      "i": 3112, "e": 25, "n": 12, "d": 1, "src": "orig",
+      "q": "What is the difference between the AWS Cloud Adoption Framework and the AWS Well-Architected Framework?",
+      "o": [["A", "CAF assesses an organisation's readiness to adopt cloud; Well-Architected reviews a workload's design"], ["B", "CAF applies to migrations; Well-Architected applies to new builds"], ["C", "CAF is for enterprises; Well-Architected is for start-ups"], ["D", "CAF is a paid engagement; Well-Architected is free"]],
+      "a": ["A"],
+      "k": "The unit of analysis is the giveaway. CAF assesses an organisation; Well-Architected assesses a workload.",
+      "r": {
+        "A": "Correct. One looks at capability across the business, the other at how a specific workload is designed and run.",
+        "B": "Well-Architected applies to any workload, migrated or newly built.",
+        "C": "Neither framework is restricted by company size.",
+        "D": "Both are free to use. The Well-Architected Tool is in the console, and CAF is published guidance."
+      }
+    },
+    {
+      "i": 3113, "e": 25, "n": 13, "d": 1, "src": "orig",
+      "q": "Which three CAF perspectives are most concerned with the organisation rather than the technology?",
+      "o": [["A", "Platform, security and operations"], ["B", "Business, people and governance"], ["C", "Envision, align and launch"], ["D", "Reliability, cost optimisation and sustainability"]],
+      "a": ["B"],
+      "k": "CAF splits neatly in half: business, people and governance are organisational; platform, security and operations are technical.",
+      "r": {
+        "A": "Those three are the technical half of CAF.",
+        "B": "Correct. Business, people and governance address strategy, culture and control rather than systems.",
+        "C": "Those are transformation phases, not perspectives.",
+        "D": "Those are Well-Architected pillars."
+      }
+    },
+    {
+      "i": 3114, "e": 25, "n": 14, "d": 1, "src": "orig",
+      "q": "AWS CAF names several transformation domains that the perspectives support. Which of the following is one of them?",
+      "o": [["A", "Financial transformation"], ["B", "Organisational transformation"], ["C", "Regulatory transformation"], ["D", "Vendor transformation"]],
+      "a": ["B"],
+      "k": "The four transformation domains are technology, process, organisation and people. Anything else on the list is invented.",
+      "r": {
+        "A": "Finance shows up inside the business perspective, but it is not one of the transformation domains.",
+        "B": "Correct. Organisational transformation is one of the four, alongside technology, process and people.",
+        "C": "Regulation is handled through governance and security, not as its own domain.",
+        "D": "Vendor management is a governance activity, not a transformation domain."
+      }
+    },
+    {
+      "i": 3115, "e": 25, "n": 15, "d": 1, "src": "orig",
+      "q": "A retailer is reorganising from project teams into product teams so that each team owns a service end to end. Which CAF transformation domain does this represent?",
+      "o": [["A", "Technology transformation"], ["B", "Process transformation"], ["C", "Organisational transformation"], ["D", "People transformation"]],
+      "a": ["C"],
+      "k": "Organisational transformation is about how teams are arranged around business outcomes; people transformation is about the culture and skills of the individuals in them.",
+      "r": {
+        "A": "Technology transformation covers migrating and modernising the estate itself.",
+        "B": "Process transformation is about digitising and optimising how work flows.",
+        "C": "Correct. Restructuring teams around products and outcomes is organisational transformation.",
+        "D": "People transformation would cover the training and culture change that accompanies it, not the restructure."
+      }
+    },
+    {
+      "i": 3116, "e": 25, "n": 16, "d": 1, "src": "orig",
+      "q": "Which statement about the AWS Cloud Adoption Framework is TRUE?",
+      "o": [["A", "It is available only to customers on Enterprise Support"], ["B", "It certifies that a workload meets a compliance standard"], ["C", "It is free published guidance any organisation can apply"], ["D", "It replaces the need for a migration business case"]],
+      "a": ["C"],
+      "k": "CAF is guidance, not a product, a certification or a paywalled service. Anyone can read it and run the assessment themselves.",
+      "r": {
+        "A": "There is no support plan requirement. AWS Professional Services can help, but the framework itself is open.",
+        "B": "Compliance certification comes from audits, and the evidence from AWS Artifact. CAF certifies nothing.",
+        "C": "Correct. It is published guidance, free to use, with AWS or a partner optionally facilitating the assessment.",
+        "D": "A business case is still needed. CAF helps you build one rather than removing it."
+      }
+    },
+    {
+      "i": 3117, "e": 25, "n": 17, "d": 1, "src": "orig",
+      "q": "During the align phase of a CAF engagement, what is the main activity?",
+      "o": [["A", "Running the first production workloads to prove value"], ["B", "Identifying capability gaps and building stakeholder agreement"], ["C", "Expanding proven workloads across the organisation"], ["D", "Choosing which AWS Region to deploy into"]],
+      "a": ["B"],
+      "k": "Align is where the gaps between where you are and where you want to be get named, and where the people who must agree are brought together.",
+      "r": {
+        "A": "Running the first production workloads is the launch phase.",
+        "B": "Correct. Align surfaces capability gaps, dependencies and stakeholder concerns, producing an action plan.",
+        "C": "Expanding what worked is the scale phase.",
+        "D": "Region selection is a delivery decision, not a CAF phase activity."
+      }
+    },
+    {
+      "i": 3118, "e": 25, "n": 18, "d": 4, "src": "orig",
+      "q": "Which CAF perspective would help a company decide how to fund cloud spending and manage it as an operating expense rather than a capital purchase?",
+      "o": [["A", "Business perspective"], ["B", "Platform perspective"], ["C", "Operations perspective"], ["D", "Security perspective"]],
+      "a": ["A"],
+      "k": "Cloud financial management sits under the business perspective, because it is about how the organisation funds and measures technology investment.",
+      "r": {
+        "A": "Correct. Cloud financial management is one of the business perspective's named capabilities.",
+        "B": "Platform is concerned with architecture, not with how the bill is funded.",
+        "C": "Operations runs the services; it does not decide the funding model.",
+        "D": "Security has no role in how spend is classified."
+      }
+    },
+    {
+      "i": 3119, "e": 25, "n": 19, "d": 1, "src": "orig",
+      "q": "A company wants AWS specialists working alongside its own staff to run a CAF assessment and shape the roadmap. Which AWS offering provides this?",
+      "o": [["A", "AWS Trusted Advisor"], ["B", "AWS Professional Services"], ["C", "AWS Artifact"], ["D", "AWS Support Basic plan"]],
+      "a": ["B"],
+      "k": "CAF is free to read, but running the assessment with AWS people is a paid engagement through Professional Services, or through an APN partner.",
+      "r": {
+        "A": "Trusted Advisor is an automated checking tool. It cannot facilitate a workshop.",
+        "B": "Correct. Professional Services is the AWS consulting arm that runs engagements alongside customer teams.",
+        "C": "Artifact provides compliance reports and nothing else.",
+        "D": "Basic Support offers no technical or advisory engagement at all."
+      }
+    },
+    {
+      "i": 3120, "e": 25, "n": 20, "d": 1, "src": "orig",
+      "q": "Which pair correctly matches a CAF perspective to one of its capabilities?",
+      "o": [["A", "People perspective — vulnerability management"], ["B", "Governance perspective — data curation"], ["C", "Operations perspective — cloud financial management"], ["D", "Security perspective — organisational alignment"]],
+      "a": ["B"],
+      "k": "Data curation, risk management, portfolio management and benefits realisation all sit under governance — the perspective that measures and controls the programme.",
+      "r": {
+        "A": "Vulnerability management is a security perspective capability.",
+        "B": "Correct. Data curation is one of the governance perspective's named capabilities.",
+        "C": "Cloud financial management belongs to the business perspective.",
+        "D": "Organisational alignment belongs to the people perspective."
+      }
+    }
+  ]
+}
